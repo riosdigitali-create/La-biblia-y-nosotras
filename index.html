@@ -1,0 +1,1686 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RÍO MX | Ve y haz discípulos</title>
+    <meta name="description" content="RÍO MX es una iglesia viva en Ciudad de México, certificada por Casa de Dios. Encuentra propósito, restauración y comunidad. Vamos y hacemos discípulos a través de grupos de amistad.">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo+Black&family=Bebas+Neue&family=Caveat:wght@400..700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            cyan: '#EFE7D4',
+                            teal: '#EFE7D4',
+                            purple: '#C24B23',
+                            violet: '#C24B23',
+                            gold: '#E3B23C',
+                            amber: '#C98A2E',
+                            dark: '#0B0A09',
+                            navy: '#171310'
+                        },
+                        obsidian: '#0B0A09'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Anton', 'Bebas Neue', 'sans-serif'],
+                        script: ['Caveat', 'cursive'],
+                        serif: ['Libre Baskerville', 'Cormorant Garamond', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Dependencies -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
+
+    <style>
+        @font-face {
+            font-family: 'Libre Baskerville';
+            src: url('LibreBaskerville-VariableFont_wght.ttf') format('truetype');
+            font-weight: 400 700; font-style: normal; font-display: swap;
+        }
+        @font-face {
+            font-family: 'Libre Baskerville';
+            src: url('LibreBaskerville-Italic-VariableFont_wght.ttf') format('truetype');
+            font-weight: 400 700; font-style: italic; font-display: swap;
+        }
+        :root {
+            --brand-cyan: #EFE7D4;
+            --brand-purple: #C24B23;
+            --brand-gold: #E3B23C;
+            --brand-teal: #EFE7D4;
+        }
+
+        * { -webkit-tap-highlight-color: transparent; }
+
+        body {
+            background-color: #0B0A09;
+            color: #ffffff;
+            overflow-x: hidden;
+            overscroll-behavior: none;
+            cursor: none;
+        }
+        @media (max-width: 1024px) { body { cursor: auto; } }
+
+        .hide-scroll::-webkit-scrollbar { display: none; }
+        .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* ============== PRELOADER ============== */
+        #preloader {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: #04060f;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 1.5rem;
+        }
+        #preloader .pl-logo {
+            width: 90px;
+            opacity: 0;
+            transform: scale(0.8);
+            filter: drop-shadow(0 0 25px rgba(45,212,255,0.5));
+        }
+        .pl-bar-wrap {
+            width: 220px;
+            height: 2px;
+            background: rgba(255,255,255,0.08);
+            overflow: hidden;
+            border-radius: 99px;
+        }
+        .pl-bar {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, var(--brand-cyan), var(--brand-purple), var(--brand-gold));
+            box-shadow: 0 0 16px rgba(45,212,255,0.7);
+        }
+        .pl-count {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 0.9rem;
+            letter-spacing: 0.4em;
+            color: rgba(255,255,255,0.5);
+        }
+        .pl-curtain {
+            position: fixed;
+            inset: 0;
+            z-index: 9998;
+            background: #04060f;
+            transform: translateY(0);
+        }
+
+        /* ============== CUSTOM CURSOR ============== */
+        .cursor-dot, .cursor-ring {
+            position: fixed;
+            top: 0; left: 0;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9990;
+            transform: translate(-50%, -50%);
+            mix-blend-mode: difference;
+        }
+        .cursor-dot { width: 7px; height: 7px; background: #fff; }
+        .cursor-ring {
+            width: 38px; height: 38px;
+            border: 1px solid rgba(255,255,255,0.6);
+            transition: width .3s, height .3s, background .3s, border-color .3s;
+        }
+        .cursor-ring.grow { width: 70px; height: 70px; background: rgba(255,255,255,0.1); border-color: transparent; }
+        @media (max-width: 1024px) { .cursor-dot, .cursor-ring { display: none; } }
+
+        /* Ambient Effects */
+        .ambient-aurora {
+            position: fixed;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background:
+                radial-gradient(circle at 50% 50%, rgba(239,231,212,0.04) 0%, transparent 40%),
+                radial-gradient(circle at 80% 20%, rgba(194,75,35,0.05) 0%, transparent 40%),
+                radial-gradient(circle at 20% 80%, rgba(227,178,60,0.03) 0%, transparent 40%);
+            z-index: 0;
+            pointer-events: none;
+            animation: rotateAurora 70s linear infinite;
+        }
+        @keyframes rotateAurora { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        .cursor-glow {
+            position: fixed;
+            width: 500px; height: 500px;
+            background: radial-gradient(circle, rgba(239,231,212,0.10) 0%, rgba(194,75,35,0.06) 40%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+            mix-blend-mode: screen;
+            filter: blur(50px);
+            will-change: transform;
+        }
+
+        .noise-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 60;
+            pointer-events: none;
+            opacity: 0.04;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        /* Glassmorphism & 3D Cards */
+        .glass-panel {
+            background: rgba(11, 18, 36, 0.45);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.5);
+        }
+        .glass-card {
+            background: linear-gradient(145deg, rgba(255,255,255,0.025) 0%, rgba(255,255,255,0.0) 100%);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.04);
+            transition: border-color 0.5s, box-shadow 0.5s;
+            transform-style: preserve-3d;
+            will-change: transform;
+        }
+        .glass-card:hover {
+            border-color: rgba(45, 212, 255, 0.2);
+            box-shadow: 0 20px 40px -10px rgba(45, 212, 255, 0.12);
+        }
+        .card-content-3d { transform: translateZ(30px); transition: transform 0.3s; }
+        .glass-card:hover .card-content-3d { transform: translateZ(50px); }
+
+        .rio-path { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+
+        /* Gold shimmer text */
+        .gold-shimmer {
+            background: linear-gradient(110deg, #E8A33D 20%, #F5C451 35%, #FFF6DC 50%, #F5C451 65%, #E8A33D 80%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: shimmer 6s linear infinite;
+        }
+        @keyframes shimmer { to { background-position: 200% center; } }
+
+        /* Magnetic button */
+        .magnetic { will-change: transform; }
+
+        /* Modals */
+        .modal-overlay {
+            opacity: 0; visibility: hidden;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+            position: fixed; inset: 0; z-index: 100;
+            background: rgba(0,0,0,0.82);
+            backdrop-filter: blur(10px);
+            display: flex; align-items: center; justify-content: center;
+        }
+        .modal-overlay.active { opacity: 1; visibility: visible; }
+        .modal-content {
+            transform: scale(0.95) translateY(20px); opacity: 0;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            background: #0b1224;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 1.5rem; padding: 2rem;
+            width: 90%; max-width: 500px; max-height: 90vh; overflow-y: auto;
+        }
+        .modal-overlay.active .modal-content { transform: scale(1) translateY(0); opacity: 1; }
+
+        /* Reveal masks */
+        .reveal-mask { overflow: hidden; display: inline-block; vertical-align: top; }
+        .reveal-mask-inner { display: inline-block; transform: translateY(110%); will-change: transform; }
+        .image-reveal-container { clip-path: none; }
+        .circle-reveal-container { clip-path: none; }
+
+        .vintage-photo {
+            filter: contrast(1.15) saturate(0.6) sepia(0.2) brightness(0.9);
+            position: relative;
+            mix-blend-mode: luminosity;
+            transition: filter 0.5s ease;
+            transform: none;
+            width: 100%; height: 100%; object-fit: cover;
+        }
+        .vintage-photo-container:hover .vintage-photo { filter: contrast(1.1) saturate(0.95) sepia(0) brightness(1); mix-blend-mode: normal; }
+        .vintage-photo-container::after {
+            content: ''; position: absolute; inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.15'/%3E%3C/svg%3E");
+            pointer-events: none; mix-blend-mode: overlay;
+        }
+
+        /* Light rays for scripture */
+        .light-rays {
+            position: absolute; inset: 0;
+            background:
+                conic-gradient(from 180deg at 50% 0%, transparent 0deg, rgba(245,196,81,0.07) 10deg, transparent 20deg, transparent 340deg, rgba(45,212,255,0.06) 350deg, transparent 360deg);
+            mix-blend-mode: screen;
+            pointer-events: none;
+            animation: raysPulse 8s ease-in-out infinite;
+        }
+        @keyframes raysPulse { 0%,100% { opacity: 0.5; } 50% { opacity: 1; } }
+
+        /* River path */
+        .river-line { stroke-dasharray: 1; stroke-dashoffset: 1; }
+
+        /* Marquee */
+        .marquee { display: flex; width: max-content; animation: marquee 38s linear infinite; }
+        @keyframes marquee { to { transform: translateX(-50%); } }
+        .marquee-track:hover .marquee { animation-play-state: paused; }
+
+        /* Stage node pulse */
+        .stage-node { box-shadow: 0 0 0 0 rgba(255,255,255,0.4); }
+        .stage-glow { animation: nodePulse 3s ease-in-out infinite; }
+        @keyframes nodePulse { 0%,100% { transform: scale(1); opacity: .6;} 50% { transform: scale(1.25); opacity: 1;} }
+
+        /* Scroll-reveal helpers */
+        .fx-up { opacity: 0; transform: translateY(40px); }
+
+        /* ===== Selector de sedes (tipo character-select) ===== */
+        .sede-chip.chip-active { background: var(--brand-cyan); color: #04060f; border-color: var(--brand-cyan); }
+        #sede-stage > .sede-card { will-change: transform, opacity, filter; }
+        .sede-enter-right { animation: sedeInR .5s cubic-bezier(.16,1,.3,1); }
+        .sede-enter-left { animation: sedeInL .5s cubic-bezier(.16,1,.3,1); }
+        @keyframes sedeInR { from { opacity:0; transform: translateX(60px) scale(.97); filter: blur(8px);} to { opacity:1; transform:none; filter:blur(0);} }
+        @keyframes sedeInL { from { opacity:0; transform: translateX(-60px) scale(.97); filter: blur(8px);} to { opacity:1; transform:none; filter:blur(0);} }
+        .sede-seg { height: 5px; border-radius: 99px; background: rgba(255,255,255,0.08); flex: 1; cursor: pointer; transition: background .35s, transform .35s; }
+        .sede-seg.on { background: linear-gradient(90deg, var(--brand-cyan), var(--brand-purple)); }
+        .sede-seg.cur { transform: scaleY(2.4); background: linear-gradient(90deg, var(--brand-cyan), var(--brand-gold)); box-shadow: 0 0 12px rgba(45,212,255,0.6); }
+        #sede-pos.flip { animation: posFlip .4s ease; }
+        @keyframes posFlip { 0% { opacity:0; transform: translateY(-10px) scale(1.2);} 100% { opacity:1; transform:none;} }
+    </style>
+</head>
+<body class="selection:bg-brand-cyan selection:text-brand-dark hide-scroll">
+
+    <!-- PRELOADER -->
+    <div id="preloader">
+        <img src="logo.png" alt="RÍO" class="pl-logo" id="pl-logo">
+        <div class="pl-bar-wrap"><div class="pl-bar" id="pl-bar"></div></div>
+        <div class="pl-count" id="pl-count">000</div>
+    </div>
+    <div class="pl-curtain" id="pl-curtain"></div>
+
+    <!-- CURSOR -->
+    <div class="cursor-ring" id="cursor-ring"></div>
+    <div class="cursor-dot" id="cursor-dot"></div>
+
+    <div class="ambient-aurora"></div>
+    <div class="cursor-glow" id="cursor-glow"></div>
+    <div class="noise-overlay"></div>
+
+    <div class="relative w-full overflow-hidden" id="page-wrapper">
+
+        <nav class="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-6xl transition-transform duration-500" id="main-nav">
+            <div class="glass-panel rounded-full px-6 py-3 flex justify-between items-center">
+                <div class="cursor-pointer flex items-center hover:opacity-80 hover:drop-shadow-[0_0_10px_rgba(255,255,255,0.5)] transition-all duration-300 magnetic" data-cursor onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+                    <img src="logo.png" alt="RÍO Logo" class="h-8 md:h-10 w-auto object-contain">
+                </div>
+                <div class="hidden md:flex space-x-9 items-center text-xs font-bold text-gray-400 uppercase tracking-widest">
+                    <a data-cursor onclick="document.getElementById('seccion-discipulado').scrollIntoView({behavior: 'smooth'})" class="hover:text-white transition-colors cursor-pointer">El Río</a>
+                    <a data-cursor onclick="document.getElementById('seccion-proximo-paso').scrollIntoView({behavior: 'smooth'})" class="hover:text-white transition-colors cursor-pointer">Próximo Paso</a>
+                    <a data-cursor onclick="document.getElementById('seccion-encuentro').scrollIntoView({behavior: 'smooth'})" class="hover:text-white transition-colors cursor-pointer">Encuentro</a>
+                    <a data-cursor onclick="document.getElementById('seccion-recursos').scrollIntoView({behavior: 'smooth'})" class="hover:text-white transition-colors cursor-pointer">Recursos</a>
+                    <a data-cursor onclick="document.getElementById('seccion-comunidades').scrollIntoView({behavior: 'smooth'})" class="hover:text-white transition-colors cursor-pointer">Comunidades</a>
+                    <a data-cursor onclick="document.getElementById('seccion-donativos').scrollIntoView({behavior: 'smooth'})" class="hover:text-brand-gold transition-colors cursor-pointer">Donar</a>
+                </div>
+                <div class="flex items-center gap-4">
+                    <button data-cursor onclick="openModal('modal-comunidad')" class="magnetic bg-white text-brand-dark px-7 py-3 rounded-full font-bold text-xs uppercase tracking-widest hover:scale-105 transition-transform shadow-[0_0_20px_rgba(255,255,255,0.2)]">
+                        Únete
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <main class="relative z-10">
+
+            <!-- ============ HERO ============ -->
+            <section id="hero-section" class="relative w-full min-h-screen flex items-center justify-center overflow-hidden pt-32 pb-16 z-20">
+                <!-- Video de fondo -->
+                <video class="absolute inset-0 w-full h-full object-cover z-0" autoplay muted loop playsinline preload="auto">
+                    <source src="fondo-portada.mp4" type="video/mp4">
+                </video>
+                <div class="absolute inset-0 z-[1] bg-gradient-to-b from-brand-dark/85 via-brand-dark/55 to-brand-dark"></div>
+                <div class="absolute inset-0 z-[1] bg-black/25"></div>
+
+                <div class="relative z-10 w-full max-w-3xl mx-auto px-6 text-center flex flex-col items-center">
+                    <div class="gsap-hero opacity-0 translate-y-8 inline-flex items-center gap-3 px-4 py-2 rounded-full bg-brand-gold/10 border border-brand-gold/30 mb-6 backdrop-blur-md">
+                        <span class="w-2 h-2 rounded-full bg-brand-gold animate-pulse"></span>
+                        <span class="text-[10px] font-bold text-brand-gold uppercase tracking-[0.25em]">Río Poderoso celebra</span>
+                    </div>
+
+                    <img src="29.png" alt="29 Aniversario" class="gsap-hero opacity-0 translate-y-8 h-28 md:h-44 w-auto mb-2 drop-shadow-[0_15px_45px_rgba(0,0,0,0.7)]">
+                    <p class="gsap-hero opacity-0 translate-y-8 font-display text-[clamp(2rem,7vw,4.5rem)] text-white tracking-[0.28em] leading-none mb-8">ANIVERSARIO</p>
+
+                    <!-- Invitado especial -->
+                    <div class="gsap-hero opacity-0 translate-y-8 mb-7">
+                        <p class="text-[10px] uppercase tracking-[0.25em] text-brand-gold font-bold mb-1">✦ Invitado especial ✦</p>
+                        <p class="font-display text-3xl md:text-5xl text-white tracking-wide leading-none drop-shadow-[0_4px_20px_rgba(0,0,0,0.6)]">MARCOS BARRIENTOS</p>
+                        <p class="text-sm text-gray-300 mt-2">En una noche de adoración inolvidable</p>
+                    </div>
+
+                    <!-- Fecha + horarios -->
+                    <div class="gsap-hero opacity-0 translate-y-8 flex flex-col sm:flex-row items-center gap-3">
+                        <div class="px-5 py-2.5 rounded-2xl bg-white text-brand-dark text-center shrink-0">
+                            <div class="font-display text-xl leading-none tracking-widest">DOM</div>
+                            <div class="font-display text-2xl leading-none tracking-widest">5 JUL</div>
+                        </div>
+                        <div class="px-5 py-2.5 rounded-2xl bg-white/10 border border-white/15 backdrop-blur-md text-left">
+                            <p class="text-[10px] uppercase tracking-[0.2em] text-gray-300 mb-1">Horarios de servicio</p>
+                            <p class="text-white font-bold text-sm">9:00 AM · 12:00 PM · 7:00 PM</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-50 animate-bounce">
+                    <span class="text-[10px] uppercase tracking-widest font-bold text-white">Scroll</span>
+                    <div class="w-px h-12 bg-gradient-to-b from-white to-transparent"></div>
+                </div>
+            </section>
+
+            <!-- ============ SCRIPTURE / GRAN COMISIÓN ============ -->
+            <section id="seccion-escritura" class="relative w-full py-40 px-4 z-20 overflow-hidden flex items-center justify-center min-h-[80vh]">
+                <div class="light-rays"></div>
+                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-brand-gold/5 blur-[120px] rounded-full"></div>
+
+                <div class="relative z-10 max-w-5xl mx-auto text-center">
+                    <div class="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/5 border border-white/10 mb-10 gsap-fade-up">
+                        <span class="w-2 h-2 rounded-full bg-brand-gold shadow-[0_0_10px_#F5C451] animate-pulse"></span>
+                        <span class="text-[10px] font-bold text-white uppercase tracking-[0.25em]">Mateo 28:19 · Nuestra Razón de Ser</span>
+                    </div>
+
+                    <p class="font-serif text-[clamp(1.7rem,4.8vw,3.8rem)] leading-[1.3] text-white/90 mb-10 scripture-words">
+                        "Por tanto, <span class="text-brand-gold/90">vayan</span> y hagan <span class="text-brand-gold/90">discípulos</span> de todas las naciones, enseñándoles a guardar todo lo que les he mandado."
+                    </p>
+
+                    <div class="flex items-center justify-center gap-4 gsap-fade-up">
+                        <div class="h-px w-16 bg-gradient-to-r from-transparent to-brand-gold/60"></div>
+                        <span class="font-serif text-base md:text-lg text-brand-gold/80 tracking-[0.25em] uppercase">Este es el latido de RÍO</span>
+                        <div class="h-px w-16 bg-gradient-to-l from-transparent to-brand-gold/60"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============ VISIÓN ============ -->
+            <section id="seccion-vision" class="relative w-full py-32 px-4 z-20 border-b border-white/5">
+                <div class="max-w-7xl mx-auto">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-24 mt-8">
+                        <div class="image-reveal-container vintage-photo-container relative rounded-2xl overflow-hidden aspect-[16/9] md:aspect-[4/3] border border-white/10 group">
+                            <img src="Nuestra Vision.png" alt="Nuestra Visión" loading="lazy" decoding="async" class="vintage-photo img-scale-effect">
+                            <div class="absolute bottom-6 left-6 z-10 gsap-fade-up">
+                                <span class="font-script text-4xl text-brand-cyan">Hope</span>
+                            </div>
+                        </div>
+                        <div class="image-reveal-container vintage-photo-container relative rounded-2xl overflow-hidden aspect-[16/9] md:aspect-[4/3] border border-white/10 group md:-translate-y-12">
+                            <img src="Horarios de Servicio.png" alt="Horarios de Servicio" loading="lazy" decoding="async" class="vintage-photo img-scale-effect">
+                            <div class="absolute bottom-6 left-6 z-10 gsap-fade-up">
+                                <span class="font-script text-4xl text-white">in</span> <span class="font-display text-5xl text-brand-purple tracking-widest ml-2">JESUS</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                        <div>
+                            <div class="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/5 border border-white/10 mb-8 gsap-fade-up">
+                                <span class="w-2 h-2 rounded-full bg-brand-cyan shadow-[0_0_10px_#2DD4FF] animate-pulse"></span>
+                                <span class="text-[10px] font-bold text-white uppercase tracking-[0.2em]">Nuestra Visión</span>
+                            </div>
+                            <h2 class="text-5xl md:text-7xl font-display font-normal text-white leading-[0.9] mb-6 tracking-wide cinematic-text-reveal">
+                                UN ECOSISTEMA VIVO <br>
+                                <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-cyan to-white/70">PARA TRANSFORMAR.</span>
+                            </h2>
+                            <p class="text-lg md:text-xl text-gray-400 font-light leading-relaxed mb-6 cinematic-fade">
+                                Existimos para ir y hacer discípulos: una casa donde las personas desconectadas encuentran propósito, las familias encuentran restauración y una nueva generación de líderes es levantada para impactar la ciudad.
+                            </p>
+                            <p class="text-base text-gray-500 font-light leading-relaxed cinematic-fade border-l-2 border-brand-gold/40 pl-5">
+                                Lo hacemos a través de <span class="text-white font-medium">grupos de amistad</span>, donde aprendemos a dar la vida por nuestros amigos — el mismo modelo con el que Jesús formó a sus discípulos.
+                            </p>
+                        </div>
+
+                        <div class="flex flex-col gap-6">
+                            <div class="glass-card tilt-card p-8 rounded-3xl relative overflow-hidden group hover-stagger">
+                                <div class="absolute top-0 right-0 w-48 h-48 bg-brand-cyan/10 blur-[40px] rounded-full translate-x-1/2 -translate-y-1/2 transition-all duration-700 group-hover:bg-brand-cyan/20"></div>
+                                <div class="card-content-3d">
+                                    <h4 class="text-xs font-bold text-brand-cyan tracking-widest uppercase mb-6 flex items-center gap-2">
+                                        <svg viewBox="0 0 24 24" class="w-4 h-4 rio-path stroke-current stroke-2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                                        Experiencia Domingo
+                                    </h4>
+                                    <div class="flex flex-wrap gap-3 relative z-10">
+                                        <div class="px-5 py-3 rounded-xl bg-black/40 border border-white/10 text-white font-medium text-sm hover:border-brand-cyan/50 transition-colors cursor-default">9:00 AM</div>
+                                        <div class="px-5 py-3 rounded-xl bg-black/40 border border-white/10 text-white font-medium text-sm hover:border-brand-cyan/50 transition-colors cursor-default">12:00 PM</div>
+                                        <div class="px-5 py-3 rounded-xl bg-black/40 border border-white/10 text-white font-medium text-sm hover:border-brand-cyan/50 transition-colors cursor-default">7:00 PM</div>
+                                        <div class="px-5 py-3 rounded-xl bg-black/40 border border-brand-cyan/20 text-brand-cyan/80 font-medium text-xs flex items-center cursor-default">Río Central</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="glass-card tilt-card p-8 rounded-3xl relative overflow-hidden group hover-stagger">
+                                <div class="absolute bottom-0 right-0 w-48 h-48 bg-brand-purple/10 blur-[40px] rounded-full translate-x-1/2 translate-y-1/2 transition-all duration-700 group-hover:bg-brand-purple/20"></div>
+                                <div class="card-content-3d">
+                                    <h4 class="text-xs font-bold text-brand-purple tracking-widest uppercase mb-6 flex items-center gap-2">
+                                        <svg viewBox="0 0 24 24" class="w-4 h-4 rio-path stroke-current stroke-2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                                        Reunión Mitad de Semana
+                                    </h4>
+                                    <div class="flex flex-wrap gap-3 relative z-10">
+                                        <div class="px-5 py-3 rounded-xl bg-black/40 border border-white/10 text-white font-medium text-sm hover:border-brand-purple/50 transition-colors cursor-default">JUEVES • 8:00 PM</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============ DISCIPULADO: EL RÍO FLUYE ============ -->
+            <section id="seccion-discipulado" class="relative w-full py-32 px-4 z-20 overflow-hidden">
+                <div class="absolute inset-0 bg-gradient-to-b from-transparent via-brand-navy/30 to-transparent pointer-events-none"></div>
+                <div class="max-w-7xl mx-auto relative z-10">
+                    <div class="text-center mb-8">
+                        <h2 class="text-xs text-brand-gold font-bold tracking-[0.3em] uppercase mb-4 gsap-fade-up">El ADN de Casa de Dios y su red</h2>
+                        <h3 class="text-5xl md:text-8xl font-display font-normal text-white tracking-wide cinematic-text-reveal leading-[0.9]">EL RÍO TE LLEVA</h3>
+                        <p class="text-lg text-gray-400 font-light max-w-2xl mx-auto mt-6 cinematic-fade">
+                            Nadie llega a su destino solo. Cada persona que ganamos para Cristo entra en una corriente que la transforma de visitante a discípulo, y de discípulo a líder que envía.
+                        </p>
+                    </div>
+
+                    <!-- River SVG flowing through stages -->
+                    <div class="relative mt-16" id="river-wrap">
+                        <svg class="absolute left-0 top-0 w-full h-full pointer-events-none hidden lg:block" viewBox="0 0 1200 520" preserveAspectRatio="none" fill="none">
+                            <defs>
+                                <linearGradient id="riverGrad" x1="0" y1="0" x2="1200" y2="0" gradientUnits="userSpaceOnUse">
+                                    <stop offset="0%" stop-color="#2DD4FF"/>
+                                    <stop offset="40%" stop-color="#34D399"/>
+                                    <stop offset="70%" stop-color="#9D4EDD"/>
+                                    <stop offset="100%" stop-color="#F5C451"/>
+                                </linearGradient>
+                                <filter id="riverGlow"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                            </defs>
+                            <path id="river-path" class="river-line" d="M 60 110 C 260 40, 360 200, 600 200 S 940 320, 1140 260 C 1180 245, 1180 380, 1140 410" stroke="url(#riverGrad)" stroke-width="3" filter="url(#riverGlow)" stroke-linecap="round"/>
+                        </svg>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 relative z-10">
+
+                            <!-- 1 GANAR -->
+                            <div class="stage-item glass-card p-7 rounded-3xl relative overflow-hidden group fx-up">
+                                <div class="absolute -top-10 -right-10 w-40 h-40 bg-brand-cyan/10 blur-[40px] rounded-full"></div>
+                                <div class="relative z-10">
+                                    <div class="flex items-center justify-between mb-6">
+                                        <span class="font-display text-6xl text-white/10 group-hover:text-brand-cyan/30 transition-colors">01</span>
+                                        <div class="w-12 h-12 rounded-2xl bg-brand-cyan/10 border border-brand-cyan/30 flex items-center justify-center stage-node">
+                                            <svg viewBox="0 0 24 24" class="w-6 h-6 text-brand-cyan rio-path stroke-current stroke-2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                                        </div>
+                                    </div>
+                                    <h4 class="text-2xl font-display tracking-wide text-white mb-1">GANAR</h4>
+                                    <span class="text-[10px] uppercase tracking-[0.2em] text-brand-cyan font-bold">Te recibimos</span>
+                                    <p class="text-sm text-gray-400 mt-4 leading-relaxed">Llegas tal y como eres. Aquí encuentras el amor de Jesús sin condiciones — el primer paso de una nueva historia.</p>
+                                </div>
+                            </div>
+
+                            <!-- 2 CONSOLIDAR -->
+                            <div class="stage-item glass-card p-7 rounded-3xl relative overflow-hidden group fx-up lg:mt-16">
+                                <div class="absolute -top-10 -right-10 w-40 h-40 bg-brand-teal/10 blur-[40px] rounded-full"></div>
+                                <div class="relative z-10">
+                                    <div class="flex items-center justify-between mb-6">
+                                        <span class="font-display text-6xl text-white/10 group-hover:text-brand-teal/30 transition-colors">02</span>
+                                        <div class="w-12 h-12 rounded-2xl bg-brand-teal/10 border border-brand-teal/30 flex items-center justify-center stage-node">
+                                            <svg viewBox="0 0 24 24" class="w-6 h-6 text-brand-teal rio-path stroke-current stroke-2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                                        </div>
+                                    </div>
+                                    <h4 class="text-2xl font-display tracking-wide text-white mb-1">CONSOLIDAR</h4>
+                                    <span class="text-[10px] uppercase tracking-[0.2em] text-brand-teal font-bold">Te afirmamos</span>
+                                    <p class="text-sm text-gray-400 mt-4 leading-relaxed">Te conectamos a un grupo de amistad donde echas raíces, vives el Encuentro y afirmas tu fe. No caminas solo.</p>
+                                </div>
+                            </div>
+
+                            <!-- 3 DISCIPULAR -->
+                            <div class="stage-item glass-card p-7 rounded-3xl relative overflow-hidden group fx-up">
+                                <div class="absolute -top-10 -right-10 w-40 h-40 bg-brand-purple/10 blur-[40px] rounded-full"></div>
+                                <div class="relative z-10">
+                                    <div class="flex items-center justify-between mb-6">
+                                        <span class="font-display text-6xl text-white/10 group-hover:text-brand-purple/30 transition-colors">03</span>
+                                        <div class="w-12 h-12 rounded-2xl bg-brand-purple/10 border border-brand-purple/30 flex items-center justify-center stage-node">
+                                            <svg viewBox="0 0 24 24" class="w-6 h-6 text-brand-purple rio-path stroke-current stroke-2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+                                        </div>
+                                    </div>
+                                    <h4 class="text-2xl font-display tracking-wide text-white mb-1">DISCIPULAR</h4>
+                                    <span class="text-[10px] uppercase tracking-[0.2em] text-brand-purple font-bold">Te formamos</span>
+                                    <p class="text-sm text-gray-400 mt-4 leading-relaxed">En la Academia de Líderes creces, descubres tus dones y aprendes a multiplicar tu vida en otros. El discípulo forma discípulos.</p>
+                                </div>
+                            </div>
+
+                            <!-- 4 ENVIAR -->
+                            <div class="stage-item glass-card p-7 rounded-3xl relative overflow-hidden group fx-up lg:mt-16">
+                                <div class="absolute -top-10 -right-10 w-40 h-40 bg-brand-gold/15 blur-[40px] rounded-full"></div>
+                                <div class="relative z-10">
+                                    <div class="flex items-center justify-between mb-6">
+                                        <span class="font-display text-6xl text-white/10 group-hover:text-brand-gold/40 transition-colors">04</span>
+                                        <div class="w-12 h-12 rounded-2xl bg-brand-gold/10 border border-brand-gold/40 flex items-center justify-center stage-node">
+                                            <svg viewBox="0 0 24 24" class="w-6 h-6 text-brand-gold rio-path stroke-current stroke-2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+                                        </div>
+                                    </div>
+                                    <h4 class="text-2xl font-display tracking-wide text-white mb-1">ENVIAR</h4>
+                                    <span class="text-[10px] uppercase tracking-[0.2em] text-brand-gold font-bold">Te activamos</span>
+                                    <p class="text-sm text-gray-400 mt-4 leading-relaxed">Te enviamos según tu llamado a ganar a otros. Cada persona activada extiende el Río — porque a quien ganamos y no activamos, lo perdemos.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-center mt-20 gsap-fade-up">
+                        <button data-cursor onclick="openModal('modal-comunidad')" class="magnetic px-10 py-5 bg-gradient-to-r from-brand-cyan via-brand-purple to-brand-gold text-white rounded-full font-bold text-xs md:text-sm uppercase tracking-widest hover:scale-105 transition-transform shadow-[0_0_40px_rgba(157,78,221,0.35)]">
+                            Empieza tu recorrido en el Río
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============ STATS / IMPACTO ============ -->
+            <section id="seccion-stats" class="relative w-full py-24 px-4 z-20 border-y border-white/5">
+                <div class="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                    <div class="stat-block">
+                        <div class="font-display text-5xl md:text-7xl gold-shimmer leading-none" data-count="12000">0</div>
+                        <p class="text-[11px] uppercase tracking-[0.2em] text-gray-500 font-bold mt-3">Vidas alcanzadas</p>
+                    </div>
+                    <div class="stat-block">
+                        <div class="font-display text-5xl md:text-7xl text-brand-cyan leading-none" data-count="350">0</div>
+                        <p class="text-[11px] uppercase tracking-[0.2em] text-gray-500 font-bold mt-3">Grupos de amistad</p>
+                    </div>
+                    <div class="stat-block">
+                        <div class="font-display text-5xl md:text-7xl text-brand-purple leading-none" data-count="48">0</div>
+                        <p class="text-[11px] uppercase tracking-[0.2em] text-gray-500 font-bold mt-3">Líderes enviados</p>
+                    </div>
+                    <div class="stat-block">
+                        <div class="font-display text-5xl md:text-7xl text-brand-teal leading-none" data-count="9">0</div>
+                        <p class="text-[11px] uppercase tracking-[0.2em] text-gray-500 font-bold mt-3">Generaciones de Academia</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============ PRÓXIMO PASO ============ -->
+            <section id="seccion-proximo-paso" class="relative w-full py-32 px-4 z-20">
+                <div class="max-w-7xl mx-auto">
+                    <div class="text-center mb-24">
+                        <h2 class="text-xs text-brand-cyan font-bold tracking-[0.3em] uppercase mb-4 gsap-fade-up">Da tu próximo paso</h2>
+                        <h3 class="text-5xl md:text-8xl font-display font-normal text-white tracking-wide cinematic-text-reveal">¿QUÉ ESTÁS BUSCANDO?</h3>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 relative" id="cards-container">
+
+                        <div data-cursor onclick="openModal('modal-comunidad')" class="glass-card tilt-card card-stagger-item p-8 rounded-3xl flex flex-col items-center text-center group cursor-pointer relative overflow-hidden">
+                            <div class="absolute inset-0 bg-gradient-to-b from-brand-cyan/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                            <div class="card-content-3d w-full flex flex-col items-center h-full">
+                                <div class="w-full h-40 mb-6 rounded-xl overflow-hidden border border-white/10 relative">
+                                    <img src="Comunidad (Grupos).png" alt="Comunidad" loading="lazy" decoding="async" class="w-full h-full object-cover vintage-photo group-hover:scale-105 transition-transform duration-700">
+                                </div>
+                                <h4 class="text-xl font-bold text-white mb-3">Comunidad</h4>
+                                <p class="text-sm text-gray-400 mb-6 flex-grow">Conecta con un grupo de amistad cerca de ti. Geolocalizamos tu grupo ideal.</p>
+                                <span class="text-brand-cyan text-xs font-bold uppercase tracking-widest flex items-center gap-2 group-hover:translate-x-2 transition-transform">Encontrar grupo <svg viewBox="0 0 24 24" class="w-4 h-4 rio-path stroke-current stroke-2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+                            </div>
+                        </div>
+
+                        <div data-cursor onclick="openModal('modal-academia')" class="glass-card tilt-card card-stagger-item p-8 rounded-3xl flex flex-col items-center text-center group cursor-pointer relative overflow-hidden mt-0 lg:mt-12">
+                            <div class="absolute inset-0 bg-gradient-to-b from-brand-purple/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                            <div class="card-content-3d w-full flex flex-col items-center h-full">
+                                <div class="w-full h-40 mb-6 rounded-xl overflow-hidden border border-white/10 relative">
+                                    <img src="Liderazgo (Academia).png" alt="Liderazgo" loading="lazy" decoding="async" class="w-full h-full object-cover vintage-photo group-hover:scale-105 transition-transform duration-700">
+                                </div>
+                                <h4 class="text-xl font-bold text-white mb-3">Liderazgo</h4>
+                                <p class="text-sm text-gray-400 mb-6 flex-grow">Desarrolla tu potencial a través de nuestra Academia inmersiva de 12 semanas.</p>
+                                <span class="text-brand-purple text-xs font-bold uppercase tracking-widest flex items-center gap-2 group-hover:translate-x-2 transition-transform">Ver Academia <svg viewBox="0 0 24 24" class="w-4 h-4 rio-path stroke-current stroke-2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+                            </div>
+                        </div>
+
+                        <div data-cursor onclick="openModal('modal-ayuda')" class="glass-card tilt-card card-stagger-item p-8 rounded-3xl flex flex-col items-center text-center group cursor-pointer relative overflow-hidden">
+                            <div class="absolute inset-0 bg-gradient-to-b from-red-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                            <div class="card-content-3d w-full flex flex-col items-center h-full">
+                                <div class="w-full h-40 mb-6 rounded-xl overflow-hidden border border-white/10 relative">
+                                    <img src="Restauración (Ayuda).png" alt="Restauración" loading="lazy" decoding="async" class="w-full h-full object-cover vintage-photo group-hover:scale-105 transition-transform duration-700">
+                                </div>
+                                <h4 class="text-xl font-bold text-white mb-3">Restauración</h4>
+                                <p class="text-sm text-gray-400 mb-6 flex-grow">Matrimonios, ansiedad, duelo. No camines solo, tenemos un equipo listo para ti.</p>
+                                <span class="text-red-500 text-xs font-bold uppercase tracking-widest flex items-center gap-2 group-hover:translate-x-2 transition-transform">Pedir Apoyo <svg viewBox="0 0 24 24" class="w-4 h-4 rio-path stroke-current stroke-2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+                            </div>
+                        </div>
+
+                        <div data-cursor onclick="openModal('modal-comunidad')" class="glass-card tilt-card card-stagger-item p-8 rounded-3xl flex flex-col items-center text-center group cursor-pointer relative overflow-hidden mt-0 lg:mt-12">
+                            <div class="absolute inset-0 bg-gradient-to-b from-yellow-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                            <div class="card-content-3d w-full flex flex-col items-center h-full">
+                                <div class="w-full h-40 mb-6 rounded-xl overflow-hidden border border-white/10 relative">
+                                    <img src="Servir (Voluntariado).png" alt="Servir" loading="lazy" decoding="async" class="w-full h-full object-cover vintage-photo group-hover:scale-105 transition-transform duration-700">
+                                </div>
+                                <h4 class="text-xl font-bold text-white mb-3">Servir</h4>
+                                <p class="text-sm text-gray-400 mb-6 flex-grow">Usa tus dones y talentos para crear impacto real en la ciudad.</p>
+                                <span class="text-yellow-500 text-xs font-bold uppercase tracking-widest flex items-center gap-2 group-hover:translate-x-2 transition-transform">Ser Voluntario <svg viewBox="0 0 24 24" class="w-4 h-4 rio-path stroke-current stroke-2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============ VALUES MARQUEE ============ -->
+            <section class="relative w-full py-10 z-20 overflow-hidden border-y border-white/5 bg-white/[0.015]">
+                <div class="marquee-track overflow-hidden">
+                    <div class="marquee items-center gap-8 text-5xl md:text-7xl font-display tracking-wide whitespace-nowrap">
+                        <span class="text-white/15">GANAR</span><span class="text-brand-cyan">✦</span>
+                        <span class="text-white/15">CONSOLIDAR</span><span class="text-brand-teal">✦</span>
+                        <span class="text-white/15">DISCIPULAR</span><span class="text-brand-purple">✦</span>
+                        <span class="text-white/15">ENVIAR</span><span class="text-brand-gold">✦</span>
+                        <span class="text-white/15">GANAR</span><span class="text-brand-cyan">✦</span>
+                        <span class="text-white/15">CONSOLIDAR</span><span class="text-brand-teal">✦</span>
+                        <span class="text-white/15">DISCIPULAR</span><span class="text-brand-purple">✦</span>
+                        <span class="text-white/15">ENVIAR</span><span class="text-brand-gold">✦</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============ KIDS ============ -->
+            <section id="seccion-kids" class="relative w-full py-32 px-4 z-20 overflow-hidden">
+                <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+
+                    <div class="circle-reveal-container relative h-[400px] w-full flex items-center justify-center order-2 lg:order-1 rounded-3xl overflow-hidden border border-white/10 shadow-[0_0_40px_rgba(45,212,255,0.1)] group">
+                        <img src="RÍO Kids.png" alt="RÍO Kids" loading="lazy" decoding="async" class="w-full h-full object-cover vintage-photo img-scale-effect group-hover:scale-105 transition-transform duration-700">
+                    </div>
+
+                    <div class="order-1 lg:order-2 text-center lg:text-left z-10">
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-purple/10 border border-brand-purple/20 mb-6 gsap-fade-up">
+                            <span class="text-[10px] font-bold text-brand-purple uppercase tracking-[0.2em]">La Próxima Generación</span>
+                        </div>
+                        <h2 class="text-6xl md:text-8xl font-display font-normal text-white mb-6 leading-none tracking-wide cinematic-text-reveal">
+                            RÍO <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-cyan via-white to-brand-purple">KIDS</span>
+                        </h2>
+                        <p class="text-lg md:text-xl text-gray-400 font-light mb-8 max-w-2xl mx-auto lg:mx-0 leading-relaxed cinematic-fade">
+                            Diseñamos entornos interactivos, completamente seguros y llenos de energía. No es una guardería, es la mejor hora de la semana donde tus hijos descubrirán su propósito a su propio nivel.
+                        </p>
+
+                        <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start gsap-fade-up">
+                            <div class="glass-panel px-6 py-4 rounded-2xl flex items-center gap-4">
+                                <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center">
+                                    <svg viewBox="0 0 24 24" class="w-5 h-5 text-brand-cyan rio-path stroke-current stroke-2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                                </div>
+                                <div class="text-left">
+                                    <p class="text-white font-bold text-sm">Check-in Seguro</p>
+                                    <p class="text-gray-500 text-xs">Sistema de registro digital</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 flex justify-center lg:justify-start w-full max-w-md mx-auto lg:mx-0 gsap-fade-up">
+                            <div class="glass-panel px-6 py-5 rounded-2xl flex flex-col gap-4 w-full border border-yellow-500/20 hover:border-yellow-500/40 transition-colors relative overflow-hidden group">
+                                <div class="absolute inset-0 bg-gradient-to-r from-yellow-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                                <div class="flex items-center gap-4 relative z-10">
+                                    <div class="w-10 h-10 rounded-full bg-yellow-500/10 flex items-center justify-center">
+                                        <svg viewBox="0 0 24 24" class="w-5 h-5 text-yellow-500 rio-path stroke-current stroke-2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                                    </div>
+                                    <div class="text-left flex-1">
+                                        <h4 class="text-white font-bold text-sm flex items-center gap-2">RÍO Champions <span class="w-2 h-2 rounded-full bg-yellow-500 animate-pulse"></span></h4>
+                                        <p class="text-gray-400 text-xs mt-1">Entorno diseñado para niños con necesidades especiales.</p>
+                                    </div>
+                                </div>
+                                <button data-cursor onclick="openModal('modal-champions')" class="w-full py-3 bg-yellow-500/10 text-yellow-500 border border-yellow-500/20 rounded-xl font-bold text-xs uppercase tracking-widest hover:bg-yellow-500 hover:text-brand-dark transition-all text-center relative z-10">
+                                    Registro Champions
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============ ENCUENTRO ============ -->
+            <section id="seccion-encuentro" class="relative w-full min-h-screen py-32 overflow-hidden flex items-center z-20">
+                <div class="absolute inset-0 z-0 h-[150%] -top-[25%]" id="encuentro-bg">
+                    <img src="Encuentro.png" alt="Encuentro" loading="lazy" decoding="async" class="w-full h-full object-cover opacity-40 vintage-photo mix-blend-luminosity">
+                </div>
+
+                <canvas id="souls-canvas" class="absolute inset-0 w-full h-full opacity-60 z-10"></canvas>
+                <div class="absolute inset-0 bg-gradient-to-b from-transparent via-brand-dark/80 to-brand-dark z-10"></div>
+
+                <div class="relative z-20 max-w-7xl mx-auto px-4 flex flex-col items-center text-center">
+                    <span class="text-xs text-brand-cyan font-bold tracking-[0.3em] uppercase mb-6 gsap-fade-up">El paso que lo cambia todo · Consolidar</span>
+                    <h2 class="text-7xl md:text-[10rem] font-display font-normal text-white mb-4 leading-none tracking-widest drop-shadow-2xl cinematic-text-reveal">
+                        ENCUENTRO
+                    </h2>
+
+                    <p class="text-lg md:text-2xl text-gray-400 font-light max-w-2xl mx-auto mb-12 cinematic-fade">
+                        Tres días diseñados estratégicamente para desconectarte del ruido y reconectar con tu origen.
+                    </p>
+
+                    <div class="gsap-fade-up">
+                        <button data-cursor onclick="openModal('modal-encuentro-flujo')" class="magnetic px-10 py-5 bg-white text-brand-dark rounded-full font-bold text-sm uppercase tracking-widest hover:scale-105 transition-transform shadow-[0_0_40px_rgba(255,255,255,0.2)]">
+                            Asegurar mi lugar
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============ RECURSOS: LIBRO + LA BIBLIA Y NOSOTRAS ============ -->
+            <section id="seccion-recursos" class="relative w-full py-32 px-4 z-20 overflow-hidden border-t border-white/5">
+                <div class="max-w-7xl mx-auto">
+                    <div class="text-center mb-16">
+                        <h2 class="text-xs text-brand-gold font-bold tracking-[0.3em] uppercase mb-4 gsap-fade-up">Recursos para tu vida</h2>
+                        <h3 class="text-5xl md:text-8xl font-display font-normal text-white tracking-wide cinematic-text-reveal leading-[0.9]">LLÉVALO CONTIGO</h3>
+                    </div>
+
+                    <!-- Libro -->
+                    <div class="glass-card rounded-3xl overflow-hidden grid grid-cols-1 lg:grid-cols-2 gap-0 mb-8 relative">
+                        <div class="absolute -top-16 -left-16 w-72 h-72 bg-brand-gold/10 blur-[80px] rounded-full pointer-events-none"></div>
+                        <div class="p-10 md:p-14 flex flex-col justify-center relative z-10">
+                            <span class="text-[10px] font-bold uppercase tracking-[0.25em] text-brand-gold mb-4">Nuevo libro · Efrén y Michelle Ruiz</span>
+                            <h4 class="text-4xl md:text-5xl font-display tracking-wide text-white leading-none mb-3">AMOR A PRUEBA<br>DE TODO</h4>
+                            <p class="font-serif text-lg text-brand-gold/90 mb-5">Lo que nadie te dijo sobre construir un "nosotros".</p>
+                            <p class="text-gray-400 font-light leading-relaxed mb-8 max-w-md">
+                                De los pastores de RÍO, una guía honesta y práctica para edificar un matrimonio firme — herramienta por herramienta. Porque un "nosotros" sólido no se improvisa: se construye.
+                            </p>
+                            <div class="flex flex-col sm:flex-row gap-4">
+                                <a data-cursor href="https://www.amazon.com.mx/dp/B0G1994SM1" target="_blank" rel="noopener" class="magnetic inline-flex items-center justify-center gap-2 px-8 py-4 bg-brand-gold text-brand-dark rounded-full font-bold text-xs uppercase tracking-widest hover:scale-105 transition-transform shadow-[0_0_30px_rgba(245,196,81,0.3)]">
+                                    Conseguir en Amazon
+                                    <svg viewBox="0 0 24 24" class="w-4 h-4 rio-path stroke-current stroke-2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                                </a>
+                                <span class="inline-flex items-center text-xs text-gray-500">Disponible en Kindle y pasta blanda</span>
+                            </div>
+                        </div>
+                        <div class="relative min-h-[360px] flex items-center justify-center p-10 bg-gradient-to-br from-white/[0.03] to-transparent">
+                            <img src="libro.png" alt="Amor a prueba de todo — Efrén y Michelle Ruiz" loading="lazy" decoding="async" class="max-h-[420px] w-auto rounded-lg shadow-[0_30px_60px_-12px_rgba(0,0,0,0.7)] rotate-[-3deg] hover:rotate-0 transition-transform duration-500">
+                        </div>
+                    </div>
+
+                    <!-- La Biblia y Nosotras -->
+                    <div class="rounded-3xl overflow-hidden relative border border-[#FF4FA3]/30 min-h-[440px]">
+                        <video class="absolute inset-0 w-full h-full object-cover z-0" autoplay muted loop playsinline preload="metadata">
+                            <source src="biblia-nosotras.mp4" type="video/mp4">
+                        </video>
+                        <div class="absolute inset-0 z-[1] bg-gradient-to-br from-[#2a0a1c]/92 via-[#3d0f2a]/72 to-brand-dark/92"></div>
+                        <div class="absolute inset-0 z-[1] bg-[#FF4FA3]/10"></div>
+                        <div class="absolute -bottom-24 -right-24 w-80 h-80 bg-[#FF4FA3]/25 blur-[90px] rounded-full pointer-events-none z-[1]"></div>
+
+                        <div class="relative z-10 p-10 md:p-14 grid grid-cols-1 lg:grid-cols-3 gap-10 items-center">
+                            <div class="lg:col-span-2">
+                                <img src="logobiblia.png" alt="La Biblia y Nosotras" loading="lazy" decoding="async" class="h-24 md:h-32 w-auto mb-6 drop-shadow-[0_10px_35px_rgba(0,0,0,0.55)]">
+                                <span class="text-[10px] font-bold uppercase tracking-[0.25em] text-[#FF8FC7] mb-3 inline-block">Movimiento de fe · Pastora Michelle Ruiz</span>
+                                <p class="text-gray-200 font-light leading-relaxed mb-2 max-w-xl">
+                                    Un movimiento que levanta a miles de mujeres alrededor de la Palabra. El tour recorre todo México rumbo a un encuentro histórico.
+                                </p>
+                                <p class="font-serif text-lg text-[#FF8FC7]">"Yo iré y lo anunciaré."</p>
+                            </div>
+                            <div class="rounded-2xl p-6 text-center border border-[#FF4FA3]/30 bg-black/45 backdrop-blur-md">
+                                <span class="text-[10px] uppercase tracking-[0.2em] text-[#FF6FB5] font-bold">Gran Encuentro</span>
+                                <div class="font-display text-5xl text-white leading-none my-2">ARENA CDMX</div>
+                                <div class="text-[#FF6FB5] font-bold tracking-widest mb-5">15 · AGOSTO · 2026</div>
+                                <div class="flex flex-col gap-3">
+                                    <a data-cursor href="https://www.superboletos.com/landing-evento/4lstBqD-3YdArDsuzo1SUQ" target="_blank" rel="noopener" class="magnetic w-full inline-flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-[#FF4FA3] to-[#FF8FC7] text-white rounded-full font-bold text-xs uppercase tracking-widest hover:scale-105 transition-transform shadow-[0_0_25px_rgba(255,79,163,0.35)]">Boletos · Súper Boletos</a>
+                                    <a data-cursor href="https://labibliaynosotras.com" target="_blank" rel="noopener" class="w-full inline-flex items-center justify-center gap-2 px-6 py-3 border border-white/20 text-white rounded-full font-bold text-xs uppercase tracking-widest hover:bg-white/10 transition-colors">labibliaynosotras.com</a>
+                                    <a data-cursor href="https://www.instagram.com/labibliaynosotras/" target="_blank" rel="noopener" class="text-xs text-gray-300 hover:text-white transition-colors">@labibliaynosotras</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============ COMUNIDADES / SEDES ============ -->
+            <section id="seccion-comunidades" class="relative w-full py-32 px-4 z-20 overflow-hidden border-t border-white/5">
+                <div class="max-w-7xl mx-auto">
+                    <div class="text-center mb-16">
+                        <h2 class="text-xs text-brand-cyan font-bold tracking-[0.3em] uppercase mb-4 gsap-fade-up">Eres bienvenido aquí</h2>
+                        <h3 class="text-5xl md:text-8xl font-display font-normal text-white tracking-wide cinematic-text-reveal leading-[0.9]">ENCUENTRA TU RÍO</h3>
+                        <p class="text-lg text-gray-400 font-light max-w-2xl mx-auto mt-6 cinematic-fade">
+                            Una sola familia que fluye por toda la ciudad y más allá. Acércate a la comunidad RÍO más cercana a ti.
+                        </p>
+                    </div>
+
+                    <!-- Selector "elige tu comunidad" -->
+                    <div class="max-w-4xl mx-auto">
+                        <div class="flex flex-wrap gap-2 justify-center mb-10" id="sede-chips">
+                            <button data-estado="todas" class="sede-chip chip-active px-4 py-2 rounded-full border border-white/10 text-[11px] font-bold uppercase tracking-widest text-gray-400 hover:text-white hover:border-white/30 transition-colors">Todas</button>
+                            <button data-estado="cdmx" class="sede-chip px-4 py-2 rounded-full border border-white/10 text-[11px] font-bold uppercase tracking-widest text-gray-400 hover:text-white hover:border-white/30 transition-colors">CDMX</button>
+                            <button data-estado="edomex" class="sede-chip px-4 py-2 rounded-full border border-white/10 text-[11px] font-bold uppercase tracking-widest text-gray-400 hover:text-white hover:border-white/30 transition-colors">Edo. Méx</button>
+                            <button data-estado="hidalgo" class="sede-chip px-4 py-2 rounded-full border border-white/10 text-[11px] font-bold uppercase tracking-widest text-gray-400 hover:text-white hover:border-white/30 transition-colors">Hidalgo</button>
+                            <button data-estado="tlaxcala" class="sede-chip px-4 py-2 rounded-full border border-white/10 text-[11px] font-bold uppercase tracking-widest text-gray-400 hover:text-white hover:border-white/30 transition-colors">Tlaxcala</button>
+                            <button data-estado="slp" class="sede-chip px-4 py-2 rounded-full border border-white/10 text-[11px] font-bold uppercase tracking-widest text-gray-400 hover:text-white hover:border-white/30 transition-colors">San Luis Potosí</button>
+                        </div>
+
+                        <div class="relative select-none" id="sede-carousel">
+                            <button id="sede-prev" aria-label="Anterior" class="absolute left-0 md:-left-5 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full glass-panel flex items-center justify-center text-white hover:bg-white hover:text-brand-dark transition-all">
+                                <svg viewBox="0 0 24 24" class="w-5 h-5 rio-path stroke-current stroke-2"><path d="M15 18l-6-6 6-6"/></svg>
+                            </button>
+                            <button id="sede-next" aria-label="Siguiente" class="absolute right-0 md:-right-5 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full glass-panel flex items-center justify-center text-white hover:bg-white hover:text-brand-dark transition-all">
+                                <svg viewBox="0 0 24 24" class="w-5 h-5 rio-path stroke-current stroke-2"><path d="M9 18l6-6-6-6"/></svg>
+                            </button>
+                            <div class="overflow-hidden rounded-3xl mx-12 md:mx-16" id="sede-viewport">
+                                <div id="sede-stage"></div>
+                            </div>
+                        </div>
+
+                        <!-- Tacómetro / posición -->
+                        <div class="flex items-center gap-4 max-w-2xl mx-auto mt-8 px-12 md:px-16">
+                            <span id="sede-pos" class="font-display text-2xl text-white w-10 text-center">01</span>
+                            <div class="flex-grow flex gap-1.5 items-center" id="sede-rev"></div>
+                            <span id="sede-total" class="font-display text-2xl text-gray-600 w-10 text-center">12</span>
+                        </div>
+                    </div>
+
+                    <div class="text-center mt-12">
+                        <p class="text-sm text-gray-500">¿No ves tu ciudad? <a data-cursor href="https://riomx.org/sedes/" target="_blank" rel="noopener" class="text-brand-cyan hover:text-white underline-offset-4 hover:underline">Escríbenos</a> y te conectamos con la comunidad más cercana.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============ DONATIVOS ============ -->
+            <section id="seccion-donativos" class="relative w-full py-32 px-4 z-20 border-t border-white/5 overflow-hidden">
+                <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-brand-gold/8 blur-[120px] rounded-full pointer-events-none"></div>
+                <div class="max-w-5xl mx-auto relative z-10">
+                    <div class="text-center mb-14">
+                        <h2 class="text-xs text-brand-gold font-bold tracking-[0.3em] uppercase mb-4 gsap-fade-up">Tu generosidad transforma</h2>
+                        <h3 class="text-5xl md:text-8xl font-display font-normal text-white tracking-wide cinematic-text-reveal leading-[0.9]">DONATIVOS</h3>
+                        <p class="text-lg text-gray-400 font-light max-w-2xl mx-auto mt-6 cinematic-fade">
+                            Tu diezmo y ofrenda sostienen la visión de ir y hacer discípulos. Toca cualquier dato para copiarlo al instante.
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <!-- Datos bancarios -->
+                        <div class="glass-card p-8 rounded-3xl">
+                            <h4 class="text-xs font-bold text-brand-cyan uppercase tracking-[0.2em] mb-6 flex items-center gap-2">
+                                <svg viewBox="0 0 24 24" class="w-4 h-4 rio-path stroke-current stroke-2"><path d="M3 21h18M3 10h18M5 6l7-3 7 3M4 10v11M20 10v11M8 14v3M12 14v3M16 14v3"/></svg>
+                                Transferencia o depósito
+                            </h4>
+                            <div class="space-y-3">
+                                <button onclick="copyDato(this)" data-copy="Banco Multiva" class="copy-row w-full flex items-center justify-between gap-3 bg-black/40 border border-white/10 rounded-xl px-4 py-3 hover:border-brand-cyan/40 transition-colors text-left">
+                                    <div><span class="block text-[10px] uppercase tracking-widest text-gray-500">Banco</span><span class="text-white font-medium">Multiva</span></div>
+                                    <span class="copy-label text-[10px] font-bold uppercase tracking-widest text-brand-cyan whitespace-nowrap">Copiar</span>
+                                </button>
+                                <button onclick="copyDato(this)" data-copy="Comunidad Cristiana Río Poderoso A.R." class="copy-row w-full flex items-center justify-between gap-3 bg-black/40 border border-white/10 rounded-xl px-4 py-3 hover:border-brand-cyan/40 transition-colors text-left">
+                                    <div><span class="block text-[10px] uppercase tracking-widest text-gray-500">Titular</span><span class="text-white font-medium text-sm">Comunidad Cristiana Río Poderoso A.R.</span></div>
+                                    <span class="copy-label text-[10px] font-bold uppercase tracking-widest text-brand-cyan whitespace-nowrap">Copiar</span>
+                                </button>
+                                <button onclick="copyDato(this)" data-copy="Lindavista" class="copy-row w-full flex items-center justify-between gap-3 bg-black/40 border border-white/10 rounded-xl px-4 py-3 hover:border-brand-cyan/40 transition-colors text-left">
+                                    <div><span class="block text-[10px] uppercase tracking-widest text-gray-500">Sucursal</span><span class="text-white font-medium">Lindavista</span></div>
+                                    <span class="copy-label text-[10px] font-bold uppercase tracking-widest text-brand-cyan whitespace-nowrap">Copiar</span>
+                                </button>
+                                <div class="w-full flex items-center justify-between gap-3 bg-black/20 border border-dashed border-white/10 rounded-xl px-4 py-3 text-left">
+                                    <div><span class="block text-[10px] uppercase tracking-widest text-gray-500">Cuenta</span><span class="text-gray-500 font-medium text-sm italic">Por agregar</span></div>
+                                </div>
+                                <div class="w-full flex items-center justify-between gap-3 bg-black/20 border border-dashed border-white/10 rounded-xl px-4 py-3 text-left">
+                                    <div><span class="block text-[10px] uppercase tracking-widest text-gray-500">CLABE</span><span class="text-gray-500 font-medium text-sm italic">Por agregar</span></div>
+                                </div>
+                            </div>
+                            <p class="text-xs text-gray-600 mt-5">Donativos deducibles de impuestos · Asociación Religiosa.</p>
+                        </div>
+
+                        <!-- En línea -->
+                        <div class="glass-card p-8 rounded-3xl flex flex-col">
+                            <h4 class="text-xs font-bold text-brand-gold uppercase tracking-[0.2em] mb-6 flex items-center gap-2">
+                                <svg viewBox="0 0 24 24" class="w-4 h-4 rio-path stroke-current stroke-2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+                                Dona en línea
+                            </h4>
+                            <p class="text-gray-400 text-sm leading-relaxed mb-6 flex-grow">Rápido y seguro desde tu tarjeta de débito o crédito, en el portal oficial de RÍO.</p>
+                            <div class="flex flex-col gap-3">
+                                <a data-cursor href="https://riomx.org/donar/" target="_blank" rel="noopener" class="magnetic w-full inline-flex items-center justify-center gap-2 px-7 py-4 bg-gradient-to-r from-brand-gold to-brand-amber text-brand-dark rounded-full font-bold text-xs uppercase tracking-widest hover:scale-105 transition-transform shadow-[0_0_30px_rgba(245,196,81,0.3)]">
+                                    Donar ahora
+                                    <svg viewBox="0 0 24 24" class="w-4 h-4 rio-path stroke-current stroke-2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                                </a>
+                                <a data-cursor href="https://riomx.org/contacto/" target="_blank" rel="noopener" class="w-full inline-flex items-center justify-center gap-2 px-7 py-4 border border-white/15 text-white rounded-full font-bold text-xs uppercase tracking-widest hover:bg-white/5 transition-colors">¿Dudas? Contáctanos</a>
+                            </div>
+                            <p class="font-serif text-base text-brand-gold/90 mt-6 text-center">"Cada uno dé como propuso en su corazón." — 2 Co. 9:7</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============ FOOTER ============ -->
+            <footer class="relative w-full pt-24 pb-10 px-4 z-20 border-t border-white/5 overflow-hidden">
+                <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[300px] bg-brand-purple/10 blur-[120px] rounded-full pointer-events-none"></div>
+                <div class="max-w-7xl mx-auto relative z-10">
+                    <div class="text-center mb-16">
+                        <img src="logo.png" alt="RÍO" loading="lazy" decoding="async" class="h-14 w-auto object-contain mx-auto mb-8 drop-shadow-[0_0_20px_rgba(45,212,255,0.3)]">
+                        <h3 class="text-4xl md:text-6xl font-display tracking-wide text-white mb-4">TU LUGAR TE ESPERA</h3>
+                        <p class="font-serif text-lg text-brand-gold/90 tracking-wide">Ven, sé ganado, y un día serás tú quien envíe.</p>
+                        <button data-cursor onclick="openModal('modal-comunidad')" class="magnetic mt-8 px-9 py-4 bg-white text-brand-dark rounded-full font-bold text-xs uppercase tracking-widest hover:scale-105 transition-transform">
+                            Quiero ser parte
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-10 py-12 border-t border-white/5 text-center md:text-left">
+                        <div>
+                            <h5 class="text-[10px] font-bold uppercase tracking-[0.2em] text-brand-cyan mb-4">Servicios</h5>
+                            <ul class="space-y-2 text-sm text-gray-400">
+                                <li>Domingo 9:00 AM</li><li>Domingo 12:00 PM</li><li>Domingo 7:00 PM</li><li>Jueves 8:00 PM</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h5 class="text-[10px] font-bold uppercase tracking-[0.2em] text-brand-purple mb-4">El Río</h5>
+                            <ul class="space-y-2 text-sm text-gray-400">
+                                <li><a data-cursor class="hover:text-white cursor-pointer" onclick="document.getElementById('seccion-discipulado').scrollIntoView({behavior:'smooth'})">Cómo fluye</a></li>
+                                <li><a data-cursor class="hover:text-white cursor-pointer" onclick="openModal('modal-academia')">Academia</a></li>
+                                <li><a data-cursor class="hover:text-white cursor-pointer" onclick="openModal('modal-comunidad')">Grupos de amistad</a></li>
+                                <li><a data-cursor class="hover:text-white cursor-pointer" onclick="openModal('modal-ayuda')">Restauración</a></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h5 class="text-[10px] font-bold uppercase tracking-[0.2em] text-brand-gold mb-4">Visítanos · Río Central</h5>
+                            <ul class="space-y-2 text-sm text-gray-400">
+                                <li>Av. Gran Canal 6692</li><li>San Pedro el Chico, GAM, CDMX</li><li>Tel. 55 3874 0000 · 55 5748 3645</li><li><a data-cursor href="https://riomx.org" target="_blank" rel="noopener" class="hover:text-white">riomx.org</a></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h5 class="text-[10px] font-bold uppercase tracking-[0.2em] text-brand-teal mb-4">Síguenos</h5>
+                            <div class="flex gap-3 justify-center md:justify-start">
+                                <a data-cursor href="https://www.instagram.com/rio_mex/" target="_blank" rel="noopener" aria-label="Instagram" class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-white hover:text-brand-dark transition-all cursor-pointer"><svg viewBox="0 0 24 24" class="w-4 h-4 fill-current"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 3.25.15 4.77 1.69 4.92 4.92.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.15 3.23-1.66 4.77-4.92 4.92-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-3.26-.15-4.77-1.7-4.92-4.92-.06-1.27-.07-1.65-.07-4.85s.01-3.58.07-4.85C2.38 3.92 3.9 2.38 7.15 2.23 8.42 2.17 8.8 2.16 12 2.16zM12 0C8.74 0 8.33.01 7.05.07 2.7.27.27 2.69.07 7.05.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.2 4.36 2.62 6.78 6.98 6.98C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c4.35-.2 6.78-2.62 6.98-6.98.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.2-4.35-2.62-6.78-6.98-6.98C15.67.01 15.26 0 12 0zm0 5.84a6.16 6.16 0 100 12.32 6.16 6.16 0 000-12.32zM12 16a4 4 0 110-8 4 4 0 010 8zm6.41-10.85a1.44 1.44 0 100 2.88 1.44 1.44 0 000-2.88z"/></svg></a>
+                                <a data-cursor href="https://www.youtube.com/channel/UCfKO8cXJBjlq806mAnRFlBA" target="_blank" rel="noopener" aria-label="YouTube" class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-white hover:text-brand-dark transition-all cursor-pointer"><svg viewBox="0 0 24 24" class="w-4 h-4 fill-current"><path d="M23.5 6.2a3 3 0 00-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 00.5 6.2 31 31 0 000 12a31 31 0 00.5 5.8 3 3 0 002.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 002.1-2.1A31 31 0 0024 12a31 31 0 00-.5-5.8zM9.6 15.6V8.4l6.3 3.6-6.3 3.6z"/></svg></a>
+                                <a data-cursor href="https://www.facebook.com/RioMX" target="_blank" rel="noopener" aria-label="Facebook" class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-white hover:text-brand-dark transition-all cursor-pointer"><svg viewBox="0 0 24 24" class="w-4 h-4 fill-current"><path d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.05V9.41c0-3.02 1.79-4.69 4.53-4.69 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.96.93-1.96 1.89v2.25h3.33l-.53 3.49h-2.8V24C19.61 23.1 24 18.1 24 12.07z"/></svg></a>
+                                <a data-cursor href="https://twitter.com/RIO_CDMX" target="_blank" rel="noopener" aria-label="X" class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-white hover:text-brand-dark transition-all cursor-pointer"><svg viewBox="0 0 24 24" class="w-4 h-4 fill-current"><path d="M18.9 1.5h3.7l-8 9.1L24 22.5h-7.4l-5.8-7.6-6.6 7.6H.5l8.6-9.8L0 1.5h7.6l5.2 6.9 6.1-6.9zm-1.3 18.8h2L6.5 3.6H4.3l13.3 16.7z"/></svg></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-600">
+                        <p>© 2026 RÍO MX · Certificada por Casa de Dios. Vamos y hacemos discípulos.</p>
+                        <p class="font-serif text-gray-500">"El que cree en mí, ríos de agua viva correrán de su interior." — Juan 7:38</p>
+                    </div>
+                </div>
+            </footer>
+
+        </main>
+    </div>
+
+    <!-- Modal Reserva Aniversario -->
+    <div class="modal-overlay" id="modal-reserva">
+        <div class="modal-content relative border-brand-gold/30 shadow-[0_0_50px_rgba(245,196,81,0.15)]">
+            <button onclick="closeModal('modal-reserva')" class="absolute top-4 right-4 text-gray-400 hover:text-white"><svg viewBox="0 0 24 24" class="w-6 h-6 rio-path stroke-current stroke-2"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+            <div id="reserva-step-1">
+                <div class="flex items-center gap-3 mb-3">
+                    <span class="w-3 h-3 rounded-full bg-brand-gold animate-pulse"></span>
+                    <span class="text-xs font-bold text-brand-gold uppercase tracking-[0.2em]">29 Aniversario · Dom 5 Jul</span>
+                </div>
+                <h3 class="text-2xl font-bold text-white mb-2">Reserva tu lugar</h3>
+                <p class="text-sm text-gray-400 mb-6">Una noche de adoración con Marcos Barrientos. Déjanos tus datos.</p>
+                <form onsubmit="handleReservaSubmit(event)">
+                    <div class="mb-4">
+                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Nombre completo</label>
+                        <input type="text" required class="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-brand-gold transition-colors">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">WhatsApp</label>
+                        <input type="tel" required class="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-brand-gold transition-colors" placeholder="Tu número">
+                    </div>
+                    <div class="mb-6">
+                        <label class="block text-xs font-bold text-brand-gold uppercase tracking-wider mb-2">¿A qué servicio vendrás?</label>
+                        <select id="reserva-servicio" required class="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-brand-gold transition-colors appearance-none">
+                            <option value="">Selecciona un horario</option>
+                            <option value="9:00 AM">Domingo 5 Jul · 9:00 AM</option>
+                            <option value="12:00 PM">Domingo 5 Jul · 12:00 PM</option>
+                            <option value="7:00 PM">Domingo 5 Jul · 7:00 PM</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="w-full bg-gradient-to-r from-brand-gold to-brand-amber text-brand-dark font-bold py-3 rounded-lg uppercase tracking-widest text-sm hover:scale-[1.02] transition-transform shadow-[0_0_20px_rgba(245,196,81,0.35)]">Confirmar mi lugar</button>
+                </form>
+            </div>
+            <div id="reserva-success" class="hidden text-center py-8">
+                <div class="w-20 h-20 bg-brand-gold/20 rounded-full flex items-center justify-center mx-auto mb-6 border border-brand-gold">
+                    <svg viewBox="0 0 24 24" class="w-10 h-10 text-brand-gold rio-path stroke-current stroke-2"><polyline points="20 6 9 17 4 12"/></svg>
+                </div>
+                <h3 class="text-2xl font-display text-white mb-2 tracking-wide">¡LUGAR RESERVADO!</h3>
+                <p class="text-gray-400 text-sm mb-6" id="reserva-success-msg">Te esperamos el domingo 5 de julio. ¡Va a ser inolvidable!</p>
+                <button onclick="closeModal('modal-reserva')" class="w-full border border-white/20 text-white font-bold py-3 rounded-lg uppercase tracking-widest text-sm hover:bg-white hover:text-brand-dark transition-colors">Listo</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Comunidad -->
+    <div class="modal-overlay" id="modal-comunidad">
+        <div class="modal-content relative">
+            <button onclick="closeModal('modal-comunidad')" class="absolute top-4 right-4 text-gray-400 hover:text-white"><svg viewBox="0 0 24 24" class="w-6 h-6 rio-path stroke-current stroke-2"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+            <div id="comunidad-step-1">
+                <h3 class="text-2xl font-bold text-white mb-2">Encuentra tu Comunidad</h3>
+                <p class="text-sm text-gray-400 mb-5">Ingresa tu código postal para conectarte con el grupo de amistad más cercano a ti.</p>
+                <div class="bg-black/30 border border-white/10 rounded-xl p-4 mb-6">
+                    <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-brand-cyan mb-3">¿En qué consiste?</p>
+                    <ul class="space-y-2 text-sm text-gray-300">
+                        <li class="flex gap-2"><svg viewBox="0 0 24 24" class="w-4 h-4 mt-0.5 shrink-0 text-brand-cyan rio-path stroke-current stroke-2"><polyline points="20 6 9 17 4 12"/></svg> Grupos pequeños que se reúnen en casa cada semana.</li>
+                        <li class="flex gap-2"><svg viewBox="0 0 24 24" class="w-4 h-4 mt-0.5 shrink-0 text-brand-cyan rio-path stroke-current stroke-2"><polyline points="20 6 9 17 4 12"/></svg> Un lugar para crecer en fe, orar y hacer amigos.</li>
+                        <li class="flex gap-2"><svg viewBox="0 0 24 24" class="w-4 h-4 mt-0.5 shrink-0 text-brand-cyan rio-path stroke-current stroke-2"><polyline points="20 6 9 17 4 12"/></svg> Te conectamos con el grupo más cercano a tu zona.</li>
+                    </ul>
+                </div>
+                <form onsubmit="handleComunidadSubmit(event)">
+                    <div class="mb-4">
+                        <label class="block text-xs font-bold text-brand-cyan uppercase tracking-wider mb-2">Código Postal</label>
+                        <input type="text" id="cp-input" required class="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-brand-cyan transition-colors" placeholder="Ej. 11000">
+                    </div>
+                    <button type="submit" class="w-full bg-brand-cyan text-brand-dark font-bold py-3 rounded-lg uppercase tracking-widest text-sm hover:bg-white transition-colors">Buscar Grupo</button>
+                </form>
+            </div>
+            <div id="comunidad-loading" class="hidden flex flex-col items-center justify-center py-8">
+                <div class="w-12 h-12 border-4 border-brand-cyan/20 border-t-brand-cyan rounded-full animate-spin mb-4"></div>
+                <p class="text-brand-cyan font-bold tracking-widest text-sm animate-pulse">Triangulando ubicación...</p>
+            </div>
+            <div id="comunidad-success" class="hidden text-center py-4">
+                <div class="w-16 h-16 bg-brand-cyan/20 rounded-full flex items-center justify-center mx-auto mb-4 border border-brand-cyan/50">
+                    <svg viewBox="0 0 24 24" class="w-8 h-8 text-brand-cyan rio-path stroke-current stroke-2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                </div>
+                <h3 class="text-xl font-bold text-white mb-2">¡Grupo Encontrado!</h3>
+                <div class="bg-black/30 border border-white/10 rounded-xl p-4 mb-6 text-left">
+                    <p class="text-brand-cyan text-xs font-bold uppercase tracking-widest mb-1">Grupo Centro Sur</p>
+                    <p class="text-white text-sm font-medium">Anfitriones: Familia Martínez</p>
+                    <p class="text-gray-400 text-xs mt-2">A 2.5 km de tu ubicación</p>
+                </div>
+                <button onclick="closeModal('modal-comunidad')" class="w-full bg-[#25D366] text-white font-bold py-3 rounded-lg uppercase tracking-widest text-sm hover:bg-[#128C7E] transition-colors flex items-center justify-center gap-2">
+                    <svg viewBox="0 0 24 24" class="w-5 h-5 fill-current"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                    Contactar Líder
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Ayuda -->
+    <div class="modal-overlay" id="modal-ayuda">
+        <div class="modal-content relative">
+            <button onclick="closeModal('modal-ayuda')" class="absolute top-4 right-4 text-gray-400 hover:text-white"><svg viewBox="0 0 24 24" class="w-6 h-6 rio-path stroke-current stroke-2"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+            <div id="ayuda-step-1">
+                <h3 class="text-2xl font-bold text-white mb-2">No camines solo</h3>
+                <p class="text-sm text-gray-400 mb-5">Estamos aquí para apoyarte. Cuéntanos qué necesitas.</p>
+                <div class="bg-black/30 border border-white/10 rounded-xl p-4 mb-6">
+                    <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-red-400 mb-3">¿En qué consiste?</p>
+                    <ul class="space-y-2 text-sm text-gray-300">
+                        <li class="flex gap-2"><svg viewBox="0 0 24 24" class="w-4 h-4 mt-0.5 shrink-0 text-red-400 rio-path stroke-current stroke-2"><polyline points="20 6 9 17 4 12"/></svg> Un equipo pastoral te acompaña: oración y consejería.</li>
+                        <li class="flex gap-2"><svg viewBox="0 0 24 24" class="w-4 h-4 mt-0.5 shrink-0 text-red-400 rio-path stroke-current stroke-2"><polyline points="20 6 9 17 4 12"/></svg> Matrimonios, ansiedad, duelo o finanzas — sin juzgar.</li>
+                        <li class="flex gap-2"><svg viewBox="0 0 24 24" class="w-4 h-4 mt-0.5 shrink-0 text-red-400 rio-path stroke-current stroke-2"><polyline points="20 6 9 17 4 12"/></svg> Atención discreta; te contactamos en menos de 24 horas.</li>
+                    </ul>
+                </div>
+                <form onsubmit="handleAyudaSubmit(event)">
+                    <div class="mb-4">
+                        <label class="block text-xs font-bold text-red-500 uppercase tracking-wider mb-2">Área de Necesidad</label>
+                        <select class="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-red-500 transition-colors appearance-none">
+                            <option>Necesito Oración</option>
+                            <option>Mi matrimonio está en crisis</option>
+                            <option>Tengo ansiedad/depresión</option>
+                            <option>Perdí a un ser querido</option>
+                            <option>Problemas financieros</option>
+                        </select>
+                    </div>
+                    <div class="mb-6">
+                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Teléfono de Contacto</label>
+                        <input type="tel" required class="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-red-500 transition-colors" placeholder="Tu número">
+                    </div>
+                    <button type="submit" class="w-full bg-red-500 text-white font-bold py-3 rounded-lg uppercase tracking-widest text-sm hover:bg-red-600 transition-colors">Solicitar Apoyo</button>
+                </form>
+            </div>
+            <div id="ayuda-success" class="hidden text-center py-4">
+                <div class="w-16 h-16 bg-red-500/20 rounded-full flex items-center justify-center mx-auto mb-4 border border-red-500/50">
+                    <svg viewBox="0 0 24 24" class="w-8 h-8 text-red-500 rio-path stroke-current stroke-2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                </div>
+                <h3 class="text-xl font-bold text-white mb-2">Petición Recibida</h3>
+                <p class="text-gray-400 text-sm mb-6">Un líder de nuestro equipo de restauración se pondrá en contacto contigo en las próximas 24 horas.</p>
+                <button onclick="closeModal('modal-ayuda')" class="w-full bg-white/10 text-white font-bold py-3 rounded-lg uppercase tracking-widest text-sm hover:bg-white/20 transition-colors">Entendido</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Academia -->
+    <div class="modal-overlay" id="modal-academia">
+        <div class="modal-content relative border-brand-purple/30 shadow-[0_0_50px_rgba(157,78,221,0.15)]">
+            <button onclick="closeModal('modal-academia')" class="absolute top-4 right-4 text-gray-400 hover:text-white"><svg viewBox="0 0 24 24" class="w-6 h-6 rio-path stroke-current stroke-2"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+            <div id="academia-step-1">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="w-3 h-3 rounded-full bg-brand-purple animate-pulse"></span>
+                    <span class="text-xs font-bold text-brand-purple uppercase tracking-[0.2em]">Discipular · MasterClass</span>
+                </div>
+                <h3 class="text-3xl font-display text-white mb-2 tracking-wide">ACADEMIA DE LÍDERES</h3>
+                <p class="text-sm text-gray-400 mb-5">12 semanas de transformación intensiva. Descubre tu propósito y capacítate para multiplicar tu vida en otros.</p>
+                <div class="bg-black/30 border border-brand-purple/20 rounded-xl p-4 mb-6">
+                    <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-brand-purple mb-3">¿En qué consiste?</p>
+                    <ul class="space-y-2 text-sm text-gray-300">
+                        <li class="flex gap-2"><svg viewBox="0 0 24 24" class="w-4 h-4 mt-0.5 shrink-0 text-brand-purple rio-path stroke-current stroke-2"><polyline points="20 6 9 17 4 12"/></svg> 12 semanas de formación con clases y prácticas.</li>
+                        <li class="flex gap-2"><svg viewBox="0 0 24 24" class="w-4 h-4 mt-0.5 shrink-0 text-brand-purple rio-path stroke-current stroke-2"><polyline points="20 6 9 17 4 12"/></svg> Descubres tus dones y tu propósito en Dios.</li>
+                        <li class="flex gap-2"><svg viewBox="0 0 24 24" class="w-4 h-4 mt-0.5 shrink-0 text-brand-purple rio-path stroke-current stroke-2"><polyline points="20 6 9 17 4 12"/></svg> Te capacita para liderar y discipular a otros.</li>
+                    </ul>
+                </div>
+                <form onsubmit="handleAcademiaSubmit(event)">
+                    <div class="mb-4">
+                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Nombre Completo</label>
+                        <input type="text" required class="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-brand-purple transition-colors">
+                    </div>
+                    <div class="mb-6">
+                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">¿Por qué quieres unirte?</label>
+                        <textarea required rows="3" class="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-brand-purple transition-colors"></textarea>
+                    </div>
+                    <button type="submit" class="w-full bg-brand-purple text-white font-bold py-3 rounded-lg uppercase tracking-widest text-sm hover:bg-[#B266FF] transition-colors shadow-[0_0_20px_rgba(157,78,221,0.4)]">Aplicar a la Generación Actual</button>
+                </form>
+            </div>
+            <div id="academia-success" class="hidden text-center py-8">
+                <div class="w-20 h-20 bg-brand-purple/20 rounded-full flex items-center justify-center mx-auto mb-6 border border-brand-purple">
+                    <svg viewBox="0 0 24 24" class="w-10 h-10 text-brand-purple rio-path stroke-current stroke-2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                </div>
+                <h3 class="text-2xl font-display text-white mb-2 tracking-wide">APLICACIÓN RECIBIDA</h3>
+                <p class="text-gray-400 text-sm mb-6">Tu perfil está en revisión. Te enviaremos los detalles de acceso por correo electrónico.</p>
+                <button onclick="closeModal('modal-academia')" class="w-full border border-white/20 text-white font-bold py-3 rounded-lg uppercase tracking-widest text-sm hover:bg-white hover:text-brand-dark transition-colors">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Champions -->
+    <div class="modal-overlay" id="modal-champions">
+        <div class="modal-content relative border-yellow-500/30 shadow-[0_0_50px_rgba(234,179,8,0.15)]">
+            <button onclick="closeModal('modal-champions')" class="absolute top-4 right-4 text-gray-400 hover:text-white"><svg viewBox="0 0 24 24" class="w-6 h-6 rio-path stroke-current stroke-2"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+            <div id="champions-step-1">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="w-3 h-3 rounded-full bg-yellow-500 animate-pulse"></span>
+                    <span class="text-xs font-bold text-yellow-500 uppercase tracking-[0.2em]">Inclusión Total</span>
+                </div>
+                <h3 class="text-3xl font-display text-white mb-2 tracking-wide">RÍO CHAMPIONS</h3>
+                <p class="text-sm text-gray-400 mb-5">Registro para nuestro entorno diseñado para niños con necesidades especiales.</p>
+                <div class="bg-black/30 border border-yellow-500/20 rounded-xl p-4 mb-6">
+                    <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-yellow-500 mb-3">¿En qué consiste?</p>
+                    <ul class="space-y-2 text-sm text-gray-300">
+                        <li class="flex gap-2"><svg viewBox="0 0 24 24" class="w-4 h-4 mt-0.5 shrink-0 text-yellow-500 rio-path stroke-current stroke-2"><polyline points="20 6 9 17 4 12"/></svg> Entorno seguro y adaptado durante todo el servicio.</li>
+                        <li class="flex gap-2"><svg viewBox="0 0 24 24" class="w-4 h-4 mt-0.5 shrink-0 text-yellow-500 rio-path stroke-current stroke-2"><polyline points="20 6 9 17 4 12"/></svg> Personal capacitado y check-in digital seguro.</li>
+                        <li class="flex gap-2"><svg viewBox="0 0 24 24" class="w-4 h-4 mt-0.5 shrink-0 text-yellow-500 rio-path stroke-current stroke-2"><polyline points="20 6 9 17 4 12"/></svg> Inclusión total: un lugar pensado para cada niño.</li>
+                    </ul>
+                </div>
+                <form onsubmit="handleChampionsSubmit(event)">
+                    <div class="mb-4">
+                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Nombre del Padre/Tutor</label>
+                        <input type="text" required class="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-yellow-500 transition-colors">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Nombre del Niño(a)</label>
+                        <input type="text" required class="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-yellow-500 transition-colors">
+                    </div>
+                    <div class="mb-6">
+                        <label class="block text-xs font-bold text-yellow-500 uppercase tracking-wider mb-2">Horario del Servicio</label>
+                        <select id="champions-time" required class="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-yellow-500 transition-colors appearance-none">
+                            <option value="">Selecciona un horario</option>
+                            <option value="Domingo 9:00 AM">Domingo 9:00 AM</option>
+                            <option value="Domingo 12:00 PM">Domingo 12:00 PM</option>
+                            <option value="Domingo 7:00 PM">Domingo 7:00 PM</option>
+                            <option value="Jueves 8:00 PM">Jueves 8:00 PM</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="w-full bg-yellow-500 text-brand-dark font-bold py-3 rounded-lg uppercase tracking-widest text-sm hover:bg-yellow-400 transition-colors shadow-[0_0_20px_rgba(234,179,8,0.4)]">Completar Registro</button>
+                </form>
+            </div>
+            <div id="champions-success" class="hidden text-center py-8">
+                <div class="w-20 h-20 bg-yellow-500/20 rounded-full flex items-center justify-center mx-auto mb-6 border border-yellow-500">
+                    <svg viewBox="0 0 24 24" class="w-10 h-10 text-yellow-500 rio-path stroke-current stroke-2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                </div>
+                <h3 class="text-2xl font-display text-white mb-2 tracking-wide">¡REGISTRO EXITOSO!</h3>
+                <p class="text-gray-400 text-sm mb-6" id="champions-success-msg">Todo listo. Los esperamos con mucha alegría.</p>
+                <button onclick="closeModal('modal-champions')" class="w-full border border-white/20 text-white font-bold py-3 rounded-lg uppercase tracking-widest text-sm hover:bg-white hover:text-brand-dark transition-colors">Entendido</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Encuentro (Flujo Guiado) -->
+    <div class="modal-overlay" id="modal-encuentro-flujo">
+        <div class="modal-content relative border-white/30 shadow-[0_0_50px_rgba(255,255,255,0.1)] transition-all duration-300">
+            <button onclick="closeModal('modal-encuentro-flujo')" class="absolute top-4 right-4 text-gray-400 hover:text-white z-20"><svg viewBox="0 0 24 24" class="w-6 h-6 rio-path stroke-current stroke-2"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+
+            <div id="enc-step-1">
+                <h3 class="text-3xl font-display text-white mb-2 tracking-wide">TU ENCUENTRO</h3>
+                <p class="text-sm text-gray-400 mb-5">Selecciona la categoría a la que perteneces para iniciar.</p>
+                <div class="bg-black/30 border border-white/10 rounded-xl p-4 mb-6">
+                    <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/70 mb-3">¿En qué consiste?</p>
+                    <ul class="space-y-2 text-sm text-gray-300">
+                        <li class="flex gap-2"><svg viewBox="0 0 24 24" class="w-4 h-4 mt-0.5 shrink-0 text-brand-cyan rio-path stroke-current stroke-2"><polyline points="20 6 9 17 4 12"/></svg> Tres días para desconectarte del ruido y reconectar con Dios.</li>
+                        <li class="flex gap-2"><svg viewBox="0 0 24 24" class="w-4 h-4 mt-0.5 shrink-0 text-brand-cyan rio-path stroke-current stroke-2"><polyline points="20 6 9 17 4 12"/></svg> El paso clave para afirmar tu fe y echar raíces.</li>
+                        <li class="flex gap-2"><svg viewBox="0 0 24 24" class="w-4 h-4 mt-0.5 shrink-0 text-brand-cyan rio-path stroke-current stroke-2"><polyline points="20 6 9 17 4 12"/></svg> Puedes vivirlo como encuentrista o servir en el equipo.</li>
+                    </ul>
+                </div>
+                <div class="flex flex-col gap-2.5">
+                    <button onclick="selectEncuentro('Niños (5-11 años)')" class="w-full flex items-center gap-4 text-left p-4 bg-white/5 hover:bg-brand-cyan/15 border border-white/10 hover:border-brand-cyan rounded-xl transition-all group">
+                        <span class="font-display text-2xl text-white/20 group-hover:text-brand-cyan/50 transition-colors w-8 shrink-0">01</span>
+                        <div class="flex-grow"><span class="block text-white font-medium text-lg leading-tight">Niños</span><span class="block text-brand-cyan text-xs font-bold uppercase tracking-wider">5 a 11 años</span></div>
+                        <svg viewBox="0 0 24 24" class="w-5 h-5 text-gray-600 group-hover:text-brand-cyan group-hover:translate-x-1 transition-all rio-path stroke-current stroke-2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                    </button>
+                    <button onclick="selectEncuentro('Youth (12-18 años)')" class="w-full flex items-center gap-4 text-left p-4 bg-white/5 hover:bg-brand-purple/15 border border-white/10 hover:border-brand-purple rounded-xl transition-all group">
+                        <span class="font-display text-2xl text-white/20 group-hover:text-brand-purple/50 transition-colors w-8 shrink-0">02</span>
+                        <div class="flex-grow"><span class="block text-white font-medium text-lg leading-tight">Youth</span><span class="block text-brand-purple text-xs font-bold uppercase tracking-wider">12 a 18 años</span></div>
+                        <svg viewBox="0 0 24 24" class="w-5 h-5 text-gray-600 group-hover:text-brand-purple group-hover:translate-x-1 transition-all rio-path stroke-current stroke-2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                    </button>
+                    <button onclick="selectEncuentro('Pro Jóvenes (18-26 años)')" class="w-full flex items-center gap-4 text-left p-4 bg-white/5 hover:bg-brand-teal/15 border border-white/10 hover:border-brand-teal rounded-xl transition-all group">
+                        <span class="font-display text-2xl text-white/20 group-hover:text-brand-teal/50 transition-colors w-8 shrink-0">03</span>
+                        <div class="flex-grow"><span class="block text-white font-medium text-lg leading-tight">Pro Jóvenes</span><span class="block text-brand-teal text-xs font-bold uppercase tracking-wider">18 a 26 años</span></div>
+                        <svg viewBox="0 0 24 24" class="w-5 h-5 text-gray-600 group-hover:text-brand-teal group-hover:translate-x-1 transition-all rio-path stroke-current stroke-2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                    </button>
+                    <button onclick="selectEncuentro('Prime · Solteros')" class="w-full flex items-center gap-4 text-left p-4 bg-white/5 hover:bg-white/15 border border-white/10 hover:border-white rounded-xl transition-all group">
+                        <span class="font-display text-2xl text-white/20 group-hover:text-white/60 transition-colors w-8 shrink-0">04</span>
+                        <div class="flex-grow"><span class="block text-white font-medium text-lg leading-tight">Prime</span><span class="block text-gray-400 text-xs font-bold uppercase tracking-wider">Solteros · 26+ años</span></div>
+                        <svg viewBox="0 0 24 24" class="w-5 h-5 text-gray-600 group-hover:text-white group-hover:translate-x-1 transition-all rio-path stroke-current stroke-2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                    </button>
+                    <button onclick="selectEncuentro('Damas y Varones · Matrimonios')" class="w-full flex items-center gap-4 text-left p-4 bg-white/5 hover:bg-yellow-500/15 border border-white/10 hover:border-yellow-500 rounded-xl transition-all group">
+                        <span class="font-display text-2xl text-white/20 group-hover:text-yellow-500/60 transition-colors w-8 shrink-0">05</span>
+                        <div class="flex-grow"><span class="block text-white font-medium text-lg leading-tight">Damas y Varones</span><span class="block text-yellow-500 text-xs font-bold uppercase tracking-wider">Matrimonios y adultos</span></div>
+                        <svg viewBox="0 0 24 24" class="w-5 h-5 text-gray-600 group-hover:text-yellow-500 group-hover:translate-x-1 transition-all rio-path stroke-current stroke-2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                    </button>
+                </div>
+            </div>
+
+            <div id="enc-step-2" class="hidden">
+                <button onclick="backToStep('enc-step-1')" class="text-gray-400 hover:text-white text-sm flex items-center gap-2 mb-4"><svg viewBox="0 0 24 24" class="w-4 h-4 rio-path stroke-current stroke-2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg> Atrás</button>
+                <h3 class="text-3xl font-display text-white mb-2 tracking-wide">MODALIDAD</h3>
+                <p class="text-sm text-brand-cyan mb-6" id="selected-category">Categoría seleccionada</p>
+                <div class="flex flex-col gap-4">
+                    <button onclick="selectModalidad('Encuentrista')" class="w-full p-6 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/30 rounded-xl transition-all text-center">
+                        <div class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center mx-auto mb-3">
+                            <svg viewBox="0 0 24 24" class="w-6 h-6 text-white rio-path stroke-current stroke-2"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
+                        </div>
+                        <span class="block text-white font-bold text-lg">Voy a vivirlo</span>
+                        <span class="block text-gray-400 text-xs mt-1">Quiero asistir como Encuentrista</span>
+                    </button>
+                    <button onclick="selectModalidad('Servidor')" class="w-full p-6 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/30 rounded-xl transition-all text-center">
+                        <div class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center mx-auto mb-3">
+                            <svg viewBox="0 0 24 24" class="w-6 h-6 text-white rio-path stroke-current stroke-2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                        </div>
+                        <span class="block text-white font-bold text-lg">Voy a servir</span>
+                        <span class="block text-gray-400 text-xs mt-1">Quiero ser parte del equipo de Servidores</span>
+                    </button>
+                </div>
+            </div>
+
+            <div id="enc-step-3" class="hidden">
+                <button onclick="backToStep('enc-step-2')" class="text-gray-400 hover:text-white text-sm flex items-center gap-2 mb-4"><svg viewBox="0 0 24 24" class="w-4 h-4 rio-path stroke-current stroke-2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg> Atrás</button>
+                <div class="flex items-center justify-between mb-6 pb-4 border-b border-white/10">
+                    <div>
+                        <span class="block text-[10px] text-gray-500 uppercase tracking-widest">Registro para</span>
+                        <span class="block text-white font-bold" id="summary-cat">Niños</span>
+                    </div>
+                    <div class="text-right">
+                        <span class="block text-[10px] text-gray-500 uppercase tracking-widest">Como</span>
+                        <span class="block text-brand-cyan font-bold" id="summary-mod">Encuentrista</span>
+                    </div>
+                </div>
+                <form onsubmit="handleEncuentroSubmit(event)">
+                    <div class="mb-4">
+                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Nombre Completo</label>
+                        <input type="text" required class="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-brand-cyan transition-colors">
+                    </div>
+                    <div class="mb-6">
+                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Teléfono / WhatsApp</label>
+                        <input type="tel" required class="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-brand-cyan transition-colors">
+                    </div>
+                    <button type="submit" class="w-full bg-white text-brand-dark font-bold py-3 rounded-lg uppercase tracking-widest text-sm hover:bg-gray-200 transition-colors shadow-[0_0_20px_rgba(255,255,255,0.2)]">Confirmar Registro</button>
+                </form>
+            </div>
+
+            <div id="enc-success" class="hidden text-center py-8">
+                <div class="w-20 h-20 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-6 border border-white/30">
+                    <svg viewBox="0 0 24 24" class="w-10 h-10 text-white rio-path stroke-current stroke-2"><polyline points="20 6 9 17 4 12"/></svg>
+                </div>
+                <h3 class="text-2xl font-display text-white mb-2 tracking-wide">¡LUGAR ASEGURADO!</h3>
+                <p class="text-gray-400 text-sm mb-6">Tu registro ha sido completado. Te contactaremos por WhatsApp con los siguientes pasos.</p>
+                <button onclick="closeModal('modal-encuentro-flujo')" class="w-full border border-white/20 text-white font-bold py-3 rounded-lg uppercase tracking-widest text-sm hover:bg-white hover:text-brand-dark transition-colors">Excelente</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const lenis = new Lenis({ duration: 1.2, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)) });
+        function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+        requestAnimationFrame(raf);
+
+        gsap.registerPlugin(ScrollTrigger);
+
+        /* ====== PRELOADER ====== */
+        (function preloader(){
+            const bar = document.getElementById('pl-bar');
+            const count = document.getElementById('pl-count');
+            const logo = document.getElementById('pl-logo');
+            gsap.to(logo, { opacity: 1, scale: 1, duration: 0.8, ease: 'power3.out' });
+            let p = 0;
+            const tick = setInterval(() => {
+                p += Math.random() * 12;
+                if (p >= 100) { p = 100; clearInterval(tick); finish(); }
+                bar.style.width = p + '%';
+                count.textContent = String(Math.floor(p)).padStart(3, '0');
+            }, 110);
+            function finish(){
+                const tl = gsap.timeline();
+                tl.to('#preloader', { opacity: 0, duration: 0.5, delay: 0.25 })
+                  .set('#preloader', { display: 'none' })
+                  .to('#pl-curtain', { yPercent: -100, duration: 1.0, ease: 'power4.inOut' }, '-=0.2')
+                  .set('#pl-curtain', { display: 'none' })
+                  .add(startHero, '-=0.6');
+            }
+        })();
+
+        function startHero(){
+            gsap.to('.gsap-hero', { y: 0, opacity: 1, duration: 1.2, stagger: 0.13, ease: 'power4.out' });
+        }
+
+        /* ====== CUSTOM CURSOR + MAGNETIC ====== */
+        (function cursor(){
+            if (window.innerWidth < 1024) return;
+            const dot = document.getElementById('cursor-dot');
+            const ring = document.getElementById('cursor-ring');
+            let mx = innerWidth/2, my = innerHeight/2, rx = mx, ry = my;
+            window.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; dot.style.transform = `translate(${mx}px,${my}px) translate(-50%,-50%)`; });
+            (function ringLoop(){ rx += (mx-rx)*0.18; ry += (my-ry)*0.18; ring.style.transform = `translate(${rx}px,${ry}px) translate(-50%,-50%)`; requestAnimationFrame(ringLoop); })();
+            document.querySelectorAll('[data-cursor], a, button').forEach(el => {
+                el.addEventListener('mouseenter', () => ring.classList.add('grow'));
+                el.addEventListener('mouseleave', () => ring.classList.remove('grow'));
+            });
+            // magnetic
+            document.querySelectorAll('.magnetic').forEach(el => {
+                el.addEventListener('mousemove', e => {
+                    const r = el.getBoundingClientRect();
+                    const x = e.clientX - r.left - r.width/2;
+                    const y = e.clientY - r.top - r.height/2;
+                    el.style.transform = `translate(${x*0.25}px, ${y*0.35}px)`;
+                });
+                el.addEventListener('mouseleave', () => { el.style.transform = 'translate(0,0)'; });
+            });
+        })();
+
+        window.addEventListener('load', () => {
+            // Navbar Hide/Show
+            let lastScroll = 0;
+            window.addEventListener('scroll', () => {
+                const nav = document.getElementById('main-nav');
+                const currentScroll = window.pageYOffset;
+                if (currentScroll > 100 && currentScroll > lastScroll) { nav.style.transform = 'translate(-50%, -150%)'; }
+                else { nav.style.transform = 'translate(-50%, 0)'; }
+                lastScroll = currentScroll;
+            });
+
+            // 1. MASKED TEXT REVEAL
+            document.querySelectorAll('.cinematic-text-reveal').forEach(text => {
+                let content = text.innerHTML;
+                text.innerHTML = `<span class="reveal-mask"><span class="reveal-mask-inner">${content}</span></span>`;
+                gsap.to(text.querySelector('.reveal-mask-inner'), {
+                    y: '0%', duration: 1.5, ease: "power4.out",
+                    scrollTrigger: { trigger: text, start: "top 90%" }
+                });
+            });
+
+            // Text Fade Simple
+            gsap.utils.toArray('.cinematic-fade, .gsap-fade-up').forEach(elem => {
+                gsap.from(elem, { y: 30, opacity: 0, duration: 1.5, ease: "power3.out", scrollTrigger: { trigger: elem, start: "top 90%" } });
+            });
+
+            // Scripture cinematic blur-in (preserves inner gold spans)
+            document.querySelectorAll('.scripture-words').forEach(el => {
+                gsap.fromTo(el,
+                    { opacity: 0, y: 30, filter: 'blur(10px)' },
+                    { opacity: 1, y: 0, filter: 'blur(0px)', duration: 1.6, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 82%' } }
+                );
+            });
+
+            // 3. CARD STAGGER
+            gsap.from('.card-stagger-item', { y: 100, opacity: 0, duration: 1, stagger: 0.15, ease: "power3.out", scrollTrigger: { trigger: '#cards-container', start: "top 85%" } });
+
+            // 4. EXTREME PARALLAX (Encuentro Background)
+            gsap.to('#encuentro-bg', { yPercent: 30, scale: 1.1, ease: "none", scrollTrigger: { trigger: '#seccion-encuentro', start: "top bottom", end: "bottom top", scrub: true } });
+
+            // 5. RIVER PATH DRAW + stage reveal
+            const river = document.getElementById('river-path');
+            if (river) {
+                const len = river.getTotalLength();
+                river.style.strokeDasharray = len;
+                river.style.strokeDashoffset = len;
+                gsap.to(river, { strokeDashoffset: 0, ease: 'none', scrollTrigger: { trigger: '#river-wrap', start: 'top 70%', end: 'bottom 70%', scrub: 1 } });
+            }
+            gsap.utils.toArray('.stage-item').forEach((el, i) => {
+                gsap.to(el, { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 88%' } });
+            });
+
+            // 6. STATS COUNTERS
+            gsap.utils.toArray('[data-count]').forEach(el => {
+                const target = +el.getAttribute('data-count');
+                ScrollTrigger.create({
+                    trigger: el, start: 'top 88%', once: true,
+                    onEnter: () => {
+                        const obj = { v: 0 };
+                        gsap.to(obj, { v: target, duration: 2, ease: 'power2.out', onUpdate: () => {
+                            el.textContent = Math.floor(obj.v).toLocaleString('es-MX') + (target >= 1000 ? '+' : '');
+                        }});
+                    }
+                });
+            });
+        });
+
+        // 3D Tilt Effect
+        document.querySelectorAll('.tilt-card').forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const rect = card.getBoundingClientRect();
+                const xPct = ((e.clientX - rect.left) / rect.width) - 0.5;
+                const yPct = ((e.clientY - rect.top) / rect.height) - 0.5;
+                card.style.transform = `perspective(1000px) rotateX(${yPct * -16}deg) rotateY(${xPct * 16}deg) scale3d(1.02, 1.02, 1.02)`;
+            });
+            card.addEventListener('mouseleave', () => { card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`; });
+        });
+
+        // Modals & Forms
+        function openModal(id) {
+            const m = document.getElementById(id);
+            if(m){ m.classList.add('active'); lenis.stop();
+                if(id === 'modal-encuentro-flujo') {
+                    document.getElementById('enc-step-1').classList.remove('hidden');
+                    document.getElementById('enc-step-2').classList.add('hidden');
+                    document.getElementById('enc-step-3').classList.add('hidden');
+                    document.getElementById('enc-success').classList.add('hidden');
+                }
+                if(id === 'modal-reserva') {
+                    document.getElementById('reserva-step-1').classList.remove('hidden');
+                    document.getElementById('reserva-success').classList.add('hidden');
+                }
+            }
+        }
+        function closeModal(id) { const m = document.getElementById(id); if(m){ m.classList.remove('active'); lenis.start(); } }
+        function handleComunidadSubmit(e) {
+            e.preventDefault();
+            document.getElementById('comunidad-step-1').classList.add('hidden');
+            document.getElementById('comunidad-loading').classList.remove('hidden');
+            setTimeout(() => {
+                document.getElementById('comunidad-loading').classList.add('hidden');
+                document.getElementById('comunidad-success').classList.remove('hidden');
+            }, 2000);
+        }
+        function handleAyudaSubmit(e) { e.preventDefault(); document.getElementById('ayuda-step-1').classList.add('hidden'); document.getElementById('ayuda-success').classList.remove('hidden'); }
+        function handleReservaSubmit(e) {
+            e.preventDefault();
+            const sel = document.getElementById('reserva-servicio');
+            const serv = sel.value || 'el servicio';
+            document.getElementById('reserva-step-1').classList.add('hidden');
+            document.getElementById('reserva-success-msg').innerText = `Tu lugar está apartado para el domingo 5 de julio a las ${serv}. Te confirmaremos por WhatsApp. ¡Va a ser inolvidable!`;
+            document.getElementById('reserva-success').classList.remove('hidden');
+        }
+        function copyDato(el){
+            const val = el.getAttribute('data-copy');
+            const label = el.querySelector('.copy-label');
+            const orig = label ? label.innerText : '';
+            const done = ()=>{ if(label){ label.innerText='¡Copiado!'; setTimeout(()=>{ label.innerText = orig; }, 1500); } };
+            function fallback(text){
+                const ta = document.createElement('textarea'); ta.value = text;
+                ta.style.position='fixed'; ta.style.opacity='0'; document.body.appendChild(ta); ta.focus(); ta.select();
+                try { document.execCommand('copy'); done(); } catch(err){} document.body.removeChild(ta);
+            }
+            if(navigator.clipboard && navigator.clipboard.writeText){
+                navigator.clipboard.writeText(val).then(done).catch(()=>fallback(val));
+            } else { fallback(val); }
+        }
+        function handleAcademiaSubmit(e) { e.preventDefault(); document.getElementById('academia-step-1').classList.add('hidden'); document.getElementById('academia-success').classList.remove('hidden'); }
+        function handleChampionsSubmit(e) {
+            e.preventDefault();
+            const timeSelect = document.getElementById('champions-time');
+            const selectedTime = timeSelect.options[timeSelect.selectedIndex].text;
+            document.getElementById('champions-step-1').classList.add('hidden');
+            document.getElementById('champions-success-msg').innerText = `Todo listo. Los esperamos con mucha alegría este ${selectedTime}.`;
+            document.getElementById('champions-success').classList.remove('hidden');
+        }
+        let encuentroData = { categoria: '', modalidad: '' };
+        function selectEncuentro(cat) {
+            encuentroData.categoria = cat;
+            document.getElementById('selected-category').innerText = cat;
+            document.getElementById('summary-cat').innerText = cat;
+            document.getElementById('enc-step-1').classList.add('hidden');
+            document.getElementById('enc-step-2').classList.remove('hidden');
+        }
+        function selectModalidad(mod) {
+            encuentroData.modalidad = mod;
+            document.getElementById('summary-mod').innerText = mod;
+            document.getElementById('enc-step-2').classList.add('hidden');
+            document.getElementById('enc-step-3').classList.remove('hidden');
+        }
+        function backToStep(stepId) {
+            document.getElementById('enc-step-1').classList.add('hidden');
+            document.getElementById('enc-step-2').classList.add('hidden');
+            document.getElementById('enc-step-3').classList.add('hidden');
+            document.getElementById(stepId).classList.remove('hidden');
+        }
+        function handleEncuentroSubmit(e) { e.preventDefault(); document.getElementById('enc-step-3').classList.add('hidden'); document.getElementById('enc-success').classList.remove('hidden'); }
+
+        // Mouse glow
+        (function(){
+            const cursorGlow = document.getElementById('cursor-glow');
+            window.addEventListener('mousemove', (e) => {
+                cursorGlow.style.left = `${e.clientX}px`; cursorGlow.style.top = `${e.clientY}px`;
+            });
+        })();
+
+        // Souls Canvas
+        const initSoulsCanvas = () => {
+            const canvas = document.getElementById('souls-canvas');
+            if(!canvas) return;
+            const ctx = canvas.getContext('2d');
+            let w = canvas.width = canvas.offsetWidth; let h = canvas.height = canvas.offsetHeight;
+            const souls = [];
+            class Soul {
+                constructor() { this.reset(); }
+                reset() { this.angle = Math.random() * Math.PI * 2; this.radius = Math.random() * (w/2) + 50; this.speed = (Math.random() * 0.002) + 0.001; this.size = Math.random() * 2 + 0.5; this.yOffset = (Math.random() - 0.5) * h; }
+                update() { this.angle -= this.speed; this.radius -= 0.5; if(this.radius < 10) this.reset(); }
+                draw() {
+                    const x = (w/2) + Math.cos(this.angle) * this.radius;
+                    const y = (h/2) + Math.sin(this.angle) * (this.radius * 0.3) + this.yOffset * (this.radius/w);
+                    ctx.beginPath(); ctx.arc(x, y, this.size, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(255, 255, 255, ${Math.min(1, this.radius / 100) * 0.5})`; ctx.fill();
+                }
+            }
+            for(let i=0; i<150; i++) souls.push(new Soul());
+            window.addEventListener('resize', () => { w = canvas.width = canvas.offsetWidth; h = canvas.height = canvas.offsetHeight; });
+            const animateSouls = () => {
+                ctx.clearRect(0, 0, w, h);
+                const gradient = ctx.createRadialGradient(w/2, h/2, 0, w/2, h/2, 150);
+                gradient.addColorStop(0, 'rgba(255,255,255,0.1)'); gradient.addColorStop(1, 'transparent');
+                ctx.fillStyle = gradient; ctx.fillRect(0,0,w,h);
+                souls.forEach(s => { s.update(); s.draw(); }); requestAnimationFrame(animateSouls);
+            };
+            animateSouls();
+        };
+
+        // ====== SELECTOR DE SEDES (estilo elige-tu-comunidad) ======
+        (function(){
+            const SEDES = [
+                {n:'RÍO CENTRAL', est:'cdmx', estL:'Ciudad de México', principal:true, dir:'Av. Gran Canal 6692, Col. San Pedro el Chico, Gustavo A. Madero.', hor:['Dom · 9 AM · 12 PM · 7 PM','Jue · 8 PM'], extra:'Ps. Efrén y Michelle Ruiz · Tel. 55 3874 0000'},
+                {n:'RÍO SUR', est:'cdmx', estL:'Ciudad de México', dir:'Av. Cafetales 1695, Coapa, Coyoacán.', hor:['Dom · 9:30 AM']},
+                {n:'RÍO LINDAVISTA', est:'cdmx', estL:'Ciudad de México', dir:'Cinépolis Vía Vallejo, Gustavo A. Madero.', hor:['Dom · 10 AM · 12 PM']},
+                {n:'RÍO LAS AMÉRICAS', est:'edomex', estL:'Estado de México', dir:'Cinépolis Plaza Las Américas, Ecatepec.', hor:['Dom · 10 AM','Mié · 6 PM']},
+                {n:'RÍO TECÁMAC', est:'edomex', estL:'Estado de México', dir:'Plaza Soriana, Los Héroes Tecámac.', hor:['Dom · 10 AM','Jue · 7:30 PM','Vie · 10 AM']},
+                {n:'RÍO ORIENTE', est:'edomex', estL:'Estado de México', dir:'Barrio Saraperos, Chimalhuacán.', hor:['Dom · 10 AM','Lun · 5:30 PM']},
+                {n:'RÍO TOLUCA', est:'edomex', estL:'Estado de México', dir:'Metepec · Cinemex Town Square.', hor:['Dom · 10 AM · 2 PM','Jue · 7:30 PM']},
+                {n:'RÍO TOLLOCAN', est:'edomex', estL:'Estado de México', dir:'Cinépolis Galerías Toluca.', hor:['Dom · 10 AM']},
+                {n:'RÍO PROGRESO', est:'hidalgo', estL:'Hidalgo', dir:'Progreso de Obregón, Hidalgo.', hor:['Dom · 12 PM','Jue · 7:30 PM','Sáb · 6 PM (Youth)']},
+                {n:'RÍO TIZAYUCA', est:'hidalgo', estL:'Hidalgo', dir:'Cd. Deportiva, Tizayuca, Hidalgo.', hor:['Dom · 12 PM · 5 PM','Mié · 7 PM']},
+                {n:'RÍO CALPULALPAN', est:'tlaxcala', estL:'Tlaxcala', dir:'Blvd. Emilio Sánchez Piedras 60, Tlaxcala.', hor:['Dom · 10:30 AM','Mar · 7 PM']},
+                {n:'RÍO SAN LUIS POTOSÍ', est:'slp', estL:'San Luis Potosí', dir:'San Luis Potosí, S.L.P.', hor:['Dom · 10 AM']}
+            ];
+            const stage = document.getElementById('sede-stage');
+            if(!stage) return;
+            const rev = document.getElementById('sede-rev');
+            const posEl = document.getElementById('sede-pos');
+            const totalEl = document.getElementById('sede-total');
+            const chips = [...document.querySelectorAll('.sede-chip')];
+            let estado = 'todas', list = SEDES.slice(), idx = 0;
+
+            const pad = n => String(n).padStart(2,'0');
+            const mapsUrl = s => 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(s.n + ' ' + s.dir);
+
+            function cardHTML(s){
+                const pills = s.hor.map(h=>`<span class="px-4 py-2 rounded-xl bg-black/40 border border-white/10 text-white/90 text-sm">${h}</span>`).join('');
+                const extra = s.extra ? `<p class="text-xs text-gray-500 mb-6">${s.extra}</p>` : '<div class="mb-6"></div>';
+                const badge = s.principal ? ' · <span class="text-brand-cyan">★ Sede Principal</span>' : '';
+                return `<div class="sede-card glass-card rounded-3xl p-8 md:p-12 relative overflow-hidden min-h-[420px] flex flex-col">
+                    <div class="absolute -top-16 -right-16 w-64 h-64 bg-brand-cyan/10 blur-[70px] rounded-full pointer-events-none"></div>
+                    <div class="relative z-10 flex flex-col h-full">
+                        <div class="flex items-start justify-between mb-3">
+                            <span class="text-[10px] uppercase tracking-[0.25em] text-gray-400 font-bold pt-2">${s.estL}${badge}</span>
+                            <span class="font-display text-6xl md:text-7xl text-white/10 leading-none">${pad(idx+1)}</span>
+                        </div>
+                        <h4 class="text-4xl md:text-6xl font-display tracking-wide text-white leading-[0.9] mb-4">${s.n}</h4>
+                        <p class="text-gray-400 mb-6 max-w-lg">${s.dir}</p>
+                        <div class="flex flex-wrap gap-3 mb-6">${pills}</div>
+                        ${extra}
+                        <div class="flex flex-col sm:flex-row gap-3 mt-auto">
+                            <button onclick="openModal('modal-comunidad')" class="px-7 py-4 bg-white text-brand-dark rounded-full font-bold text-xs uppercase tracking-widest hover:scale-105 transition-transform">Quiero visitar</button>
+                            <a href="${mapsUrl(s)}" target="_blank" rel="noopener" class="px-7 py-4 border border-white/15 text-white rounded-full font-bold text-xs uppercase tracking-widest hover:bg-white/5 transition-colors flex items-center justify-center gap-2">Cómo llegar
+                                <svg viewBox="0 0 24 24" class="w-4 h-4 rio-path stroke-current stroke-2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>`;
+            }
+
+            function buildRev(){
+                rev.innerHTML = list.map((_,i)=>`<div class="sede-seg" data-i="${i}"></div>`).join('');
+                rev.querySelectorAll('.sede-seg').forEach(seg=>{
+                    seg.addEventListener('click', ()=> go(+seg.dataset.i, +seg.dataset.i>=idx?1:-1));
+                });
+            }
+
+            function paint(dir){
+                stage.innerHTML = cardHTML(list[idx]);
+                const card = stage.firstElementChild;
+                card.classList.add(dir>=0 ? 'sede-enter-right' : 'sede-enter-left');
+                posEl.textContent = pad(idx+1);
+                posEl.classList.remove('flip'); void posEl.offsetWidth; posEl.classList.add('flip');
+                totalEl.textContent = pad(list.length);
+                rev.querySelectorAll('.sede-seg').forEach((seg,i)=>{
+                    seg.classList.toggle('on', i<=idx);
+                    seg.classList.toggle('cur', i===idx);
+                });
+            }
+
+            function go(i, dir){ idx = (i+list.length)%list.length; paint(dir); }
+            function next(){ go(idx+1, 1); }
+            function prev(){ go(idx-1, -1); }
+
+            function setEstado(e){
+                estado = e;
+                list = (e==='todas') ? SEDES.slice() : SEDES.filter(s=>s.est===e);
+                idx = 0; buildRev(); paint(1);
+                chips.forEach(c=>c.classList.toggle('chip-active', c.dataset.estado===e));
+            }
+
+            document.getElementById('sede-next').addEventListener('click', next);
+            document.getElementById('sede-prev').addEventListener('click', prev);
+            chips.forEach(c=> c.addEventListener('click', ()=> setEstado(c.dataset.estado)));
+
+            // Teclado
+            document.getElementById('sede-carousel').setAttribute('tabindex','0');
+            document.getElementById('sede-carousel').addEventListener('keydown', e=>{
+                if(e.key==='ArrowRight') next();
+                if(e.key==='ArrowLeft') prev();
+            });
+            // Swipe / arrastre
+            const vp = document.getElementById('sede-viewport');
+            let sx=null;
+            vp.addEventListener('touchstart', e=> sx=e.touches[0].clientX, {passive:true});
+            vp.addEventListener('touchend', e=>{ if(sx===null) return; const dx=e.changedTouches[0].clientX-sx; if(Math.abs(dx)>45){ dx<0?next():prev(); } sx=null; });
+            vp.addEventListener('mousedown', e=> sx=e.clientX);
+            window.addEventListener('mouseup', e=>{ if(sx===null) return; const dx=e.clientX-sx; if(Math.abs(dx)>60){ dx<0?next():prev(); } sx=null; });
+
+            // init
+            buildRev(); paint(1);
+        })();
+
+        initSoulsCanvas();
+    </script>
+</body>
+</html>
