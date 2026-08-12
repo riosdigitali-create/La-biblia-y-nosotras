@@ -17,6 +17,7 @@ actual es el 15 de agosto de 2026 a las 3:00 p.m. de Ciudad de México.
 
 ## Destino de los botones
 
-Los dos llamados a la acción apuntan a:
-
-`https://lbyn-grupos.pages.dev/circulo/`
+Mientras la aplicación de círculos termina de publicarse, los dos llamados a
+la acción abren el WhatsApp oficial de LBYN con un mensaje preparado. Cuando
+`lbyn-grupos.pages.dev` esté activo, sustituir esos dos enlaces por la ruta
+`/circulo/` de la aplicación.
