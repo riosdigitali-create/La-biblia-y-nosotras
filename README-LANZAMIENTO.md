@@ -3,6 +3,11 @@
 La versión de Cloudflare se publica desde `public/`. El sitio histórico de la
 raíz del repositorio queda intacto.
 
+La portada usa como fuente el archivo local
+`sitio/Video Oficial La Biblia Y Nosotras.mp4`. La copia publicada conserva el
+video completo, elimina únicamente el audio para la reproducción automática y
+reduce el peso para web. El original no se modifica.
+
 ## Configuración de Cloudflare Pages
 
 - Rama: `cloudflare-launch-2026-08-15`

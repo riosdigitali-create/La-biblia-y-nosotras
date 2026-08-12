@@ -12,11 +12,11 @@
   <meta property="og:locale" content="es_MX">
   <meta property="og:title" content="Algo nuevo está por comenzar">
   <meta property="og:description" content="La Palabra nos reúne. La historia comienza en…">
-  <meta property="og:image" content="https://labibliaynosotras.com/assets/video/poster-oficial.webp">
-  <meta property="og:image:alt" content="La Biblia y Nosotras">
+  <meta property="og:image" content="https://lbyn-lanzamiento.pages.dev/assets/lbyn-portada-poster.webp">
+  <meta property="og:image:alt" content="La Biblia y Nosotras, en el desierto">
 
   <link rel="icon" href="assets/isotipo-lbyn.png">
-  <link rel="preload" href="assets/poster-oficial.webp" as="image" fetchpriority="high">
+  <link rel="preload" href="assets/lbyn-portada-poster.webp" as="image" fetchpriority="high">
   <link rel="preload" href="LibreBaskerville-Bold%20(1).ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="AloeveraDisplay-Medium%20(1).otf" as="font" type="font/otf" crossorigin>
 
@@ -148,6 +148,7 @@
     }
 
     .hero__photo {
+      display: block;
       width: 100%;
       height: 100%;
       object-fit: cover;
@@ -602,7 +603,12 @@
   <main>
     <header class="hero" aria-labelledby="hero-title">
       <div class="hero__media">
-        <img class="hero__photo" src="assets/poster-oficial.webp" alt="Una mujer de La Biblia y Nosotras sonríe al aire libre" width="1400" height="596" fetchpriority="high" decoding="async">
+        <video class="hero__photo" id="hero-video"
+               muted loop playsinline preload="metadata"
+               poster="assets/lbyn-portada-poster.webp"
+               aria-hidden="true" tabindex="-1">
+          <source src="assets/lbyn-portada.mp4" type="video/mp4">
+        </video>
       </div>
       <div class="hero__paper" aria-hidden="true"></div>
 
@@ -694,6 +700,9 @@
       "use strict";
 
       const LAUNCH_DATE = new Date("2026-08-15T15:00:00-06:00");
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const saveData = Boolean(navigator.connection && navigator.connection.saveData);
+      const heroVideo = document.getElementById("hero-video");
       const countdown = document.getElementById("cuenta");
       const arrival = document.getElementById("arrival");
       const live = document.getElementById("countdown-live");
@@ -706,6 +715,20 @@
       let previous = {};
       let announcedMinute = -1;
       let timer = 0;
+
+      if (heroVideo && !reduceMotion && !saveData) {
+        const playVideo = () => heroVideo.play().catch(() => {});
+        const videoObserver = new IntersectionObserver(entries => {
+          if (entries[0].isIntersecting && !document.hidden) playVideo();
+          else heroVideo.pause();
+        }, { threshold: .08 });
+
+        videoObserver.observe(heroVideo);
+        document.addEventListener("visibilitychange", () => {
+          if (document.hidden) heroVideo.pause();
+          else if (heroVideo.getBoundingClientRect().bottom > 0) playVideo();
+        });
+      }
 
       const pad = value => String(value).padStart(2, "0");
 
@@ -753,7 +776,6 @@
       updateCountdown();
       if (!countdown.hidden) timer = window.setInterval(updateCountdown, 1000);
 
-      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       if (!reduceMotion) {
         const letters = [...document.querySelectorAll("[data-parallax]")];
         let queued = false;
