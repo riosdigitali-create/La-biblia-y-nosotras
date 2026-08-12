@@ -1,0 +1,33 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "lbyn-grupos",
+  "pages_build_output_dir": "./public",
+  "compatibility_date": "2026-08-12",
+  "compatibility_flags": ["nodejs_compat"],
+
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "lbyn-grupos",
+      "database_id": "b440ee35-bee6-4820-b85b-5053ce5ba16f",
+      "migrations_dir": "./migrations"
+    }
+  ],
+
+  "vars": {
+    "APP_NAME": "Grupos de amistad — La Biblia y Nosotras",
+    "APP_ORIGIN": "https://lbyn-grupos.pages.dev",
+    "CONSENT_VERSION": "2026-08-v1",
+    "AGREEMENT_VERSION": "2026-08-v1",
+    "ADMIN_AUTH_MODE": "password",
+    "ACCESS_TEAM_DOMAIN": "",
+    "ACCESS_AUD": "",
+    "EMAIL_ENABLED": "false",
+    "EMAIL_FROM": "",
+    "WHATSAPP_ENABLED": "false",
+    "CHAT_PROVIDER": "",
+    "CHAT_MODEL": "",
+    "CHAT_WHATSAPP": "525591396661",
+    "PANEL_PIN_EMAIL": "equipo@labibliaynosotras.com"
+  }
+}

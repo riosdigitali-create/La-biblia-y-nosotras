@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Consultar mi solicitud — Grupos de amistad</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="../assets/css/tokens.css">
+<link rel="stylesheet" href="../assets/css/grupos.css">
+</head>
+<body>
+<header class="nav"><div class="wrap nav__inner">
+  <a class="nav__mark" href="/">La Biblia y Nosotras</a>
+</div></header>
+
+<main class="section wrap medida-form">
+  <p class="eyebrow">Consulta</p>
+  <h1 class="heading-lg mt-3 medida-14">¿Cómo va mi solicitud?</h1>
+
+  <form id="f" class="mt-6">
+    <div class="field">
+      <label class="field__label" for="folio">Tu folio</label>
+      <input id="folio" type="text" placeholder="LBYN-202608-AB12"
+             style="text-transform:uppercase" autocomplete="off">
+      <span class="field__help">Te lo dimos al enviar tu solicitud.</span>
+      <span class="field__error" id="err" role="alert"></span>
+    </div>
+    <button class="btn btn--primary" type="submit">Consultar</button>
+  </form>
+
+  <div id="out" hidden class="mt-7">
+    <p class="eyebrow" id="outFolio"></p>
+    <p class="heading-md mt-3" id="outState" tabindex="-1"></p>
+    <p class="field__help mt-3" id="outNote"></p>
+  </div>
+</main>
+
+<script>
+document.getElementById('f').addEventListener('submit', async function (e) {
+  e.preventDefault();
+  var folio = document.getElementById('folio').value.trim().toUpperCase();
+  var err = document.getElementById('err');
+  err.textContent = '';
+  try {
+    var res = await fetch('/api/application/status?folio=' + encodeURIComponent(folio));
+    var d = await res.json();
+    if (!res.ok || !d.ok) { err.textContent = d.message || 'No encontramos ese folio.'; return; }
+    document.getElementById('out').hidden = false;
+    document.getElementById('outFolio').textContent = d.folio;
+    document.getElementById('outState').textContent = d.estado_texto;
+    document.getElementById('outNote').textContent = d.publicado
+      ? 'Tu grupo ya está publicado.'
+      : 'Todavía no es un grupo activo. Te escribiremos en cuanto haya novedades.';
+    document.getElementById('outState').focus();
+  } catch (e2) {
+    err.textContent = 'No pudimos conectar. Intenta de nuevo.';
+  }
+});
+</script>
+
+<!-- ══════════════════════════════════════════════════════════════
+     Rutas internas al abrir el archivo con doble clic (file://).
+
+     Servido por Cloudflare o por `npm run dev`, «/asistir/» es una
+     ruta válida. Abriendo el archivo directamente, apunta a la raíz
+     del disco y no existe: aquí se traduce a la carpeta vecina para
+     poder ver las pantallas sin desplegar nada.
+
+     No cambia nada cuando hay servidor: solo actúa con file://.
+     ══════════════════════════════════════════════════════════════ -->
+<script>
+(function () {
+  if (window.location.protocol !== 'file:') return;
+  var subir = '../';
+  document.querySelectorAll('a[href^="/"]').forEach(function (a) {
+    var r = a.getAttribute('href');
+    if (r.indexOf('//') === 0) return;                 // enlaces de protocolo
+    a.setAttribute('href', subir + r.replace(/^\//, '') +
+      (/\/$/.test(r) ? 'index.html' : ''));
+  });
+})();
+</script>
+
+</body>
+</html>

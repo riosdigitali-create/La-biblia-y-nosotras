@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F4F3EA">
+<meta name="color-scheme" content="light">
+<title>Abre un círculo de amigas — La Biblia y Nosotras</title>
+<meta name="description" content="Reúne a tus amigas y caminen juntas estas semanas. Cuéntanos quién eres y te acompañamos.">
+<link rel="stylesheet" href="../assets/css/tokens.css">
+<link rel="stylesheet" href="../assets/css/grupos.css">
+<link rel="stylesheet" href="../assets/css/circulo.css">
+</head>
+<body>
+
+<a class="skip" href="#contenido">Saltar al formulario</a>
+
+<header class="nav">
+  <div class="wrap nav__inner">
+    <a class="nav__mark" data-landing href="https://labibliaynosotras.com/">La Biblia y Nosotras</a>
+    <a class="nav__link" data-landing href="https://labibliaynosotras.com/">Salir</a>
+  </div>
+</header>
+
+<main id="contenido">
+
+  <!-- ══ LA INVITACIÓN ═══════════════════════════════════════════
+       Repite la estampa de la landing —el mismo retrato sobre papel
+       rosa rasgado— para que se note que es el mismo camino, no otra
+       página. -->
+  <section class="circ-abre grano" aria-labelledby="circ-t">
+    <div class="wrap circ-abre__grid">
+      <div class="circ-abre__voz">
+        <p class="eyebrow">Círculos de amigas</p>
+        <h1 class="circ-abre__h editorial" id="circ-t">
+          <span class="circ-abre__l1">Abre un círculo</span><em class="circ-abre__l2">de amigas</em>
+        </h1>
+        <p class="circ-abre__lede">
+          Caminen juntas durante estas semanas. No necesitas un salón, ni un
+          programa, ni permiso de nadie: una mesa, tus amigas y la Biblia abierta.
+        </p>
+        <ol class="circ-abre__pasos">
+          <li><span class="circ-abre__n" aria-hidden="true">1</span>Nos dices quién eres y dónde estás</li>
+          <li><span class="circ-abre__n" aria-hidden="true">2</span>Te mandamos el material de las semanas</li>
+          <li><span class="circ-abre__n" aria-hidden="true">3</span>Invitas a tus amigas y empiezan</li>
+        </ol>
+      </div>
+
+      <div class="circ-abre__estampa" aria-hidden="true">
+        <span class="circ-abre__papel"></span>
+        <img class="circ-abre__retrato" src="../assets/img/retratos/circulo-biblia.webp"
+             alt="" width="563" height="767" fetchpriority="high">
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ EL FORMULARIO ═══════════════════════════════════════════
+       Siete campos, dos opcionales. No se pide dirección, ni cupo,
+       ni día, ni horario: eso lo decide cada quien con sus amigas. -->
+  <section class="circ-forma wrap" aria-labelledby="forma-t">
+    <div class="circ-forma__caja">
+    <p class="eyebrow">Casi nada</p>
+    <h2 class="circ-forma__h editorial" id="forma-t">Cuéntanos de ti</h2>
+    <p class="circ-forma__nota">Siete campos, dos opcionales. Toma menos de un minuto.</p>
+
+    <form id="circulo" novalidate>
+      <div class="circ-campos">
+
+        <div class="campo campo--ancho">
+          <label for="full_name">Tu nombre <span class="campo__req" aria-hidden="true">*</span></label>
+          <input id="full_name" name="full_name" type="text" autocomplete="name"
+                 required maxlength="120" placeholder="Nombre y apellido">
+          <p class="err" data-err="full_name" role="alert"></p>
+        </div>
+
+        <div class="campo campo--ancho">
+          <label for="email">Correo <span class="campo__req" aria-hidden="true">*</span></label>
+          <input id="email" name="email" type="email" inputmode="email"
+                 autocomplete="email" required maxlength="160" placeholder="tu@correo.com">
+          <p class="campo-pista">Por aquí te llega el material.</p>
+          <p class="err" data-err="email" role="alert"></p>
+        </div>
+
+        <div class="campo">
+          <label for="phone">WhatsApp <span class="campo__req" aria-hidden="true">*</span></label>
+          <input id="phone" name="phone" type="tel" inputmode="tel"
+                 autocomplete="tel" required maxlength="20" placeholder="10 dígitos">
+          <p class="err" data-err="phone" role="alert"></p>
+        </div>
+
+        <div class="campo">
+          <label for="city">Ciudad o zona <span class="campo__req" aria-hidden="true">*</span></label>
+          <input id="city" name="city" type="text" autocomplete="address-level2"
+                 required maxlength="90" placeholder="Dónde vives">
+          <p class="err" data-err="city" role="alert"></p>
+        </div>
+
+        <div class="campo campo--ancho">
+          <label for="church_name">Tu iglesia <span class="campo__req" aria-hidden="true">*</span></label>
+          <input id="church_name" name="church_name" type="text"
+                 required maxlength="120" placeholder="Cómo se llama">
+          <p class="campo-pista">Así podemos avisarle a tu pastora que estás abriendo un círculo.</p>
+          <p class="err" data-err="church_name" role="alert"></p>
+        </div>
+
+        <div class="campo">
+          <label for="circle_name">Nombre del círculo</label>
+          <input id="circle_name" name="circle_name" type="text"
+                 maxlength="80" placeholder="Si ya tiene uno">
+          <p class="campo-pista">Opcional. Se lo pueden poner después.</p>
+          <p class="err" data-err="circle_name" role="alert"></p>
+        </div>
+
+        <div class="campo">
+          <label for="approx_size">¿Cuántas serían?</label>
+          <input id="approx_size" name="approx_size" type="number"
+                 inputmode="numeric" min="1" max="200" placeholder="Más o menos">
+          <p class="campo-pista">Opcional. Sólo para saber cuánto material preparar.</p>
+          <p class="err" data-err="approx_size" role="alert"></p>
+        </div>
+
+      </div>
+
+      <div class="circ-permisos">
+        <label class="check">
+          <input type="checkbox" name="consent_privacy" required>
+          <span>Autorizo que guarden mis datos, según el
+            <a href="/privacidad/" target="_blank" rel="noopener">aviso de privacidad</a>.</span>
+        </label>
+        <p class="err" data-err="consent_privacy" role="alert"></p>
+
+        <label class="check">
+          <input type="checkbox" name="consent_contact" required>
+          <span>Quiero que me escriban para mandarme el material, invitaciones a
+            los Zoom y los avisos de La Biblia y Nosotras.</span>
+        </label>
+        <p class="err" data-err="consent_contact" role="alert"></p>
+      </div>
+
+      <div class="cf-turnstile" data-sitekey="0x4AAAAAAEOUCp_rOIRG3QHo"></div>
+
+      <div class="circ-enviar">
+        <button class="boton boton--principal boton--grande" type="submit" id="enviar">
+          Quiero abrir mi círculo <span class="flecha" aria-hidden="true">&#8594;</span>
+        </button>
+        <p class="circ-forma__msg" id="msg" role="status" aria-live="polite"></p>
+      </div>
+    </form>
+
+    <!-- Se muestra cuando el registro queda hecho. -->
+    <div class="circ-listo" id="listo" hidden>
+      <p class="eyebrow">Ya quedó</p>
+      <h2 class="circ-listo__h">Bienvenida, <span id="listo-nombre">amiga</span>.</h2>
+      <p class="circ-listo__cuerpo">
+        Tu círculo está registrado. Te escribimos al correo con el material de la
+        primera semana y con lo que sigue.
+      </p>
+      <p class="circ-listo__folio">Tu folio: <strong id="listo-folio">—</strong></p>
+      <p class="circ-listo__nota">Guárdalo por si necesitas escribirnos.</p>
+    </div>
+    </div>
+  </section>
+
+  <!-- ══ LA OTRA OPCIÓN, QUE TODAVÍA NO ESTÁ ═════════════════════
+       Se dice, pero no se promete fecha. -->
+  <section class="section section--tight wrap circ-cerca">
+    <div class="circ-cerca__caja">
+      <p class="eyebrow">Otra manera</p>
+      <h2 class="circ-cerca__h">¿Prefieres encontrar un círculo cerca de ti?</h2>
+      <p class="circ-cerca__cuerpo">
+        Estamos preparando esa opción. Si te registras aquí, te avisamos en
+        cuanto esté lista.
+      </p>
+    </div>
+  </section>
+
+</main>
+
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+<script src="../assets/js/circulo.js" defer></script>
+
+<!-- ══════════════════════════════════════════════════════════════
+     Rutas internas al abrir el archivo con doble clic (file://).
+     No cambia nada cuando hay servidor: solo actúa con file://.
+     ══════════════════════════════════════════════════════════════ -->
+<script>
+(function () {
+  if (window.location.protocol !== 'file:') return;
+  /* La landing vive en el repositorio de al lado. Sin servidor, la URL
+     de producción no sirve para verla: se apunta a la carpeta vecina. */
+  document.querySelectorAll('a[data-landing]').forEach(function (a) {
+    a.setAttribute('href', '../../../sitio/index.html');
+  });
+  var subir = '../';
+  document.querySelectorAll('a[href^="/"]').forEach(function (a) {
+    var r = a.getAttribute('href');
+    if (r.indexOf('//') === 0) return;
+    a.setAttribute('href', subir + r.replace(/^\//, '') +
+      (/\/$/.test(r) ? 'index.html' : ''));
+  });
+})();
+</script>
+
+</body>
+</html>

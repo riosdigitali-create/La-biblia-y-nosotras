@@ -1,0 +1,12 @@
+node_modules/
+.wrangler/
+.dev.vars
+dist/
+# La compilación de pruebas se regenera con `npm run build:test`.
+*.log
+.DS_Store
+
+# Nunca versionar datos personales ni exportaciones
+*.csv
+exports/
+backups/

@@ -1,0 +1,629 @@
+/* ═══════════════════════════════════════════════════════════════
+   GRUPOS DE AMISTAD — componentes
+   "De la Palabra a la mesa"
+   ═══════════════════════════════════════════════════════════════ */
+
+/* El atributo `hidden` vale `display:none` sin clase ninguna, así que
+   cualquier regla nuestra con `display` le gana por venir después en
+   la cascada. Eso hacía que el armazón del panel (`.shell`, que es
+   `display:grid`) se dibujara debajo del acceso antes de entrar: vacío
+   —el servidor no suelta un dato sin sesión— pero visible.
+   Esta regla le devuelve a `hidden` la última palabra en todo el sitio. */
+[hidden]{ display:none !important }
+
+/* ── Navegación mínima ──────────────────────────────────── */
+.nav{
+  position:sticky; top:0; z-index:50;
+  background:color-mix(in srgb, var(--cream) 92%, transparent);
+  backdrop-filter:saturate(120%) blur(6px);
+  border-bottom:1px solid var(--rule-soft);
+}
+.nav__inner{ display:flex; align-items:center; justify-content:space-between;
+  padding-block:var(--s4); }
+/* Los dos son enlaces: el área pulsable llega a 44 px aunque el texto
+   mida menos. */
+.nav__mark{ font-family:'Libre',serif; font-size:1.05rem; letter-spacing:-.02em;
+  display:inline-flex; align-items:center; min-height:44px; }
+.nav__link{ font-size:var(--small); letter-spacing:.06em; padding:var(--s3) 0;
+  display:inline-flex; align-items:center; min-height:44px;
+  border-bottom:1px solid transparent; transition:border-color var(--t-control) var(--ease); }
+.nav__link:hover{ border-color:var(--black); }
+
+/* ══ 1 · UMBRAL ═════════════════════════════════════════ */
+.umbral{ position:relative; min-height:90svh; display:flex; flex-direction:column;
+  justify-content:center; padding-block:var(--s10) var(--s8); }
+
+.umbral__eyebrow{ grid-column:1 / span 4; margin-bottom:var(--s7); }
+
+.umbral__title{ grid-column:1 / -1; }
+.umbral__line{ display:block; }
+.umbral__line--1{ margin-left:0; }
+.umbral__line--2{ margin-left:16.6666%; }   /* arranca en la columna 3 */
+.umbral__line--3{ margin-left:8.3333%; }    /* vuelve a la columna 2   */
+
+.umbral__note{
+  grid-column:10 / -1; align-self:end;
+  font-size:var(--small); color:var(--muted); max-width:32ch;
+  border-left:1px solid var(--rule); padding-left:var(--s4);
+}
+
+.umbral__foot{ margin-top:var(--s9); }
+.umbral__support{ grid-column:1 / span 5; }
+.umbral__scroll{ grid-column:11 / -1; align-self:end; text-align:right;
+  font-size:var(--eyebrow); letter-spacing:.28em; text-transform:uppercase;
+  color:var(--subtle); }
+
+/* Círculo trazado a mano — CSS puro, sin SVG improvisado */
+.circle-mark{
+  position:absolute; pointer-events:none; inset:auto;
+  border:1.5px solid var(--red); opacity:.5;
+  border-radius:52% 48% 47% 53% / 62% 58% 42% 38%;
+  transform:rotate(-4deg) scale(.96);
+  animation:draw-circle 900ms var(--ease) 400ms both;
+}
+@keyframes draw-circle{
+  from{ opacity:0; transform:rotate(-9deg) scale(.86); }
+  to  { opacity:.5; transform:rotate(-4deg) scale(1); }
+}
+
+/* Revelado por línea, nunca letra por letra */
+.reveal{ overflow:hidden; }
+.reveal > span{ display:block; animation:line-up var(--t-editorial) var(--ease) both; }
+.reveal:nth-of-type(1) > span{ animation-delay:60ms; }
+.reveal:nth-of-type(2) > span{ animation-delay:140ms; }
+.reveal:nth-of-type(3) > span{ animation-delay:220ms; }
+@keyframes line-up{ from{ transform:translateY(105%); } to{ transform:translateY(0); } }
+
+@media (prefers-reduced-motion: reduce){
+  .circle-mark{ opacity:.5; transform:rotate(-4deg); }
+  .reveal > span{ transform:none; }
+}
+
+/* ══ 2 · BIFURCACIÓN ════════════════════════════════════ */
+/* Dos territorios asimétricos, 7/12 y 5/12. No dos tarjetas iguales. */
+.fork{ display:grid; grid-template-columns:7fr 5fr; align-items:start; }
+
+.path{
+  position:relative; display:block; padding:var(--s9) var(--s7) var(--s8);
+  min-height:60svh; transition:background-color var(--t-control) var(--ease);
+}
+.path--open{ background:var(--black); color:var(--cream); }
+.path--find{ background:var(--pink); color:var(--black); margin-top:var(--s9); }
+
+.path__num{
+  font-family:'Libre',serif; font-size:var(--display-md); line-height:1;
+  opacity:.2; display:block; margin-bottom:var(--s6);
+}
+.path__title{ font-size:var(--heading-lg); line-height:1.02; max-width:14ch;
+  transition:transform var(--t-control) var(--ease); }
+.path__desc{ margin-top:var(--s5); max-width:40ch; font-size:var(--small); }
+.path--open .path__desc{ color:var(--on-dark); }
+.path--find .path__desc{ color:rgba(21,23,20,.7); }
+
+.path__cta{
+  display:inline-flex; align-items:center; gap:var(--s3);
+  margin-top:var(--s7); font-size:.8rem; letter-spacing:.14em;
+  text-transform:uppercase; padding-bottom:var(--s2);
+  border-bottom:1px solid currentColor;
+}
+.path__arrow{ transition:transform var(--t-control) var(--ease); }
+
+.path:hover .path__title{ transform:translateX(8px); }
+.path:hover .path__arrow{ transform:translateX(12px); }
+.path--open:hover .path__cta{ color:var(--pink); }
+.path--find:hover .path__cta{ color:var(--blue-dark); }
+
+/* ══ 3 · PROCESO ════════════════════════════════════════ */
+.process{ position:relative; }
+.process__rail{ display:grid; grid-template-columns:repeat(3,1fr); gap:var(--gap);
+  margin-top:var(--s8); }
+.step{ position:relative; padding-top:var(--s6); border-top:1px solid var(--rule); }
+.step__num{ position:absolute; top:var(--s5); right:0;
+  font-family:'Libre',serif; font-size:3.2rem; line-height:1;
+  color:var(--rule-soft); z-index:0; }
+.step__label{ position:relative; z-index:1; font-size:var(--small); max-width:16ch; }
+.step--accent{ border-top-color:var(--red); }
+.step--accent .step__label{ font-family:'Libre',serif; font-size:1.05rem; }
+
+.process__claim{
+  margin-top:var(--s8); font-family:'Libre',serif;
+  font-size:var(--heading-md); max-width:20ch;
+}
+
+/* ══ FORMULARIO EDITORIAL ═══════════════════════════════ */
+.stage{
+  display:grid; grid-template-columns:5fr 7fr;
+  gap:clamp(28px, 4vw, 64px); align-items:start;
+}
+.stage__aside{ position:sticky; top:120px; }
+.stage__counter{ font-size:var(--eyebrow); letter-spacing:.28em;
+  text-transform:uppercase; color:var(--subtle); }
+.stage__title{ font-size:var(--heading-lg); margin-top:var(--s4); }
+.stage__hint{ margin-top:var(--s4); font-size:var(--small); color:var(--muted); max-width:38ch; }
+
+.progress{ height:2px; background:var(--rule-soft); margin-bottom:var(--s7); }
+.progress__bar{ height:100%; background:var(--black);
+  transition:width var(--t-editorial) var(--ease); }
+
+.field{ margin-bottom:var(--s5); max-width:var(--measure-form) }
+.field__label{ display:block; font-size:.8rem; letter-spacing:.04em;
+  margin-bottom:var(--s3); font-weight:500; }
+.field__req{ color:var(--red); margin-left:2px; }
+
+.field input, .field select, .field textarea{
+  width:100%; min-height:56px; padding:var(--s4);
+  background:var(--paper); color:var(--black);
+  border:1px solid var(--rule); border-radius:8px;
+  font-family:'Aloe',sans-serif; font-size:16px; /* 16px evita el zoom de iOS */
+  transition:border-color var(--t-control) var(--ease);
+}
+.field textarea{ min-height:144px; resize:vertical; line-height:1.6; }
+.field input:focus, .field select:focus, .field textarea:focus{
+  border-color:var(--blue-dark); border-left-width:3px; padding-left:calc(var(--s4) - 2px);
+}
+.field__help{ display:block; margin-top:var(--s2); font-size:var(--small); color:var(--muted); }
+.field__error{ display:block; margin-top:var(--s2); font-size:var(--small);
+  color:var(--red-tinta); font-weight:500; }
+.field--error input, .field--error select, .field--error textarea{ border-color:var(--red); }
+
+.field-row{ display:grid; grid-template-columns:1fr 1fr; gap:var(--gap); }
+
+/* Superficie de uso interno */
+.private{
+  border:1px solid var(--green-dark); border-radius:10px;
+  background:color-mix(in srgb, var(--green-dark) 6%, transparent);
+  padding:var(--s6); margin-bottom:var(--s6);
+}
+.private__tag{ display:inline-flex; align-items:center; gap:var(--s2);
+  font-size:var(--eyebrow); letter-spacing:.2em; text-transform:uppercase;
+  color:var(--green-dark); font-weight:500; }
+.private__why{ font-size:var(--small); color:var(--muted); margin:var(--s3) 0 var(--s5); }
+
+/* Consentimientos — nunca preseleccionados, nunca en letra diminuta */
+.consent{ display:flex; gap:var(--s4); align-items:flex-start;
+  padding:var(--s5); border:1px solid var(--rule); border-radius:8px;
+  margin-bottom:var(--s4); background:var(--paper); }
+.consent input[type=checkbox]{ width:24px; height:24px; min-height:24px;
+  margin-top:2px; flex-shrink:0; accent-color:var(--red); }
+.consent__text{ font-size:var(--small); line-height:1.6; }
+
+/* Botones */
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:var(--s3);
+  min-height:52px; padding:var(--s4) var(--s7);
+  font-family:'Aloe',sans-serif; font-size:.8rem;
+  letter-spacing:.12em; text-transform:uppercase;
+  border:1px solid var(--black); background:transparent; color:var(--black);
+  cursor:pointer; transition:background-color var(--t-control) var(--ease),
+    color var(--t-control) var(--ease);
+}
+.btn--primary{ background:var(--black); color:var(--cream); }
+.btn--primary:hover{ background:var(--red-tinta); border-color:var(--red-tinta); }
+.btn--danger{ border-color:var(--red); color:var(--red); }
+.btn:disabled{ opacity:.45; cursor:not-allowed; }
+
+.actions{ display:flex; gap:var(--s4); align-items:center;
+  margin-top:var(--s7); flex-wrap:wrap; }
+
+/* ══ RESUMEN — "ficha de mesa" ══════════════════════════ */
+.summary{ border-top:1px solid var(--black); }
+.summary__block{ padding-block:var(--s5); border-bottom:1px solid var(--rule-soft);
+  display:grid; grid-template-columns:1fr 2fr auto; gap:var(--s4); align-items:baseline; }
+.summary__key{ font-size:var(--eyebrow); letter-spacing:.2em;
+  text-transform:uppercase; color:var(--subtle); }
+.summary__val{ font-size:var(--body); }
+.summary__edit{ font-size:var(--small); border-bottom:1px solid var(--rule);
+  background:none; border-width:0 0 1px; cursor:pointer; font-family:inherit; }
+.summary__notice{ margin-top:var(--s6); padding:var(--s5);
+  border-left:3px solid var(--red); background:var(--paper); font-size:var(--small); }
+
+/* ══ RESULTADOS — invitaciones, no productos ════════════ */
+.results{ border-top:1px solid var(--black); }
+.invite{ display:grid; grid-template-columns:1fr auto; gap:var(--s5);
+  padding-block:var(--s6); border-bottom:1px solid var(--rule-soft); align-items:center; }
+.invite__name{ font-family:'Libre',serif; font-size:var(--heading-md); line-height:1.1; }
+.invite__where{ margin-top:var(--s2); font-size:var(--small); color:var(--muted); }
+.invite__when{ margin-top:var(--s3); font-size:var(--small); display:flex;
+  gap:var(--s5); flex-wrap:wrap; }
+.invite__mode{ display:inline-flex; align-items:center; gap:var(--s2); }
+.invite__seats{ font-size:var(--small); color:var(--green-dark); margin-bottom:var(--s3); }
+.invite__side{ text-align:right; }
+
+.empty{ padding-block:var(--s9); max-width:52ch; }
+.empty__title{ font-family:'Libre',serif; font-size:var(--heading-lg); }
+.empty__text{ margin-top:var(--s5); color:var(--muted); }
+
+/* ══ ÉXITO — sereno, sin confeti ════════════════════════ */
+.success{ min-height:70svh; display:flex; flex-direction:column;
+  justify-content:center; align-items:flex-start; }
+.success__halo{ width:132px; height:132px; border-radius:50%;
+  border:1px solid var(--pink); margin-bottom:var(--s7);
+  animation:halo 700ms var(--ease) both; }
+@keyframes halo{ from{ transform:scale(.7); opacity:0; } to{ transform:scale(1); opacity:1; } }
+.success__folio{ font-family:'Libre',serif; font-size:var(--display-md);
+  letter-spacing:-.03em; line-height:1; }
+.success__label{ font-size:var(--eyebrow); letter-spacing:.28em;
+  text-transform:uppercase; color:var(--subtle); margin-bottom:var(--s3); }
+.success__title{ font-size:var(--heading-lg); margin-top:var(--s7); max-width:18ch; }
+.success__notice{ margin-top:var(--s6); padding:var(--s5) var(--s6);
+  border-left:3px solid var(--red); background:var(--paper);
+  max-width:52ch; font-size:var(--body); }
+
+/* ══ RESPONSIVE ═════════════════════════════════════════ */
+@media (max-width:1024px){
+  :root{ --cols:8; }
+  .fork{ grid-template-columns:1fr; }
+  .path--find{ margin-top:0; }
+  .stage{ grid-template-columns:1fr; gap:var(--s6); }
+  .stage__aside{ position:static; }
+  .umbral__note{ grid-column:5 / -1; }
+  .process__rail{ grid-template-columns:1fr; }
+  .step{ padding-left:var(--s8); padding-top:var(--s5); border-top:none;
+    border-left:1px solid var(--rule); }
+  .step__num{ top:0; left:var(--s3); right:auto; font-size:2.4rem; }
+}
+
+@media (max-width:720px){
+  :root{ --cols:4; --gutter:20px; }
+
+  .umbral{ min-height:auto; padding-block:var(--s8) var(--s7); }
+  .umbral__eyebrow{ grid-column:1 / -1; margin-bottom:var(--s6); }
+  .umbral__title{ font-size:clamp(3.25rem, 15vw, 5.6rem); line-height:.9; }
+  .umbral__line--2, .umbral__line--3{ margin-left:0; }
+  .umbral__note{ grid-column:1 / -1; border-left:none; padding-left:0;
+    border-top:1px solid var(--rule); padding-top:var(--s4); margin-top:var(--s6); }
+  .umbral__support, .umbral__scroll{ grid-column:1 / -1; text-align:left; }
+
+  .path{ padding:var(--s7) var(--gutter) var(--s7); min-height:auto; }
+  .path__num{ font-size:4.5rem; margin-bottom:var(--s4); }
+  .path__cta{ min-height:48px; }
+
+  .field-row{ grid-template-columns:1fr; }
+  .summary__block{ grid-template-columns:1fr; gap:var(--s2); }
+  .invite{ grid-template-columns:1fr; }
+  .invite__side{ text-align:left; }
+
+  /* Avance pegado abajo, respetando safe area.
+     Se oculta cuando el teclado virtual está abierto (js). */
+  .sticky-advance{
+    position:sticky; bottom:0; z-index:20;
+    padding:var(--s4) 0 calc(var(--s4) + env(safe-area-inset-bottom));
+    background:linear-gradient(to top, var(--cream) 72%, transparent);
+  }
+  .sticky-advance .btn{ width:100%; }
+  body.keyboard-open .sticky-advance{ position:static; background:none; }
+}
+
+/* ═══ Campos añadidos al perfil de la participante ═══ */
+.opciones{
+  display:flex;flex-wrap:wrap;gap:var(--s3, .6rem);margin-top:var(--s3, .6rem);
+}
+.opciones label{
+  display:inline-flex;align-items:center;gap:.5rem;
+  min-height:44px;padding:.55rem .9rem;
+  border:1px solid var(--rule-soft);border-radius:6px;
+  font-size:var(--small);cursor:pointer;
+  transition:border-color .2s,background .2s;
+}
+.opciones label:hover{border-color:var(--rule)}
+.opciones input{width:18px;height:18px;accent-color:currentColor;flex:0 0 auto}
+.opciones input:focus-visible{outline:2px solid currentColor;outline-offset:2px}
+.opciones label:has(input:checked){border-color:currentColor;background:rgba(0,0,0,.03)}
+
+.field__opt{
+  font-weight:400;text-transform:none;letter-spacing:0;opacity:.55;
+}
+.field textarea{
+  width:100%;font:inherit;font-size:16px;line-height:1.55;
+  padding:.8rem .9rem;border:1px solid var(--rule-soft);border-radius:6px;
+  background:transparent;color:inherit;resize:vertical;min-height:88px;
+}
+.field textarea:focus{outline:2px solid currentColor;outline-offset:1px;border-color:currentColor}
+
+.confirmacion{
+  margin-top:var(--s5);max-width:52ch;
+  font-size:var(--small);line-height:1.75;color:var(--muted);
+  border-left:2px solid var(--rule);padding-left:var(--s5);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   DIRECCIÓN ARTÍSTICA · el lenguaje del collage
+
+   Se apoya en las clases que ya existían: no se renombra nada, así
+   que el JavaScript sigue funcionando igual. Esto solo añade la
+   textura, el color y los gestos editoriales de 04.webp.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── El umbral de cada pantalla: papel, luz y sello ────────── */
+.umbral{
+  position:relative;
+  background:
+    radial-gradient(ellipse 90% 60% at 88% 4%, rgba(255,136,176,.22) 0%, transparent 60%),
+    radial-gradient(ellipse 70% 50% at 4% 92%, rgba(255,214,9,.10) 0%, transparent 58%);
+  isolation:isolate;
+}
+.umbral::after{
+  content:''; position:absolute; inset:0; z-index:-1;
+  pointer-events:none; opacity:.045; mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:220px;
+}
+/* El isotipo, enorme y tenue, detrás del titular. */
+.umbral__sello{
+  position:absolute; z-index:-1; pointer-events:none;
+  right:-6%; top:2%;
+  width:min(46vw, 380px); aspect-ratio:1;
+  opacity:.055;
+}
+@media (max-width:719px){ .umbral__sello{ right:-22%; width:70vw; opacity:.05 } }
+
+/* Un retazo del collage, pegado al margen. Solo donde hay sitio. */
+.retazo{
+  display:none;
+  position:absolute; z-index:1;
+  width:clamp(88px, 8vw, 124px); aspect-ratio:1;
+  border-radius:3px; overflow:hidden;
+  box-shadow:var(--sombra-papel);
+  transform:rotate(-4deg);
+}
+.retazo img{ width:100%; height:100%; object-fit:cover }
+@media (min-width:1100px){
+  .retazo{ display:block; right:var(--gutter); top:22% }
+}
+
+/* ── El avance: un camino, no una barra de carga ───────────── */
+.progress{
+  height:1px; background:var(--rule-soft);
+  margin-bottom:var(--s7); position:relative; overflow:visible;
+}
+.progress__bar{
+  height:1px; background:var(--red);
+  transition:width var(--t-editorial) var(--ease);
+  position:relative;
+}
+.progress__bar::after{
+  content:''; position:absolute; right:-4px; top:-3.5px;
+  width:8px; height:8px; border-radius:50%; background:var(--red);
+  box-shadow:0 0 0 4px rgba(255,12,0,.14);
+}
+
+/* ── Etapas: el número, grande y al margen ─────────────────── */
+.stage__counter{
+  font-family:'Libre',serif;
+  font-size:clamp(1.15rem, 1.5vw, 1.5rem); line-height:1;
+  letter-spacing:-.02em; color:var(--pink);
+  text-transform:none;
+}
+/* El título de una etapa no es el de una portada: se contiene. */
+.stage__title{
+  font-size:clamp(1.7rem, 2.6vw, 2.4rem);
+  line-height:1.1; letter-spacing:-.03em;
+  max-width:14ch;
+}
+.stage__hint{ line-height:1.75 }
+
+/* ── Campos: hospitalarios, no un CRM ──────────────────────── */
+.field input, .field select, .field textarea{
+  background:var(--paper);
+  border-radius:var(--radio);
+  font-size:16px;                 /* evita el zoom automático en iOS */
+  padding:.75rem .95rem;
+  min-height:50px;
+  transition:border-color var(--t-control) var(--ease),
+             background var(--t-control) var(--ease);
+}
+.field textarea{ min-height:112px; line-height:1.6 }
+.field input:focus, .field select:focus, .field textarea:focus{
+  background:#fff; border-color:var(--pink);
+}
+.field__label{
+  letter-spacing:.09em; text-transform:uppercase;
+  font-size:.7rem; margin-bottom:var(--s2);
+}
+
+/* Opciones de día y horario: etiquetas táctiles, no casillas sueltas. */
+.opciones label{
+  border-radius:100px;
+  background:var(--paper);
+}
+.opciones label:has(input:checked){
+  border-color:var(--red); background:rgba(255,12,0,.05); color:var(--black);
+}
+.opciones input{ accent-color:var(--red) }
+
+/* ── Consentimiento: se ve, se lee, no se esconde ──────────── */
+.consent{ border-radius:var(--radio); border-color:var(--rule-soft) }
+.consent:has(input:checked){ border-color:var(--green-dark) }
+
+/* ── Botones alineados con la landing ──────────────────────── */
+.btn{ border-radius:var(--radio); letter-spacing:.16em }
+.btn--primary{
+  background:var(--red-tinta); border-color:var(--red-tinta);
+  box-shadow:0 10px 26px rgba(192,10,2,.2);
+}
+.btn--primary:hover{ background:var(--black); border-color:var(--black) }
+.btn--small{ min-height:40px; padding:var(--s2) var(--s4); font-size:.74rem }
+
+/* ── Invitaciones: cada grupo, una tarjeta de papel ────────── */
+.results{ border-top:0 }
+.invite{
+  position:relative;
+  border-bottom:0; margin-bottom:var(--s5);
+  padding:var(--s6);
+  background:
+    radial-gradient(ellipse 120% 80% at 96% 2%, rgba(255,136,176,.18) 0%, transparent 60%),
+    var(--paper);
+  border:1px solid var(--rule-soft);
+  border-radius:4px 14px 14px 4px;
+  box-shadow:var(--sombra);
+  transition:transform var(--t-control) var(--ease),
+             box-shadow var(--t-control) var(--ease);
+}
+.invite::before{
+  content:''; position:absolute; left:0; top:0; bottom:0; width:3px;
+  background:var(--red); border-radius:4px 0 0 4px;
+}
+@media (hover:hover){
+  .invite:hover{ transform:translateY(-3px); box-shadow:var(--sombra-alta) }
+}
+.invite__name{ letter-spacing:-.02em }
+.invite__seats{ color:var(--green-dark); font-weight:600 }
+
+/* ── Sin resultados: acompañamiento, nunca rechazo ─────────── */
+.empty{
+  position:relative;
+  padding:clamp(36px, 5vw, 60px);
+  background:
+    radial-gradient(ellipse 90% 70% at 10% 96%, rgba(193,255,26,.12) 0%, transparent 58%),
+    linear-gradient(168deg, var(--green-dark) 0%, var(--verde-hondo) 100%);
+  color:var(--cream);
+  border-radius:var(--radio-grande);
+  margin-block:var(--s7);
+  max-width:none;
+}
+.empty__title{ color:var(--cream); letter-spacing:-.03em; max-width:18ch }
+.empty__text{ color:rgba(244,243,234,.78); max-width:48ch }
+.empty .btn{ border-color:rgba(244,243,234,.4); color:var(--cream) }
+.empty .btn--primary{
+  background:var(--cream); color:var(--black);
+  border-color:var(--cream); box-shadow:none;
+}
+.empty .btn--primary:hover{ background:#fff }
+
+/* ── Éxito: el halo se vuelve sello ────────────────────────── */
+.success__halo{
+  border:1px solid var(--pink);
+  background-image:url('../img/isotipo-lbyn.png');
+  background-repeat:no-repeat; background-position:center;
+  background-size:52%;
+  opacity:.9;
+}
+
+/* ── Confirmación de /asistir/ ─────────────────────────────── */
+.confirmacion{
+  border-left:3px solid var(--red);
+  background:var(--paper);
+  padding:var(--s5) var(--s6);
+  border-radius:0 var(--radio) var(--radio) 0;
+  color:var(--muted);
+}
+
+/* ── Los dos caminos del index de la aplicación ────────────── */
+.path{ position:relative; overflow:hidden; border-radius:var(--radio-grande) }
+.path--find{
+  background:
+    radial-gradient(ellipse 120% 90% at 92% 4%, rgba(255,136,176,.34) 0%, transparent 62%),
+    var(--paper);
+  color:var(--black);
+  border:1px solid rgba(255,136,176,.45);
+}
+.path--find .path__desc{ color:var(--muted) }
+.path--open{
+  background:
+    radial-gradient(ellipse 90% 70% at 10% 96%, rgba(193,255,26,.13) 0%, transparent 58%),
+    linear-gradient(168deg, var(--green-dark) 0%, var(--verde-hondo) 100%);
+  border:1px solid rgba(31,81,68,.5);
+}
+.path--find:hover .path__cta{ color:var(--red) }
+.path--open:hover .path__cta{ color:var(--green-light) }
+.path__num{ font-family:'Libre',serif; opacity:.3 }
+
+/* Ancla de posicionamiento para el sello y el retazo. */
+main#contenido{ position:relative }
+
+/* ═══════════════════════════════════════════════════════════════
+   UTILIDADES · sustituyen los `style=` sueltos del marcado
+
+   Solo lo que se repetía. Nada de un framework de utilidades:
+   estas seis clases cubren los 58 estilos en línea que había.
+   ═══════════════════════════════════════════════════════════════ */
+
+.mt-3{ margin-top:var(--s4) }
+.mt-4{ margin-top:var(--s5) }
+.mt-5{ margin-top:var(--s6) }
+.mt-6{ margin-top:var(--s7) }
+.mt-7{ margin-top:var(--s8) }
+.mb-0{ margin-bottom:0 }
+
+.medida-12{ max-width:12ch }
+.medida-14{ max-width:14ch }
+.medida-16{ max-width:16ch }
+.medida-18{ max-width:18ch }
+.medida-52{ max-width:52ch }
+.medida-form{ max-width:var(--measure-form) }
+.medida-texto{ max-width:820px }
+
+.subrayado-fino{ border-bottom:1px solid var(--rule) }
+.apunte{ font-size:var(--small); color:var(--muted); line-height:1.8 }
+.suave{ color:var(--subtle); font-weight:400 }
+.grupo-limpio{ border:0; padding:0; margin:0 }
+.ancho-total{ width:100% }
+.pie-seccion{ padding-block:var(--s8); border-top:1px solid var(--rule-soft) }
+
+/* Casillas grandes, con el color que corresponde a cada contexto. */
+.casilla{ width:24px; height:24px; min-height:24px; flex-shrink:0 }
+.casilla--roja{ accent-color:var(--red) }
+.casilla--verde{ accent-color:var(--green-dark) }
+.casilla--amarilla{ accent-color:var(--yellow) }
+
+/* ═══════════════════════════════════════════════════════════════
+   MÓVIL · que respire sin estirarse
+
+   El problema no era el ancho, era la escala: los mismos tamaños
+   de una portada aplicados a un formulario. Aquí se contienen.
+   ═══════════════════════════════════════════════════════════════ */
+
+@media (max-width:719px){
+  :root{
+    /* En pantallas pequeñas los títulos bajan un escalón. */
+    --seccion:clamp(48px, 11vw, 72px);
+    --gutter:20px;
+  }
+
+  .stage{ gap:var(--s5) }
+  .stage__aside{ margin-bottom:var(--s2) }
+  .stage__counter{ font-size:1rem }
+  .stage__title{ font-size:1.55rem; max-width:none }
+  .stage__hint{ font-size:.86rem; max-width:none }
+
+  .field{ margin-bottom:var(--s5); max-width:none }
+  .field-row{ grid-template-columns:1fr; gap:0 }
+  .fila{ grid-template-columns:1fr; gap:0 }
+
+  /* Los consentimientos se leen mejor con menos caja. */
+  .consent{ padding:var(--s4); gap:var(--s3) }
+  .consent__text{ font-size:.84rem; line-height:1.55 }
+
+  /* Las opciones táctiles caben de dos en dos, no en una fila larga. */
+  .opciones{ gap:var(--s2) }
+  .opciones label{ padding:.5rem .8rem; font-size:.82rem }
+
+  /* El botón de avance, a lo ancho: es la acción de la pantalla. */
+  .sticky-advance .btn,
+  .actions .btn{ width:100%; justify-content:center }
+  .actions{ gap:var(--s3); margin-top:var(--s6) }
+
+  /* La invitación de grupo, más compacta. */
+  .invite{ padding:var(--s5); grid-template-columns:1fr; gap:var(--s4) }
+  .invite__side{ text-align:left }
+  .invite__name{ font-size:1.15rem }
+
+  .empty{ padding:var(--s6) var(--s5); margin-block:var(--s6) }
+  .empty__title{ font-size:1.5rem; max-width:none }
+
+  /* El retazo y el sello estorban en pantallas pequeñas. */
+  .retazo{ display:none }
+  .umbral__sello{ opacity:.04 }
+
+  .success__halo{ width:88px; height:88px; margin-bottom:var(--s5) }
+  .success__folio{ font-size:2.2rem }
+  .success__title{ font-size:1.5rem; max-width:none }
+}
+
+/* Pantallas muy estrechas: 320 px */
+@media (max-width:359px){
+  :root{ --gutter:16px }
+  .stage__title{ font-size:1.4rem }
+  .field input, .field select, .field textarea{ padding:.7rem .8rem }
+  .btn{ padding:var(--s3) var(--s4); font-size:.74rem; letter-spacing:.1em }
+}

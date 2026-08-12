@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Panel — Grupos de amistad</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="../assets/css/tokens.css">
+<link rel="stylesheet" href="../assets/css/grupos.css">
+<link rel="stylesheet" href="../assets/css/panel.css">
+</head>
+<body>
+
+<!-- ══ ACCESO ═════════════════════════════════════════ -->
+<div class="login" id="login">
+  <div class="login__box">
+    <p class="eyebrow">Grupos de amistad</p>
+    <h1 class="heading-lg mt-3" tabindex="-1" id="loginTitle">
+      Panel interno
+    </h1>
+
+    <p class="login__bajada">
+      Escribe el PIN que te compartió el equipo.
+    </p>
+
+    <form id="pinForm">
+      <div class="field">
+        <label class="field__label" for="pin">PIN</label>
+        <input id="pin" type="password" inputmode="numeric" autocomplete="one-time-code"
+               maxlength="12" required autofocus>
+        <span class="field__error" id="e_pin" role="alert"></span>
+      </div>
+
+      <button class="btn btn--primary ancho-total" type="submit" id="pinBtn">
+        Entrar
+      </button>
+    </form>
+
+  </div>
+</div>
+
+<!-- ══ PANEL ══════════════════════════════════════════ -->
+<div class="shell" id="shell" hidden>
+  <aside class="side">
+    <div class="side__mark">La Biblia<br>y Nosotras</div>
+    <button class="drawer-btn" id="drawerBtn" aria-expanded="false" aria-controls="nav">Menú</button>
+    <nav class="side__nav" role="tablist" id="nav" aria-label="Panel">
+      <button type="button" class="side__link" data-view="dashboard" role="tab" aria-selected="true">Inicio</button>
+      <button type="button" class="side__link" data-view="circles" role="tab" aria-selected="false">Círculos</button>
+      <button type="button" class="side__link" data-view="applications" role="tab" aria-selected="false">Solicitudes</button>
+    </nav>
+    <div class="side__foot">
+      <p id="who"></p>
+      <button class="drawer-btn" id="logout" style="margin-top:var(--s3)">Cerrar sesión</button>
+    </div>
+  </aside>
+
+  <main class="main" id="main">
+    <div class="main__head">
+      <h1 class="main__title" id="viewTitle" tabindex="-1">Inicio</h1>
+      <div id="viewActions"></div>
+    </div>
+    <div id="view"></div>
+  </main>
+</div>
+
+<script src="../assets/js/panel.js"></script>
+</body>
+</html>

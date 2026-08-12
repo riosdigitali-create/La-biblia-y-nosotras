@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Encuentra una comunidad para caminar contigo — La Biblia y Nosotras</title>
+<meta name="description" content="Regístrate para integrarte a un grupo de amistad y vivir estas seis semanas acompañada de otras mujeres.">
+<link rel="stylesheet" href="../assets/css/tokens.css">
+<link rel="stylesheet" href="../assets/css/grupos.css">
+</head>
+<body>
+<a class="skip" href="#contenido">Saltar al contenido</a>
+
+<header class="nav">
+  <div class="wrap nav__inner">
+    <a class="nav__mark" data-landing href="https://labibliaynosotras.com/">La Biblia y Nosotras</a>
+    <a class="nav__link" data-landing href="https://labibliaynosotras.com/">Salir</a>
+  </div>
+</header>
+
+<main id="contenido" class="section wrap">
+  <img class="umbral__sello" src="../assets/img/isotipo-lbyn.png" alt="" aria-hidden="true" width="380" height="380">
+  <figure class="retazo" aria-hidden="true">
+    <img src="../assets/img/collage-ancho-sm.webp" alt="" width="124" height="124" loading="lazy">
+  </figure>
+  <div class="progress" role="presentation"><div class="progress__bar" id="bar" style="width:25%"></div></div>
+
+  <form id="form" novalidate>
+
+    <section class="stage" data-stage="1" aria-labelledby="t1">
+      <div class="stage__aside">
+        <p class="stage__counter">01 / 04</p>
+        <h1 class="stage__title" id="t1" tabindex="-1">Encuentra una comunidad para caminar contigo</h1>
+        <p class="stage__hint">Durante estas seis semanas queremos conectarte con un grupo de amistad
+          cercano, donde puedas sentirte acompañada, crecer en tu fe y compartir este proceso con otras
+          mujeres. Empecemos por lo básico.</p>
+      </div>
+      <div class="stage__fields">
+        <div class="field">
+          <label class="field__label" for="full_name">Nombre completo <span class="field__req" aria-hidden="true">*</span></label>
+          <input id="full_name" name="full_name" type="text" autocomplete="name" required aria-required="true">
+          <span class="field__error" id="e_full_name" role="alert"></span>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label class="field__label" for="email">Correo <span class="field__req" aria-hidden="true">*</span></label>
+            <input id="email" name="email" type="email" autocomplete="email" inputmode="email" required aria-required="true">
+            <span class="field__error" id="e_email" role="alert"></span>
+          </div>
+          <div class="field">
+            <label class="field__label" for="phone">WhatsApp <span class="field__req" aria-hidden="true">*</span></label>
+            <p class="field__help">Es por donde te vamos a buscar. No lo compartimos con nadie más.</p>
+            <input id="phone" name="phone" type="tel" autocomplete="tel-national" inputmode="numeric"
+                   maxlength="15" required aria-required="true" aria-describedby="h_phone">
+            <span class="field__help" id="h_phone">Diez dígitos, sin código de país.</span>
+            <span class="field__error" id="e_phone" role="alert"></span>
+          </div>
+        </div>
+        <div class="field">
+          <label class="field__label" for="age_range">Edad <span class="field__req" aria-hidden="true">*</span></label>
+          <select id="age_range" name="age_range" required aria-required="true">
+            <option value="">Elige un rango</option>
+            <option value="18-24">18 a 24 años</option>
+            <option value="25-34">25 a 34 años</option>
+            <option value="35-44">35 a 44 años</option>
+            <option value="45-54">45 a 54 años</option>
+            <option value="55-64">55 a 64 años</option>
+            <option value="65+">65 años o más</option>
+          </select>
+          <span class="field__error" id="e_age_range" role="alert"></span>
+        </div>
+      </div>
+    </section>
+
+    <section class="stage" data-stage="2" aria-labelledby="t2" hidden>
+      <div class="stage__aside">
+        <p class="stage__counter">02 / 04</p>
+        <h2 class="stage__title" id="t2" tabindex="-1">¿Por dónde vives?</h2>
+        <p class="stage__hint">Solo para saber qué grupo te queda cerca. No te pedimos
+          tu dirección: buscamos primero por código postal, luego por colonia,
+          después por municipio.</p>
+      </div>
+      <div class="stage__fields">
+        <div class="field-row">
+          <div class="field">
+            <label class="field__label" for="estado">Estado <span class="field__req" aria-hidden="true">*</span></label>
+            <select id="estado" name="estado" required aria-required="true"></select>
+            <span class="field__error" id="e_estado" role="alert"></span>
+          </div>
+          <div class="field">
+            <label class="field__label" for="municipio">Municipio o ciudad <span class="field__req" aria-hidden="true">*</span></label>
+            <input id="municipio" name="municipio" type="text" autocomplete="address-level2" required aria-required="true">
+            <span class="field__error" id="e_municipio" role="alert"></span>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label class="field__label" for="postal_code">Código postal <span class="field__req" aria-hidden="true">*</span></label>
+            <input id="postal_code" name="postal_code" type="text" autocomplete="postal-code"
+                   inputmode="numeric" maxlength="5" required aria-required="true">
+            <span class="field__error" id="e_postal_code" role="alert"></span>
+          </div>
+          <div class="field">
+            <label class="field__label" for="colonia">Colonia <span class="field__req" aria-hidden="true">*</span></label>
+            <input id="colonia" name="colonia" type="text" required aria-required="true">
+            <span class="field__error" id="e_colonia" role="alert"></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="stage" data-stage="3" aria-labelledby="t3" hidden>
+      <div class="stage__aside">
+        <p class="stage__counter">03 / 04</p>
+        <h2 class="stage__title" id="t3" tabindex="-1">¿Cuándo puedes?</h2>
+        <p class="stage__hint">Con esto afinamos la búsqueda. Y si hoy no hay nada
+          en tu zona, sabemos qué avisarte cuando lo haya.</p>
+      </div>
+      <div class="stage__fields">
+        <div class="field">
+          <label class="field__label" for="pref_modality">Modalidad preferida <span class="field__req" aria-hidden="true">*</span></label>
+          <select id="pref_modality" name="pref_modality" required aria-required="true">
+            <option value="">Elige una opción</option>
+            <option value="cualquiera">Cualquiera</option>
+            <option value="presencial">Presencial</option>
+            <option value="linea">En línea</option>
+          </select>
+          <span class="field__error" id="e_pref_modality" role="alert"></span>
+        </div>
+
+        <fieldset class="field grupo-limpio">
+          <legend class="field__label">¿Qué días te quedan mejor?</legend>
+          <div class="opciones" id="pref_weekdays">
+            <label><input type="checkbox" name="pref_weekdays" value="lunes"> Lunes</label>
+            <label><input type="checkbox" name="pref_weekdays" value="martes"> Martes</label>
+            <label><input type="checkbox" name="pref_weekdays" value="miercoles"> Miércoles</label>
+            <label><input type="checkbox" name="pref_weekdays" value="jueves"> Jueves</label>
+            <label><input type="checkbox" name="pref_weekdays" value="viernes"> Viernes</label>
+            <label><input type="checkbox" name="pref_weekdays" value="sabado"> Sábado</label>
+            <label><input type="checkbox" name="pref_weekdays" value="domingo"> Domingo</label>
+          </div>
+        </fieldset>
+
+        <fieldset class="field grupo-limpio">
+          <legend class="field__label">¿A qué hora?</legend>
+          <div class="opciones" id="pref_times">
+            <label><input type="checkbox" name="pref_times" value="manana"> Mañana</label>
+            <label><input type="checkbox" name="pref_times" value="tarde"> Tarde</label>
+            <label><input type="checkbox" name="pref_times" value="noche"> Noche</label>
+          </div>
+        </fieldset>
+
+        <div class="field">
+          <label class="field__label" for="has_community">¿Ya perteneces a una iglesia o comunidad? <span class="field__req" aria-hidden="true">*</span></label>
+          <select id="has_community" name="has_community" required aria-required="true">
+            <option value="">Elige una opción</option>
+            <option value="no">No, todavía no</option>
+            <option value="si">Sí, ya pertenezco a una</option>
+            <option value="antes">Iba antes, pero ya no</option>
+          </select>
+          <span class="field__error" id="e_has_community" role="alert"></span>
+        </div>
+
+        <div class="field" id="wrap_community_name" hidden>
+          <label class="field__label" for="community_name">¿Cómo se llama tu comunidad o tu líder?</label>
+          <input id="community_name" name="community_name" type="text" maxlength="120">
+          <span class="field__error" id="e_community_name" role="alert"></span>
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="comments">¿Algo más que quieras contarnos? <span class="field__opt">Opcional</span></label>
+          <textarea id="comments" name="comments" rows="3" maxlength="800"></textarea>
+          <span class="field__error" id="e_comments" role="alert"></span>
+        </div>
+
+        <div class="consent">
+          <input type="checkbox" id="consent_privacy" name="consent_privacy">
+          <label class="consent__text" for="consent_privacy">
+            <strong>Aviso de privacidad.</strong> He leído y acepto el
+            <a href="/privacidad/" target="_blank" rel="noopener" class="subrayado-fino">aviso de privacidad</a>.
+            <span class="field__error" id="e_consent_privacy" role="alert"></span>
+          </label>
+        </div>
+        <div class="consent">
+          <input type="checkbox" id="consent_contact" name="consent_contact">
+          <label class="consent__text" for="consent_contact">
+            <strong>Contacto.</strong> Autorizo a La Biblia y Nosotras a contactarme
+            por correo o WhatsApp sobre grupos de amistad.
+            <span class="field__error" id="e_consent_contact" role="alert"></span>
+          </label>
+        </div>
+
+        <div id="turnstile" class="cf-turnstile mt-4" data-sitekey="0x4AAAAAAEOUCp_rOIRG3QHo"
+             data-theme="light"></div>
+        <p class="field__error mt-4" id="e_form" role="alert"></p>
+      </div>
+    </section>
+
+    <div class="sticky-advance">
+      <div class="actions">
+        <button type="button" class="btn" id="back" hidden>← Atrás</button>
+        <button type="button" class="btn btn--primary" id="next">Continuar →</button>
+        <button type="submit" class="btn btn--primary" id="submit" hidden>Ver grupos cerca de mí</button>
+      </div>
+    </div>
+  </form>
+
+  <!-- ══ 04 · OPCIONES PARA TI ══════════════════════════ -->
+  <section id="resultsWrap" hidden aria-labelledby="t4">
+    <p class="stage__counter">04 / 04</p>
+    <h2 class="heading-lg mt-3 medida-18" id="t4" tabindex="-1">
+      Esto es lo que hay cerca de ti
+    </h2>
+
+    <!-- Se llena desde asistir.js SOLO cuando el servidor confirmó la escritura. -->
+    <p class="confirmacion" id="confirmacion" hidden></p>
+
+    <div class="results mt-6" id="results"></div>
+
+    <div class="empty" id="empty" hidden>
+      <p class="empty__title">Todavía no hay una mesa en tu zona.</p>
+      <p class="empty__text">
+        Tus datos quedaron registrados. En cuanto se abra un grupo cerca de ti,
+        te contactamos. Mientras tanto, si conoces a alguien que pueda abrir su casa,
+        cuéntale.
+      </p>
+      <div class="actions">
+        <button type="button" class="btn btn--primary" id="waitBtn">Avísenme cuando haya uno</button>
+        <a class="btn" href="/registrar/">Prefiero abrir mi mesa</a>
+      </div>
+      <p class="field__help mt-4" id="waitMsg"></p>
+    </div>
+  </section>
+</main>
+
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+<script src="../assets/js/asistir.js"></script>
+
+<!-- ══════════════════════════════════════════════════════════════
+     Rutas internas al abrir el archivo con doble clic (file://).
+
+     Servido por Cloudflare o por `npm run dev`, «/asistir/» es una
+     ruta válida. Abriendo el archivo directamente, apunta a la raíz
+     del disco y no existe: aquí se traduce a la carpeta vecina para
+     poder ver las pantallas sin desplegar nada.
+
+     No cambia nada cuando hay servidor: solo actúa con file://.
+     ══════════════════════════════════════════════════════════════ -->
+<script>
+(function () {
+  if (window.location.protocol !== 'file:') return;
+  /* La landing vive en el repositorio de al lado. Sin servidor, la URL
+     de producción no sirve para verla: se apunta a la carpeta vecina. */
+  document.querySelectorAll('a[data-landing]').forEach(function (a) {
+    a.setAttribute('href', '../../../sitio/index.html');
+  });
+  var subir = '../';
+  document.querySelectorAll('a[href^="/"]').forEach(function (a) {
+    var r = a.getAttribute('href');
+    if (r.indexOf('//') === 0) return;                 // enlaces de protocolo
+    a.setAttribute('href', subir + r.replace(/^\//, '') +
+      (/\/$/.test(r) ? 'index.html' : ''));
+  });
+})();
+</script>
+
+</body>
+</html>

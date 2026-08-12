@@ -1,0 +1,294 @@
+@charset "UTF-8";
+/* ═══════════════════════════════════════════════════════════════
+   ABRE UN CÍRCULO DE AMIGAS
+
+   El camino principal del sitio, así que pesa más que ninguna otra
+   pantalla. El sistema visual no cambia —los colores están bien— y
+   lo que se trabaja aquí es la jerarquía: que se entienda en dos
+   segundos qué es y qué hay que hacer.
+
+   Continúa la landing: la misma estampa (retrato sobre papel rosa
+   rasgado), la misma escala tipográfica y el mismo botón rojo. Quien
+   pulsa «Quiero abrir mi círculo» tiene que sentir que sigue en el
+   mismo sitio, no que aterrizó en un formulario ajeno.
+   ═══════════════════════════════════════════════════════════════ */
+
+
+/* ── La invitación ───────────────────────────────────────────── */
+
+.circ-abre{
+  position:relative;
+  padding-block:clamp(2rem, 5vw, 3.75rem) clamp(1.75rem, 4vw, 3rem);
+  background:var(--cream);
+  overflow:clip;
+}
+/* Un solo eje para toda la página: la invitación, la tarjeta del
+   formulario y la caja del final comparten ancho y márgenes. Dos
+   columnas casi iguales pero no iguales se leen como un descuadre,
+   no como una decisión. */
+.circ-abre__grid,
+.circ-forma__caja,
+.circ-cerca__caja{ max-inline-size:880px; margin-inline:auto }
+
+.circ-abre__grid{
+  position:relative; z-index:2;
+  display:grid; gap:clamp(1.75rem, 4vw, 3rem);
+  grid-template-columns:minmax(0, 1.12fr) minmax(0, .88fr);
+  align-items:center;
+}
+.circ-abre__voz{ min-width:0 }
+
+/* El titular va en la tipografía editorial, no en la de interfaz: la
+   display con cursiva sintética y tracking negativo encaballa las
+   letras de «de amigas». */
+.circ-abre__h{
+  display:grid; gap:0; margin:.15em 0 .4em;
+  /* Con techo: «Abre un círculo» tiene que caber en un renglón dentro
+     de su columna. Partido en dos deja de leerse como un titular. */
+  font-size:clamp(1.9rem, 4vw, 2.9rem);
+  line-height:1.04; letter-spacing:-.03em;
+  max-width:none;
+}
+.circ-abre__l1{ display:block }
+.circ-abre__l2{
+  display:block;
+  padding-inline-start:.6em;
+  color:var(--red-tinta); font-style:italic;
+  /* La cursiva es sintética: con el tracking del titular las letras se
+     tocan. Aquí se afloja. */
+  letter-spacing:-.005em;
+}
+.circ-abre__lede{
+  font-size:clamp(1rem, 1.5vw, 1.14rem);
+  line-height:1.65; max-width:42ch; margin:0;
+  color:var(--muted); text-wrap:pretty;
+}
+/* Los tres pasos. Que se vea que es corto. */
+.circ-abre__pasos{
+  display:grid; gap:0; margin:clamp(1.25rem, 2.5vw, 1.75rem) 0 0;
+  padding:0; list-style:none; max-width:44ch;
+}
+.circ-abre__pasos li{
+  display:grid; grid-template-columns:26px 1fr; gap:.75rem;
+  align-items:baseline;
+  padding-block:.6rem;
+  border-top:1px solid var(--rule-soft);
+  line-height:1.45; font-size:var(--small); color:var(--muted);
+}
+.circ-abre__pasos li:last-child{ border-bottom:1px solid var(--rule-soft) }
+.circ-abre__n{
+  font-family:'Libre', Georgia, serif; font-size:.95rem;
+  color:var(--red-tinta); text-align:center;
+}
+
+/* La estampa: el mismo gesto de la tarjeta de la landing. */
+.circ-abre__estampa{
+  position:relative;
+  min-height:clamp(230px, 34vw, 340px);
+  border-radius:var(--radio-grande, 16px);
+  overflow:hidden;
+}
+.circ-abre__papel{
+  position:absolute; inset:0;
+  background-color:var(--rosa-tela);
+  background-image:repeating-linear-gradient(
+    90deg, rgba(255,255,255,.20) 0 1px, transparent 1px 6px);
+  clip-path:polygon(3% 0,100% 0,100% 100%,3% 100%,
+    0 96%,2.5% 92%,0 88%,3% 84%,.5% 80%,3% 76%,0 72%,2.5% 68%,
+    0 64%,3% 60%,.5% 56%,3% 52%,0 48%,2.5% 44%,0 40%,3% 36%,
+    .5% 32%,3% 28%,0 24%,2.5% 20%,0 16%,3% 12%,.5% 8%,3% 4%);
+}
+.circ-abre__estampa::after{
+  content:''; position:absolute; z-index:1; pointer-events:none;
+  left:-12%; top:-8%; width:62%; aspect-ratio:1;
+  background:url('../img/isotipo-lbyn.png') center/contain no-repeat;
+  opacity:.12;
+}
+.circ-abre__retrato{
+  position:absolute; z-index:2;
+  left:52%; bottom:0; transform:translateX(-50%);
+  block-size:95%; inline-size:auto; max-inline-size:none;
+}
+
+/* ── El formulario ───────────────────────────────────────────── */
+
+.circ-forma{ padding-block:clamp(2rem, 5vw, 3.5rem) }
+
+/* Una hoja de papel con el borde rojo: la misma tarjeta de la
+   landing, ahora con el formulario dentro. */
+.circ-forma__caja{
+  padding:clamp(1.5rem, 4vw, 3rem);
+  background:var(--paper);
+  border:2px solid var(--red-tinta);
+  border-radius:var(--radio-grande, 16px);
+  box-shadow:0 22px 60px -34px rgba(21,23,20,.5);
+}
+.circ-forma__h{
+  font-size:clamp(1.6rem, 3vw, 2.3rem);
+  line-height:1.08; margin:.35rem 0 0;
+}
+.circ-forma__nota{ color:var(--muted); margin:.5rem 0 0; font-size:var(--small) }
+
+.circ-campos{
+  display:grid; gap:clamp(1rem, 2vw, 1.35rem);
+  grid-template-columns:repeat(2, minmax(0, 1fr));
+  margin-block:clamp(1.5rem, 3vw, 2.25rem);
+}
+.campo--ancho{ grid-column:1 / -1 }
+
+/* ── Los campos ──────────────────────────────────────────────────
+   Estaban sin una sola regla: la etiqueta salía en línea con el
+   control y el control con el estilo de fábrica del navegador. */
+.campo{ display:grid; min-width:0 }
+.campo > label{
+  display:block;
+  font-size:.72rem; letter-spacing:.14em; text-transform:uppercase;
+  font-weight:bold; color:var(--muted);
+  margin-bottom:.45rem;
+}
+.campo__req{ color:var(--red-tinta) }
+
+.campo input{
+  inline-size:100%;
+  font-family:inherit;
+  font-size:16px;                    /* evita el zoom automático en iOS */
+  line-height:1.4; color:var(--black);
+  background:var(--cream);
+  border:1px solid var(--rule);
+  border-radius:var(--radio, 8px);
+  padding:.8rem .95rem;
+  min-block-size:52px;
+  transition:border-color var(--t-control) var(--ease),
+             background var(--t-control) var(--ease),
+             box-shadow var(--t-control) var(--ease);
+}
+.campo input::placeholder{ color:var(--subtle); opacity:1 }
+.campo input:hover{ border-color:var(--muted) }
+.campo input:focus{
+  outline:none;
+  background:#fff;
+  border-color:var(--red-tinta);
+  box-shadow:0 0 0 3px rgba(192,10,2,.14);
+}
+.campo input:focus-visible{ outline:3px solid var(--blue-dark); outline-offset:2px }
+
+/* El error lo marca circulo.js con aria-invalid: no hace falta clase. */
+.campo input[aria-invalid="true"]{
+  border-color:var(--red-tinta);
+  background:rgba(192,10,2,.04);
+}
+
+/* El número no necesita las flechitas: se escribe, no se pulsa. */
+.campo input[type=number]{ -moz-appearance:textfield; appearance:textfield }
+.campo input[type=number]::-webkit-outer-spin-button,
+.campo input[type=number]::-webkit-inner-spin-button{ -webkit-appearance:none; margin:0 }
+
+.campo-pista{
+  margin:.4rem 0 0; font-size:.82rem; line-height:1.45;
+  color:var(--muted);
+}
+
+.circ-permisos{
+  display:grid; gap:.9rem;
+  padding:clamp(1rem, 2.5vw, 1.4rem);
+  background:var(--cream);
+  border:1px solid var(--rule-soft);
+  border-radius:var(--radio, 8px);
+  margin-block:clamp(1.25rem, 3vw, 1.75rem);
+}
+.check{
+  display:flex; align-items:flex-start; gap:.75rem;
+  font-size:.94rem; line-height:1.55; cursor:pointer;
+  text-transform:none; letter-spacing:0;
+  /* El área pulsable llega a 44 px aunque la casilla mida 22 y el
+     texto quepa en un renglón. */
+  padding-block:.5rem; min-block-size:44px;
+}
+.check input{
+  inline-size:22px; block-size:22px; min-block-size:0;
+  margin-block-start:.1em; flex:none;
+  accent-color:var(--red-tinta); cursor:pointer;
+}
+.check a{ color:var(--red-tinta); text-underline-offset:.2em }
+
+/* El hueco de Turnstile (65 px) lo reserva tokens.css a propósito: así
+   la página no da un salto cuando el widget termina de cargar. */
+.circ-enviar{ display:grid; gap:.75rem; justify-items:start }
+.boton--grande{
+  font-size:.95rem; padding:1.05em 2.2em; min-block-size:58px;
+  letter-spacing:.1em;
+}
+.circ-forma__msg{ margin:0; min-block-size:1.2em; color:var(--red-tinta); font-size:var(--small) }
+
+.err{ margin:.35rem 0 0; min-block-size:0; color:var(--red-tinta); font-size:.85rem; line-height:1.4 }
+.err:empty{ display:none }
+
+
+/* ── Cuando ya quedó ─────────────────────────────────────────── */
+
+.circ-listo{
+  padding:clamp(1.25rem, 3vw, 2rem);
+  background:var(--cream);
+  border-inline-start:4px solid var(--red-tinta);
+  border-radius:var(--radio, 8px);
+}
+
+/* Cuando el registro ya quedó, la cabecera del formulario sobra:
+   «Cuéntanos de ti · siete campos» encima de «Bienvenida, María» se
+   lee como si algo hubiera fallado. El h2 sigue en el árbol —de él
+   cuelga el aria-labelledby de la sección— pero deja de verse, y la
+   confirmación pasa a ser la tarjeta entera. */
+.circ-forma__caja:has(#listo:not([hidden])) > .eyebrow,
+.circ-forma__caja:has(#listo:not([hidden])) > .circ-forma__h,
+.circ-forma__caja:has(#listo:not([hidden])) > .circ-forma__nota{ display:none }
+.circ-forma__caja:has(#listo:not([hidden])) .circ-listo{
+  background:transparent; border-inline-start:0; padding:0;
+}
+.circ-listo__h{
+  font-family:'Libre', Georgia, serif; font-weight:700;
+  font-size:clamp(1.5rem, 3vw, 2.1rem); line-height:1.1;
+  letter-spacing:-.03em; margin:.25em 0 .5em;
+}
+.circ-listo__cuerpo{ margin:0 0 1rem; line-height:1.7; color:var(--muted); max-width:52ch }
+.circ-listo__folio{ margin:0; font-size:1.05rem }
+.circ-listo__nota{ margin:.35rem 0 0; color:var(--muted); font-size:.88rem }
+
+
+/* ── La opción que todavía no está ───────────────────────────── */
+
+.circ-cerca{ padding-block:0 clamp(2.5rem, 5vw, 4rem) }
+.circ-cerca__caja{
+  padding:clamp(1.15rem, 3vw, 1.6rem) clamp(1.25rem, 3vw, 1.75rem);
+  border:1px solid var(--rule-soft);
+  border-radius:var(--radio-grande, 16px);
+  background:rgba(255,253,247,.62);
+}
+.circ-cerca__h{
+  font-family:'Libre', Georgia, serif; font-weight:700;
+  font-size:clamp(1.1rem, 2.2vw, 1.4rem); line-height:1.25;
+  letter-spacing:-.02em; margin:.3em 0 .4em;
+}
+.circ-cerca__cuerpo{ margin:0; color:var(--muted); line-height:1.65; max-width:56ch }
+
+
+/* ── Pantallas pequeñas ──────────────────────────────────────── */
+
+@media (max-width:899px){
+  .circ-abre__grid{ grid-template-columns:1fr }
+  .circ-abre__estampa{ order:-1; min-height:clamp(210px, 46vw, 280px) }
+  .circ-abre__l2{ padding-inline-start:.35em }
+}
+@media (max-width:639px){
+  .circ-campos{ grid-template-columns:1fr }
+  .circ-enviar{ justify-items:stretch }
+  .boton--grande{
+    inline-size:100%; justify-content:center;
+    font-size:.8rem; letter-spacing:.07em; padding-inline:1.2em;
+  }
+  /* La caja deja de ser una tarjeta y pasa a ser la página: en un
+     móvil un marco de 2 px sólo roba 40 px de ancho de lectura. */
+  .circ-forma__caja{
+    padding:clamp(1.1rem, 4vw, 1.5rem);
+    border-radius:var(--radio, 8px);
+  }
+}

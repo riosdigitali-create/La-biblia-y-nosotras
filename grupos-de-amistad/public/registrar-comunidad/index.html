@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F4F3EA">
+<title>Registrar una comunidad — La Biblia y Nosotras</title>
+<meta name="robots" content="noindex">
+<!--
+  Esta ruta existió unos días como maqueta paralela de /registrar/.
+  Tener dos formularios de líder era un error: uno guardaba de verdad
+  en `group_applications` y pasaba por revisión del equipo, y el otro
+  no guardaba nada.
+
+  Se conserva el que funciona. Este archivo solo redirige, para que
+  cualquier enlace ya compartido siga llegando al sitio correcto.
+-->
+<link rel="canonical" href="/registrar/">
+<meta http-equiv="refresh" content="0; url=/registrar/">
+<link rel="stylesheet" href="../assets/css/tokens.css">
+<style>
+  body{
+    min-height:100dvh; display:grid; place-items:center;
+    padding:var(--s6); text-align:center;
+    background:var(--cream); color:var(--black);
+    font-family:'Aloe', system-ui, sans-serif;
+  }
+  p{ max-width:34ch; line-height:1.8; color:var(--muted); margin-bottom:var(--s6) }
+  a{
+    display:inline-flex; align-items:center; min-height:54px;
+    padding:1rem 2rem; border-radius:8px;
+    background:var(--black); color:var(--cream); text-decoration:none;
+    font-size:.8rem; letter-spacing:.18em; text-transform:uppercase; font-weight:bold;
+  }
+  a:focus-visible{ outline:3px solid var(--pink); outline-offset:3px }
+</style>
+</head>
+<body>
+  <main>
+    <p>Te estamos llevando al registro de comunidades.</p>
+    <a href="/registrar/">Continuar</a>
+  </main>
+
+<!-- ══════════════════════════════════════════════════════════════
+     Rutas internas al abrir el archivo con doble clic (file://).
+
+     Servido por Cloudflare o por `npm run dev`, «/asistir/» es una
+     ruta válida. Abriendo el archivo directamente, apunta a la raíz
+     del disco y no existe: aquí se traduce a la carpeta vecina para
+     poder ver las pantallas sin desplegar nada.
+
+     No cambia nada cuando hay servidor: solo actúa con file://.
+     ══════════════════════════════════════════════════════════════ -->
+<script>
+(function () {
+  if (window.location.protocol !== 'file:') return;
+  var subir = '../';
+  document.querySelectorAll('a[href^="/"]').forEach(function (a) {
+    var r = a.getAttribute('href');
+    if (r.indexOf('//') === 0) return;                 // enlaces de protocolo
+    a.setAttribute('href', subir + r.replace(/^\//, '') +
+      (/\/$/.test(r) ? 'index.html' : ''));
+  });
+})();
+</script>
+
+</body>
+</html>

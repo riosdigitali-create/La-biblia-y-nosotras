@@ -1,0 +1,11 @@
+# Copiar a .dev.vars para desarrollo local. .dev.vars está en .gitignore.
+# Estos son NOMBRES de variables. Los valores reales nunca se escriben aquí,
+# ni en el repositorio, ni en ningún archivo versionado.
+
+SESSION_PEPPER=
+HASH_PEPPER=
+TURNSTILE_SECRET_KEY=
+PANEL_PIN=
+RESEND_API_KEY=
+CHAT_API_KEY=
+ADMIN_BOOTSTRAP_TOKEN=

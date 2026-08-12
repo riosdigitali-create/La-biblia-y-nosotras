@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Confirmación pastoral — La Biblia y Nosotras</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<link rel="stylesheet" href="../assets/css/tokens.css">
+<link rel="stylesheet" href="../assets/css/grupos.css">
+</head>
+<body>
+<main class="section wrap medida-texto" id="contenido">
+
+  <p class="eyebrow">Confirmación pastoral</p>
+
+  <div id="loading" class="mt-6">
+    <p class="lead">Cargando la solicitud…</p>
+  </div>
+
+  <!-- Enlace inválido, usado o vencido — mismo mensaje para los tres -->
+  <div id="invalid" hidden class="mt-6">
+    <h1 class="heading-lg medida-16" tabindex="-1" id="invalidTitle">
+      Este enlace ya no está disponible.
+    </h1>
+    <p class="lead mt-4">
+      Si necesitan revisarlo de nuevo, escríbannos y les enviamos uno nuevo.
+    </p>
+  </div>
+
+  <div id="panel" hidden>
+    <h1 class="heading-lg mt-3 medida-18" tabindex="-1" id="titulo">
+      ¿Confirman esta solicitud?
+    </h1>
+
+    <div class="summary mt-6" id="detalle"></div>
+
+    <div class="summary__notice">
+      <strong>Su respuesta no publica el grupo.</strong> Después de su confirmación,
+      el equipo de La Biblia y Nosotras hace una aprobación final.
+    </div>
+
+    <form id="form" class="mt-7">
+      <div class="field">
+        <label class="field__label" for="responder_name">¿Quién responde? <span class="field__req" aria-hidden="true">*</span></label>
+        <input id="responder_name" name="responder_name" type="text" required aria-required="true"
+               aria-describedby="h_name" placeholder="Nombre y apellido">
+        <span class="field__help" id="h_name">Para dejar constancia de quién confirmó.</span>
+        <span class="field__error" id="e_responder_name" role="alert"></span>
+      </div>
+
+      <fieldset class="field" style="border:0">
+        <legend class="field__label">Su decisión <span class="field__req" aria-hidden="true">*</span></legend>
+
+        <div class="consent">
+          <input type="radio" name="decision" id="d_ok" value="approved" class="casilla casilla--verde">
+          <label class="consent__text" for="d_ok"><strong>Sí, confirmamos.</strong>
+            Conocemos a esta líder y respaldamos que abra un grupo.</label>
+        </div>
+        <div class="consent">
+          <input type="radio" name="decision" id="d_info" value="more_info" class="casilla casilla--amarilla">
+          <label class="consent__text" for="d_info"><strong>Necesitamos más información.</strong>
+            Queremos platicar antes de responder.</label>
+        </div>
+        <div class="consent">
+          <input type="radio" name="decision" id="d_no" value="rejected" class="casilla casilla--roja">
+          <label class="consent__text" for="d_no"><strong>No confirmamos por ahora.</strong></label>
+        </div>
+        <span class="field__error" id="e_decision" role="alert"></span>
+      </fieldset>
+
+      <div class="field">
+        <label class="field__label" for="comments">Comentarios <span class="suave">(opcional)</span></label>
+        <textarea id="comments" name="comments" placeholder="Lo que quieran compartir con el equipo."></textarea>
+      </div>
+
+      <p class="field__error" id="e_form" role="alert"></p>
+
+      <div class="actions">
+        <button type="submit" class="btn btn--primary" id="submit">Enviar respuesta</button>
+      </div>
+    </form>
+  </div>
+
+  <div id="done" hidden class="mt-6">
+    <div class="success__halo" aria-hidden="true"></div>
+    <h2 class="heading-lg medida-18" id="doneTitle" tabindex="-1">Gracias por responder.</h2>
+    <p class="lead mt-4" id="doneMsg"></p>
+  </div>
+
+</main>
+
+<script>
+(function () {
+  'use strict';
+  var token = new URLSearchParams(location.search).get('t') || '';
+  var $ = function (id) { return document.getElementById(id); };
+
+  var DIAS = { lunes:'Lunes', martes:'Martes', miercoles:'Miércoles', jueves:'Jueves',
+    viernes:'Viernes', sabado:'Sábado', domingo:'Domingo' };
+
+  function showInvalid() {
+    $('loading').hidden = true;
+    $('invalid').hidden = false;
+    $('invalidTitle').focus();
+  }
+
+  if (!token) { showInvalid(); return; }
+
+  function row(k, v) {
+    var d = document.createElement('div'); d.className = 'summary__block';
+    var a = document.createElement('span'); a.className = 'summary__key'; a.textContent = k;
+    var b = document.createElement('span'); b.className = 'summary__val'; b.textContent = v || '—';
+    d.appendChild(a); d.appendChild(b); return d;
+  }
+
+  fetch('/api/pastoral-approval/' + encodeURIComponent(token))
+    .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
+    .then(function (res) {
+      if (!res.ok || !res.d.ok) { showInvalid(); return; }
+      var s = res.d.solicitud;
+      var box = $('detalle');
+      box.appendChild(row('Líder', s.lider));
+      box.appendChild(row('Iglesia', s.iglesia));
+      box.appendChild(row('Pastores', s.pastores));
+      box.appendChild(row('Zona', s.zona + ', ' + s.municipio + ', ' + s.estado));
+      box.appendChild(row('Modalidad', s.modalidad === 'linea' ? 'En línea' : 'Presencial'));
+      box.appendChild(row('Cuándo', (DIAS[s.dia] || s.dia) + ' a las ' + s.horario));
+      box.appendChild(row('Capacidad', s.capacidad + ' mujeres'));
+      box.appendChild(row('Motivo', s.motivo));
+
+      $('loading').hidden = true;
+      $('panel').hidden = false;
+      $('titulo').focus();
+    })
+    .catch(showInvalid);
+
+  $('form').addEventListener('submit', async function (e) {
+    e.preventDefault();
+    $('e_form').textContent = ''; $('e_decision').textContent = ''; $('e_responder_name').textContent = '';
+
+    var name = $('responder_name').value.trim();
+    var picked = document.querySelector('input[name="decision"]:checked');
+
+    if (name.length < 3) { $('e_responder_name').textContent = 'Escriba su nombre para dejar constancia.'; $('responder_name').focus(); return; }
+    if (!picked) { $('e_decision').textContent = 'Elija una de las tres opciones.'; return; }
+
+    var btn = $('submit');
+    btn.disabled = true; btn.textContent = 'Enviando…';
+
+    try {
+      var res = await fetch('/api/pastoral-approval/' + encodeURIComponent(token), {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          decision: picked.value, responder_name: name, comments: $('comments').value.trim()
+        })
+      });
+      var data = await res.json();
+      if (!res.ok || !data.ok) {
+        $('e_form').textContent = data.message || 'No pudimos registrar su respuesta.';
+        btn.disabled = false; btn.textContent = 'Enviar respuesta';
+        return;
+      }
+      $('panel').hidden = true;
+      $('done').hidden = false;
+      $('doneMsg').textContent = data.mensaje;
+      $('doneTitle').focus();
+    } catch (err) {
+      $('e_form').textContent = 'No pudimos conectar. Intente de nuevo.';
+      btn.disabled = false; btn.textContent = 'Enviar respuesta';
+    }
+  });
+})();
+</script>
+</body>
+</html>

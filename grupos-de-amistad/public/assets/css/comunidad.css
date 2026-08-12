@@ -1,0 +1,8 @@
+/* Archivo retirado el 2026-08-06.
+
+   Daba estilo a /registrar-comunidad/, una maqueta paralela de
+   /registrar/ que duplicaba el formulario de líderes. Se conservó el
+   formulario que sí guarda en `group_applications` y pasa por la doble
+   aprobación; /registrar-comunidad/ quedó solo como redirección.
+
+   Ningún HTML lo carga. Se puede borrar sin consecuencias. */

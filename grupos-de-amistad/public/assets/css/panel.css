@@ -1,0 +1,273 @@
+/* ═══════════════════════════════════════════════════════════════
+   PANEL INTERNO — identidad LBYN, no una plantilla de dashboard.
+   Lienzo crema, navegación verde profundo, rojo solo para decisiones.
+   ═══════════════════════════════════════════════════════════════ */
+
+.shell{ display:grid; grid-template-columns:240px 1fr; min-height:100vh; }
+
+.side{
+  background:var(--green-dark); color:var(--cream);
+  padding:var(--s6) var(--s5); position:sticky; top:0; height:100vh;
+  display:flex; flex-direction:column; gap:var(--s6);
+}
+.side__mark{ font-family:'Libre',serif; font-size:1.05rem; line-height:1.2; }
+.side__nav{ display:flex; flex-direction:column; gap:var(--s1); }
+.side__link{
+  display:block; width:100%; text-align:left;
+  padding:var(--s3) var(--s4); border-radius:6px;
+  border:0; background:transparent;
+  font:inherit; font-size:var(--small); color:var(--on-dark);
+  text-decoration:none; cursor:pointer;
+  min-height:44px;
+  transition:background var(--t-control), color var(--t-control);
+}
+.side__link:hover{ background:rgba(244,243,234,.08); color:var(--cream); }
+.side__link[aria-selected="true"]{ background:rgba(244,243,234,.14); color:var(--cream); }
+.side__link:focus-visible{ outline:2px solid var(--pink); outline-offset:-2px }
+.side__foot{ margin-top:auto; font-size:var(--eyebrow); color:var(--on-dark); }
+
+.main{ padding:var(--s7) var(--s8) var(--s9); max-width:1200px; }
+.main__head{ display:flex; justify-content:space-between; align-items:baseline;
+  gap:var(--s5); flex-wrap:wrap; margin-bottom:var(--s7); }
+.main__title{ font-family:'Libre',serif; font-size:var(--heading-lg); letter-spacing:-.02em; }
+
+/* Portada editorial: bloque principal 7/12 + columna 5/12 */
+.board{ display:grid; grid-template-columns:7fr 5fr; gap:var(--s7); align-items:start; }
+
+.metric{ margin-bottom:var(--s6); }
+.metric__n{ font-family:'Libre',serif; font-size:3.4rem; line-height:1; letter-spacing:-.03em; }
+.metric__l{ font-size:var(--eyebrow); letter-spacing:.2em; text-transform:uppercase;
+  color:var(--subtle); margin-top:var(--s2); }
+
+/* Filas de solicitud — no tarjetas iguales en cuadrícula */
+.queue{ border-top:1px solid var(--black); }
+.qrow{ display:grid; grid-template-columns:auto 1fr auto; gap:var(--s5);
+  padding-block:var(--s5); border-bottom:1px solid var(--rule-soft); align-items:center; }
+.qrow__folio{ font-family:'Libre',serif; font-size:.95rem; }
+.qrow__who{ font-size:var(--body); }
+.qrow__where{ font-size:var(--small); color:var(--muted); margin-top:2px; }
+
+/* Badges: símbolo + texto, nunca solo color */
+.badge{
+  display:inline-flex; align-items:center; gap:6px;
+  font-size:var(--eyebrow); letter-spacing:.1em; text-transform:uppercase;
+  padding:5px 10px; border:1px solid currentColor; border-radius:99px; white-space:nowrap;
+}
+.badge--wait  { color:var(--muted); }
+.badge--fix   { color:var(--orange); }
+.badge--pastor{ color:var(--blue-dark); }
+.badge--final { color:var(--red-tinta); font-weight:500; }
+.badge--live  { color:var(--green-dark); }
+.badge--stop  { color:var(--muted); }
+
+/* La acción de publicar vive aislada, con sus requisitos a la vista */
+.publish{
+  margin-top:var(--s7); padding:var(--s6);
+  border:1px solid var(--red); border-radius:10px; background:var(--paper);
+}
+.publish__req{ font-size:var(--small); margin-bottom:var(--s5); }
+.publish__req li{ list-style:none; padding-left:var(--s5); position:relative; margin-bottom:var(--s2); }
+.publish__req li::before{ content:'○'; position:absolute; left:0; color:var(--subtle); }
+.publish__req li.met::before{ content:'●'; color:var(--green-dark); }
+
+/* Acciones destructivas: separadas, nunca junto a la primaria */
+.danger-zone{ margin-top:var(--s9); padding-top:var(--s6); border-top:1px solid var(--rule); }
+.danger-zone__title{ font-size:var(--eyebrow); letter-spacing:.2em;
+  text-transform:uppercase; color:var(--muted); margin-bottom:var(--s4); }
+
+.empty-state{ padding:var(--s8) 0; color:var(--muted); font-size:var(--small); }
+
+/* Acceso */
+/* Acceso. Una sola columna centrada: caja al centro de la pantalla
+   y todo el texto centrado dentro de ella. Es una pantalla de un
+   solo gesto —escribir el PIN y entrar—, así que el eje central
+   funciona: no hay nada que comparar ni recorrer con la vista. */
+.login{
+  min-height:100vh;
+  display:grid; place-items:center;
+  padding:var(--s7) var(--s6);
+}
+.login__box{
+  width:100%; max-width:400px;
+  text-align:center;
+}
+
+.login__bajada{
+  margin:var(--s4) auto var(--s7);
+  font-size:var(--body); line-height:1.6; color:var(--muted);
+  max-width:32ch;
+}
+.login .field{ margin-bottom:var(--s5) }
+.login .field__label{
+  display:block; text-align:center;
+  margin-bottom:var(--s3);
+}
+/* El PIN, centrado y espaciado: se lee como una clave, no como
+   una palabra, y se ve de un vistazo cuántos dígitos van. */
+.login #pin{
+  text-align:center;
+  letter-spacing:.5em;
+  text-indent:.5em;
+  font-size:1.3rem;
+}
+.login .field__error{ display:block; text-align:center }
+
+@media (max-width:900px){
+  .shell{ grid-template-columns:1fr; }
+  .side{ position:static; height:auto; flex-direction:row; align-items:center;
+    justify-content:space-between; padding:var(--s4) var(--s5); }
+  .side__nav{ display:none; }
+  .side__nav.open{ display:flex; position:fixed; inset:0; background:var(--green-dark);
+    z-index:100; padding:var(--s8) var(--s6); gap:var(--s3); }
+  .drawer-btn{ background:none; border:1px solid var(--on-dark); color:var(--cream);
+    padding:var(--s2) var(--s4); border-radius:6px; font-family:inherit;
+    font-size:var(--small); cursor:pointer; min-height:44px; }
+  .main{ padding:var(--s6) var(--s5) var(--s9); }
+  .board{ grid-template-columns:1fr; }
+  /* Sin desplazamiento horizontal: cada registro es una tarjeta */
+  .qrow{ grid-template-columns:1fr; gap:var(--s3); }
+}
+
+/* ═══ Acciones sobre un grupo publicado ═══ */
+.qrow__acciones{
+  display:flex; flex-wrap:wrap; gap:var(--s2);
+  justify-content:flex-end;
+}
+.btn--small{
+  min-height:38px; padding:var(--s2) var(--s4);
+  font-size:.78rem; letter-spacing:.04em;
+  white-space:nowrap;
+}
+@media (max-width:720px){
+  .qrow__acciones{ justify-content:flex-start; margin-top:var(--s3) }
+  .btn--small{ min-height:44px }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   AJUSTES DE SISTEMA · el panel habla el mismo idioma
+
+   Aquí manda la eficiencia: se toma la tipografía, el color y los
+   controles del sistema, pero ningún adorno que estorbe la lectura.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* El sello de la marca en la barra lateral, discreto. */
+.side__mark{
+  display:flex; align-items:center; gap:var(--s3);
+}
+.side__mark::before{
+  content:''; flex:0 0 22px; width:22px; height:22px;
+  background-image:url('../img/isotipo-lbyn.png');
+  background-size:contain; background-repeat:no-repeat; background-position:center;
+  filter:brightness(0) invert(1); opacity:.85;
+}
+
+/* Estados: se leen de un vistazo y se distinguen por color y forma. */
+.badge{
+  display:inline-flex; align-items:center; gap:var(--s2);
+  padding:.28rem .7rem; border-radius:100px;
+  font-size:.7rem; letter-spacing:.1em; text-transform:uppercase; font-weight:600;
+  white-space:nowrap;
+}
+.badge::before{
+  content:''; width:6px; height:6px; border-radius:50%; background:currentColor;
+}
+.badge[data-estado="PUBLISHED"]{ background:rgba(31,81,68,.12); color:var(--green-dark) }
+.badge[data-estado="FULL"]{ background:rgba(255,103,0,.12); color:var(--orange) }
+.badge[data-estado="SUSPENDED"]{ background:rgba(255,12,0,.10); color:var(--red) }
+.badge[data-estado="CLOSED"]{ background:rgba(21,23,20,.08); color:var(--muted) }
+.badge[data-estado^="PENDING"]{ background:rgba(255,214,9,.18); color:#8A6D00 }
+.badge[data-estado="NEEDS_CORRECTIONS"]{ background:rgba(255,103,0,.12); color:var(--orange) }
+.badge[data-estado="REJECTED"]{ background:rgba(21,23,20,.08); color:var(--muted) }
+
+/* Filas de cola: densas pero respirables, y táctiles en móvil. */
+.qrow{
+  border-radius:var(--radio);
+  transition:background var(--t-control) var(--ease);
+}
+.qrow:hover{ background:var(--paper) }
+
+/* Los controles del panel siguen al sistema. */
+.btn{ border-radius:var(--radio); letter-spacing:.14em }
+.btn--primary{ background:var(--red-tinta); border-color:var(--red-tinta) }
+.btn--primary:hover{ background:var(--black); border-color:var(--black) }
+
+/* Métricas: la cifra manda, la etiqueta acompaña. */
+.metric__n{ color:var(--black) }
+.metric--alerta .metric__n{ color:var(--red) }
+
+/* ── Móvil: el panel debe poder usarse desde el teléfono ───── */
+@media (max-width:900px){
+  .shell{ grid-template-columns:1fr }
+  .side{
+    position:fixed; inset:0 auto 0 0; z-index:900;
+    width:min(80vw, 280px); height:100dvh;
+    transform:translateX(-102%);
+    transition:transform var(--t-control) var(--ease);
+    box-shadow:0 0 40px rgba(21,23,20,.3);
+  }
+  .side.open{ transform:none }
+  .main{ padding:var(--s6) var(--s5) var(--s8) }
+  .board{ grid-template-columns:1fr; gap:var(--s6) }
+  .qrow{ grid-template-columns:1fr; gap:var(--s3) }
+}
+
+
+/* ── Círculos de amigas ────────────────────────────────────────
+   La vista que el equipo abre todos los días: cuántos llevamos,
+   de qué iglesias vienen y a qué pastora hay que avisar. */
+
+.cifras{
+  display:grid; gap:var(--s4);
+  grid-template-columns:repeat(auto-fit, minmax(150px, 1fr));
+  margin-bottom:var(--s7);
+}
+.cifra{
+  padding:var(--s5);
+  background:var(--cream);
+  border:1px solid var(--linea);
+  border-radius:4px;
+}
+.cifra__n{
+  font-family:var(--fuente-editorial, inherit);
+  font-size:clamp(1.9rem, 4vw, 2.8rem); line-height:1;
+  margin:0; font-weight:700;
+}
+.cifra__t{
+  margin:.45rem 0 0; font-size:.74rem;
+  letter-spacing:.16em; text-transform:uppercase; color:var(--muted);
+}
+
+.bloque{ margin-bottom:var(--s7) }
+.dos-columnas{
+  display:grid; gap:var(--s6);
+  grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.linea-dato{
+  display:flex; align-items:baseline; justify-content:space-between;
+  gap:var(--s4); padding-block:.6rem;
+  border-bottom:1px solid var(--linea);
+}
+.linea-dato__t{ min-width:0; overflow-wrap:anywhere }
+.linea-dato__n{
+  font-weight:700; flex:none;
+  font-variant-numeric:tabular-nums;
+}
+
+.nota-pie{
+  margin-top:var(--s4); font-size:.84rem;
+  color:var(--muted); max-width:60ch; line-height:1.6;
+}
+
+.pendiente{
+  display:inline-flex; align-items:center; gap:.5em; flex:none;
+  font-size:.7rem; letter-spacing:.14em; text-transform:uppercase;
+  color:#6B5A2A; background:#FFF3B2;
+  border:1px solid #E8D68A; border-radius:2px;
+  padding:.3em .6em; line-height:1.3;
+}
+.pendiente::before{
+  content:""; inline-size:6px; block-size:6px; border-radius:50%;
+  background:var(--red-tinta); flex:none;
+}

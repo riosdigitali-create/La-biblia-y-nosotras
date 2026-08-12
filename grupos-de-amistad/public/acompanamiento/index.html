@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F4F3EA">
+<meta name="color-scheme" content="light">
+<title>Acompañamiento — La Biblia y Nosotras</title>
+<meta name="description" content="Seis semanas de acompañamiento y una comunidad que camine contigo.">
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="../assets/css/tokens.css">
+<link rel="stylesheet" href="../assets/css/chat.css">
+</head>
+<body class="chat-body">
+
+<a class="saltar" href="#hilo">Saltar a la conversación</a>
+
+<div class="chat">
+
+  <!-- ══════════════════════════════════════════════════════════
+       Zona editorial. Solo en escritorio: aporta marca y calma,
+       nunca compite con la conversación ni la estrecha.
+       ══════════════════════════════════════════════════════════ -->
+  <aside class="marco grano" aria-labelledby="marco-t">
+
+    <img class="marco__agua" src="../assets/img/isotipo-lbyn.png"
+         alt="" aria-hidden="true" width="440" height="440">
+
+    <div class="marco__inner">
+      <p class="etiqueta">Seis semanas</p>
+
+      <h1 class="marco__titulo editorial" id="marco-t">
+        Lo que Dios comenzó,<br><em>continúa</em>
+      </h1>
+
+      <figure class="marco__pieza">
+        <img src="../assets/img/corazon.webp" alt="" aria-hidden="true"
+             width="420" height="420" loading="lazy">
+      </figure>
+
+      <p class="marco__lead">
+        Escribe con tus palabras. No hay botones ni respuestas correctas:
+        aquí solo se conversa.
+      </p>
+
+      <p class="nota-margen marco__nota">
+        Si prefieres, puedes contarme primero cómo te sientes.
+      </p>
+    </div>
+
+    <p class="marco__pie">
+      Solo guardamos tus datos si tú lo autorizas.
+      <a href="/privacidad/" target="_blank" rel="noopener">Aviso de privacidad</a>
+    </p>
+  </aside>
+
+  <!-- ══════════════════════════════════════════════════════════
+       La conversación
+       ══════════════════════════════════════════════════════════ -->
+  <main class="panel">
+
+    <header class="panel__cab">
+      <span class="panel__sello" aria-hidden="true">
+        <img src="../assets/img/isotipo-lbyn.png" alt="" width="20" height="20">
+      </span>
+      <div class="panel__quien">
+        <p class="panel__nombre">La Biblia y Nosotras</p>
+        <p class="panel__estado"><span class="panel__punto" aria-hidden="true"></span> Acompañamiento</p>
+      </div>
+      <a class="panel__salir" data-landing href="https://lbyn-lanzamiento.pages.dev/">Salir</a>
+    </header>
+
+    <div class="hilo" id="hilo" role="log" aria-live="polite" aria-label="Conversación" tabindex="-1">
+      <p class="escribiendo" id="escribiendo" hidden aria-hidden="true">
+        <i></i><i></i><i></i>
+      </p>
+    </div>
+
+    <!-- Derivación a una persona. Aparece solo cuando hace falta. -->
+    <div class="ayuda" id="ayuda" hidden>
+      <!-- El href lo pone chat.js con el número que devuelve el servidor. -->
+      <a class="ayuda__wa" id="waLink" target="_blank" rel="noopener">
+        Escribir por WhatsApp a una persona del equipo
+      </a>
+    </div>
+
+    <form class="barra" id="barra">
+      <label class="sr-only" for="texto">Escribe tu mensaje</label>
+      <textarea id="texto" name="texto" rows="1" maxlength="1200"
+                placeholder="Escribe lo que quieras…"
+                enterkeyhint="send" autocomplete="off"></textarea>
+      <button class="barra__enviar" type="submit" id="enviar" aria-label="Enviar mensaje">
+        <span aria-hidden="true">&#8593;</span>
+      </button>
+    </form>
+
+  </main>
+</div>
+
+<script src="../assets/js/chat.js" defer></script>
+
+<!-- ══════════════════════════════════════════════════════════════
+     Rutas internas al abrir el archivo con doble clic (file://).
+
+     Servido por Cloudflare o por `npm run dev`, «/asistir/» es una
+     ruta válida. Abriendo el archivo directamente, apunta a la raíz
+     del disco y no existe: aquí se traduce a la carpeta vecina para
+     poder ver las pantallas sin desplegar nada.
+
+     No cambia nada cuando hay servidor: solo actúa con file://.
+     ══════════════════════════════════════════════════════════════ -->
+<script>
+(function () {
+  if (window.location.protocol !== 'file:') return;
+  /* La landing vive en el repositorio de al lado. Sin servidor, la URL
+     de producción no sirve para verla: se apunta a la carpeta vecina. */
+  document.querySelectorAll('a[data-landing]').forEach(function (a) {
+    a.setAttribute('href', '../../../sitio/index.html');
+  });
+  var subir = '../';
+  document.querySelectorAll('a[href^="/"]').forEach(function (a) {
+    var r = a.getAttribute('href');
+    if (r.indexOf('//') === 0) return;                 // enlaces de protocolo
+    a.setAttribute('href', subir + r.replace(/^\//, '') +
+      (/\/$/.test(r) ? 'index.html' : ''));
+  });
+})();
+</script>
+
+</body>
+</html>

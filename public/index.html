@@ -496,6 +496,20 @@
     .button:hover { background: var(--black); transform: translateY(-2px); }
     .button--light { color: var(--black); background: var(--cream); }
     .button--light:hover { color: var(--cream); background: var(--black); }
+    .button--outline { color: var(--red-ink); border-color: var(--red-ink); background: transparent; }
+    .button--outline:hover { color: var(--cream); background: var(--red-ink); }
+
+    .closing__actions,
+    .arrival__actions {
+      width: min(100%, 760px);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: .8rem;
+    }
+
+    .closing__actions .button,
+    .arrival__actions .button { width: 100%; }
 
     .closing__soon {
       margin: 2rem 0 0;
@@ -532,6 +546,18 @@
       letter-spacing: .12em;
       text-transform: uppercase;
     }
+
+    .footer__panel {
+      display: inline-block;
+      margin-top: 1.5rem;
+      color: rgba(244, 243, 234, .55);
+      font-size: .66rem;
+      letter-spacing: .12em;
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+
+    .footer__panel:hover { color: var(--cream); }
 
     .noscript {
       padding: 1rem var(--gutter);
@@ -580,6 +606,8 @@
       .time-panel__letter { font-size: clamp(18rem, 82vw, 25rem); }
       .time-panel__number { font-size: clamp(8.2rem, 38vw, 12rem); }
       .button { width: min(100%, 360px); }
+      .closing__actions,
+      .arrival__actions { grid-template-columns: 1fr; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -671,25 +699,28 @@
     <section class="arrival" id="arrival" aria-labelledby="arrival-title" hidden>
       <div>
         <h2 class="arrival__title" id="arrival-title">Ya estamos aquí</h2>
-        <a class="button button--light"
-           href="https://wa.me/525591396661?text=Hola%2C%20ya%20estoy%20aqu%C3%AD%20para%20vivir%20la%20experiencia%20de%20La%20Biblia%20y%20Nosotras."
-           target="_blank" rel="noopener">Entrar a la experiencia <span aria-hidden="true">→</span></a>
+        <div class="arrival__actions">
+          <a class="button button--light" href="https://lbyn-grupos.pages.dev/registrar/">Registrar un grupo <span aria-hidden="true">→</span></a>
+          <a class="button button--light" href="https://lbyn-grupos.pages.dev/acompanamiento/">Unirme a un grupo <span aria-hidden="true">→</span></a>
+        </div>
       </div>
     </section>
 
     <section class="closing" aria-labelledby="closing-title">
       <p class="closing__eyebrow">Esto apenas comienza</p>
       <h2 class="closing__title" id="closing-title">Esto no es solo leer la Biblia. Es encontrarnos dentro de su historia.</h2>
-      <a class="button"
-         href="https://wa.me/525591396661?text=Hola%2C%20quiero%20ser%20parte%20de%20La%20Biblia%20y%20Nosotras."
-         target="_blank" rel="noopener">Quiero ser parte <span aria-hidden="true">→</span></a>
-      <p class="closing__soon">Muy pronto</p>
+      <div class="closing__actions">
+        <a class="button" href="https://lbyn-grupos.pages.dev/registrar/">Quiero registrar un grupo <span aria-hidden="true">→</span></a>
+        <a class="button button--outline" href="https://lbyn-grupos.pages.dev/acompanamiento/">Quiero unirme a un grupo <span aria-hidden="true">→</span></a>
+      </div>
+      <p class="closing__soon">Encuentra tu lugar. Caminemos juntas.</p>
     </section>
   </main>
 
   <footer class="footer">
     <img src="assets/isotipo-lbyn.png" alt="" width="36" height="36" loading="lazy">
     <p class="footer__line">Abrimos la Biblia. Compartimos la vida.<br>Caminamos con Jesús.</p>
+    <a class="footer__panel" href="https://lbyn-grupos.pages.dev/panel/">Acceso del equipo</a>
     <p class="footer__legal">© 2026 La Biblia y Nosotras · Hecho con cuidado en México</p>
   </footer>
 

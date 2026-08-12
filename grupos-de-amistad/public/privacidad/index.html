@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aviso de privacidad — La Biblia y Nosotras</title>
+<link rel="stylesheet" href="../assets/css/tokens.css">
+<link rel="stylesheet" href="../assets/css/grupos.css">
+</head>
+<body>
+<header class="nav"><div class="wrap nav__inner">
+  <a class="nav__mark" href="/">La Biblia y Nosotras</a>
+</div></header>
+
+<main class="section wrap prose">
+  <p class="eyebrow">Aviso de privacidad</p>
+  <h1 class="heading-lg mt-3 medida-18">Cómo cuidamos tus datos</h1>
+
+  <div class="summary__notice mt-6">
+    <strong>[PENDIENTE: aprobación de contenido]</strong><br>
+    Este aviso todavía no tiene texto legal aprobado. No debe publicarse ni
+    enlazarse desde un formulario en producción hasta que exista una versión
+    revisada y aprobada por la propietaria del proyecto.
+  </div>
+
+  <p class="lead mt-6">
+    El contenido de esta página debe cubrir, como mínimo: quién es responsable
+    de los datos, qué datos se recogen, para qué se usan, con quién se comparten,
+    cuánto tiempo se conservan, cómo ejercer los derechos ARCO, y los datos de
+    contacto para hacerlo.
+  </p>
+
+  <p class="field__help mt-5">
+    Versión que quedará registrada en cada consentimiento:
+    <code>2026-08-v1</code>. Al cambiar el texto hay que subir la versión, porque
+    los consentimientos se guardan versionados.
+  </p>
+</main>
+
+<!-- ══════════════════════════════════════════════════════════════
+     Rutas internas al abrir el archivo con doble clic (file://).
+
+     Servido por Cloudflare o por `npm run dev`, «/asistir/» es una
+     ruta válida. Abriendo el archivo directamente, apunta a la raíz
+     del disco y no existe: aquí se traduce a la carpeta vecina para
+     poder ver las pantallas sin desplegar nada.
+
+     No cambia nada cuando hay servidor: solo actúa con file://.
+     ══════════════════════════════════════════════════════════════ -->
+<script>
+(function () {
+  if (window.location.protocol !== 'file:') return;
+  var subir = '../';
+  document.querySelectorAll('a[href^="/"]').forEach(function (a) {
+    var r = a.getAttribute('href');
+    if (r.indexOf('//') === 0) return;                 // enlaces de protocolo
+    a.setAttribute('href', subir + r.replace(/^\//, '') +
+      (/\/$/.test(r) ? 'index.html' : ''));
+  });
+})();
+</script>
+
+</body>
+</html>
