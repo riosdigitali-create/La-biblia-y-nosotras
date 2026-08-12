@@ -10,17 +10,25 @@
 <link rel="stylesheet" href="../assets/css/tokens.css">
 <link rel="stylesheet" href="../assets/css/grupos.css">
 <link rel="stylesheet" href="../assets/css/circulo.css">
+<link rel="stylesheet" href="../assets/css/shell.css">
 </head>
 <body>
 
 <a class="skip" href="#contenido">Saltar al formulario</a>
 
-<header class="nav">
-  <div class="wrap nav__inner">
-    <a class="nav__mark" data-landing href="https://labibliaynosotras.com/">La Biblia y Nosotras</a>
-    <a class="nav__link" data-landing href="https://labibliaynosotras.com/">Salir</a>
+<header class="site-header">
+  <div class="site-header__inner">
+    <a class="site-brand" data-landing href="https://lbyn-lanzamiento.pages.dev/" aria-label="La Biblia y Nosotras, portada">
+      <span class="site-brand__seal"><img src="../assets/img/isotipo-lbyn.png" alt="" width="23" height="23"></span>
+      <span class="site-brand__type"><strong>La Biblia</strong><span>y Nosotras</span></span>
+    </a>
+    <nav class="site-links" aria-label="Principal">
+      <a href="/">Comunidad</a><a href="/acompanamiento/">Unirme</a>
+      <a class="site-links__primary" href="/registrar/">Abrir un grupo</a><a href="/estado/">Mi solicitud</a>
+    </nav>
   </div>
 </header>
+<div class="site-ribbon">Una Biblia abierta · tus amigas · seis semanas juntas</div>
 
 <main id="contenido">
 
@@ -161,20 +169,31 @@
     </div>
   </section>
 
-  <!-- ══ LA OTRA OPCIÓN, QUE TODAVÍA NO ESTÁ ═════════════════════
-       Se dice, pero no se promete fecha. -->
+  <!-- ══ LA OTRA OPCIÓN ════════════════════════════════════════ -->
   <section class="section section--tight wrap circ-cerca">
     <div class="circ-cerca__caja">
       <p class="eyebrow">Otra manera</p>
       <h2 class="circ-cerca__h">¿Prefieres encontrar un círculo cerca de ti?</h2>
       <p class="circ-cerca__cuerpo">
-        Estamos preparando esa opción. Si te registras aquí, te avisamos en
-        cuanto esté lista.
+        Ya puedes buscar grupos aceptados por código postal. Te acompañamos
+        durante el proceso para encontrar una mesa cerca de ti.
       </p>
+      <a class="boton boton--segundo mt-5" href="/acompanamiento/">Encontrar un grupo <span class="flecha" aria-hidden="true">→</span></a>
     </div>
   </section>
 
 </main>
+
+<section class="site-journey" aria-label="Otros caminos">
+  <a href="/acompanamiento/"><span class="site-journey__kicker">Quiero participar</span><span class="site-journey__title">Encontrar mi grupo <span aria-hidden="true">→</span></span></a>
+  <a href="/registrar/"><span class="site-journey__kicker">Quiero un grupo formal</span><span class="site-journey__title">Registrar mi grupo <span aria-hidden="true">→</span></span></a>
+  <a href="/"><span class="site-journey__kicker">Ver todos los caminos</span><span class="site-journey__title">Volver a comunidad <span aria-hidden="true">→</span></span></a>
+</section>
+<footer class="site-footer"><div class="site-footer__inner">
+  <div class="site-footer__brand"><img src="../assets/img/isotipo-lbyn.png" alt="" width="34" height="34"><p><strong>La Biblia y Nosotras</strong><span>La fe también se vive entre amigas.</span></p></div>
+  <nav class="site-footer__links" aria-label="Enlaces secundarios"><a data-landing href="https://lbyn-lanzamiento.pages.dev/">Portada</a><a href="/privacidad/">Privacidad</a><a href="/panel/">Acceso del equipo</a></nav>
+  <p class="site-footer__legal">© 2026 La Biblia y Nosotras · Caminamos juntas</p>
+</div></footer>
 
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 <script src="../assets/js/circulo.js" defer></script>

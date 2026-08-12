@@ -60,14 +60,18 @@
   <main class="panel">
 
     <header class="panel__cab">
-      <span class="panel__sello" aria-hidden="true">
+      <a class="panel__sello" href="/" aria-label="Volver a comunidad">
         <img src="../assets/img/isotipo-lbyn.png" alt="" width="20" height="20">
-      </span>
+      </a>
       <div class="panel__quien">
         <p class="panel__nombre">La Biblia y Nosotras</p>
         <p class="panel__estado"><span class="panel__punto" aria-hidden="true"></span> Acompañamiento</p>
       </div>
-      <a class="panel__salir" data-landing href="https://lbyn-lanzamiento.pages.dev/">Salir</a>
+      <nav class="panel__nav" aria-label="Navegación de la conversación">
+        <a href="/">Inicio</a>
+        <a href="/asistir/">Buscar directo</a>
+        <a href="/registrar/">Abrir grupo</a>
+      </nav>
     </header>
 
     <div class="hilo" id="hilo" role="log" aria-live="polite" aria-label="Conversación" tabindex="-1">

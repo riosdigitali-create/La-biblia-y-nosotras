@@ -196,6 +196,25 @@
       text-transform: uppercase;
     }
 
+    .hero__nav { display: flex; align-items: center; gap: .45rem; }
+    .hero__nav a {
+      min-height: 42px;
+      padding: .72rem 1rem;
+      display: inline-flex;
+      align-items: center;
+      border-radius: 99px;
+      color: var(--black);
+      background: rgba(244,243,234,.88);
+      font-size: clamp(.6rem, 1.25vw, .72rem);
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-decoration: none;
+      text-transform: uppercase;
+      backdrop-filter: blur(8px);
+    }
+    .hero__nav a:hover { color: var(--cream); background: var(--black); }
+    .hero__nav a:last-child { color: var(--cream); background: var(--red-ink); }
+
     .hero__copy {
       grid-column: 1 / -1;
       align-self: center;
@@ -598,6 +617,8 @@
       .hero__header { align-items: flex-start; }
       .brand span { display: none; }
       .hero__eyebrow { max-width: 22ch; text-align: right; }
+      .hero__nav a { padding-inline: .8rem; }
+      .hero__nav a:first-child { display: none; }
       .hero__copy { align-self: end; padding-bottom: 4.5rem; }
       .hero__title { font-size: clamp(3.05rem, 16vw, 5rem); }
       .hero__intro { max-width: 21ch; font-size: clamp(1rem, 4.5vw, 1.35rem); }
@@ -645,7 +666,11 @@
           <img src="assets/isotipo-lbyn.png" alt="" width="25" height="25">
           <span>La Biblia y Nosotras</span>
         </a>
-        <p class="hero__eyebrow">Algo nuevo está por comenzar</p>
+        <nav class="hero__nav" aria-label="Comunidad LBYN">
+          <a href="https://lbyn-grupos.pages.dev/">Comunidad</a>
+          <a href="https://lbyn-grupos.pages.dev/acompanamiento/">Unirme</a>
+          <a href="https://lbyn-grupos.pages.dev/registrar/">Abrir un grupo</a>
+        </nav>
       </div>
 
       <div class="hero__copy" id="top">

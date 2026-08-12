@@ -3,23 +3,36 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Registrar un grupo — Grupos de amistad</title>
+<title>Registrar un grupo — La Biblia y Nosotras</title>
 <meta name="robots" content="noindex">
 <link rel="stylesheet" href="../assets/css/tokens.css">
 <link rel="stylesheet" href="../assets/css/grupos.css">
+<link rel="stylesheet" href="../assets/css/shell.css">
 </head>
-<body>
+<body class="site-form-page">
 
 <a class="skip" href="#contenido">Saltar al contenido</a>
 
-<header class="nav">
-  <div class="wrap nav__inner">
-    <a class="nav__mark" data-landing href="https://labibliaynosotras.com/">La Biblia y Nosotras</a>
-    <a class="nav__link" data-landing href="https://labibliaynosotras.com/">Salir</a>
+<header class="site-header">
+  <div class="site-header__inner">
+    <a class="site-brand" data-landing href="https://lbyn-lanzamiento.pages.dev/" aria-label="La Biblia y Nosotras, portada">
+      <span class="site-brand__seal"><img src="../assets/img/isotipo-lbyn.png" alt="" width="23" height="23"></span>
+      <span class="site-brand__type"><strong>La Biblia</strong><span>y Nosotras</span></span>
+    </a>
+    <nav class="site-links" aria-label="Principal">
+      <a href="/">Comunidad</a><a href="/acompanamiento/">Unirme</a>
+      <a class="site-links__primary" href="/registrar/" aria-current="page">Abrir un grupo</a><a href="/estado/">Mi solicitud</a>
+    </nav>
   </div>
 </header>
+<div class="site-ribbon">Tu mesa puede convertirse en el comienzo de una historia</div>
 
 <main id="contenido" class="section wrap">
+  <section class="route-intro route-intro--green" data-letters="LBYN" aria-label="Registro de líderes">
+    <p class="route-intro__eyebrow">Para líderes · seis semanas</p>
+    <p class="route-intro__claim">Abre una mesa. Nosotras caminamos contigo.</p>
+    <p class="route-intro__copy">Completa una sola solicitud. El equipo la revisa y, al aceptarla, tu grupo queda disponible para las mujeres de tu zona.</p>
+  </section>
   <img class="umbral__sello" src="../assets/img/isotipo-lbyn.png" alt="" aria-hidden="true" width="380" height="380">
   <figure class="retazo" aria-hidden="true">
     <img src="../assets/img/papel.webp" alt="" width="124" height="124" loading="lazy">
@@ -379,6 +392,17 @@
   </section>
 
 </main>
+
+<section class="site-journey" aria-label="Otros caminos">
+  <a href="/acompanamiento/"><span class="site-journey__kicker">Quiero participar</span><span class="site-journey__title">Encontrar mi grupo <span aria-hidden="true">→</span></span></a>
+  <a href="/estado/"><span class="site-journey__kicker">Ya envié la solicitud</span><span class="site-journey__title">Consultar el avance <span aria-hidden="true">→</span></span></a>
+  <a href="/"><span class="site-journey__kicker">Conocer la experiencia</span><span class="site-journey__title">Volver a comunidad <span aria-hidden="true">→</span></span></a>
+</section>
+<footer class="site-footer"><div class="site-footer__inner">
+  <div class="site-footer__brand"><img src="../assets/img/isotipo-lbyn.png" alt="" width="34" height="34"><p><strong>La Biblia y Nosotras</strong><span>Tu mesa también puede ser comunidad.</span></p></div>
+  <nav class="site-footer__links" aria-label="Enlaces secundarios"><a data-landing href="https://lbyn-lanzamiento.pages.dev/">Portada</a><a href="/privacidad/">Privacidad</a><a href="/panel/">Acceso del equipo</a></nav>
+  <p class="site-footer__legal">© 2026 La Biblia y Nosotras · Registro protegido por Cloudflare</p>
+</div></footer>
 
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 <script src="../assets/js/registrar.js"></script>

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Panel — Grupos de amistad</title>
+<title>Panel de comunidad — La Biblia y Nosotras</title>
 <meta name="robots" content="noindex, nofollow">
 <link rel="stylesheet" href="../assets/css/tokens.css">
 <link rel="stylesheet" href="../assets/css/grupos.css">
@@ -13,6 +13,7 @@
 
 <!-- ══ ACCESO ═════════════════════════════════════════ -->
 <div class="login" id="login">
+  <a class="login__back" href="/">← Volver al sitio de comunidades</a>
   <div class="login__box">
     <p class="eyebrow">Grupos de amistad</p>
     <h1 class="heading-lg mt-3" tabindex="-1" id="loginTitle">
@@ -42,7 +43,7 @@
 <!-- ══ PANEL ══════════════════════════════════════════ -->
 <div class="shell" id="shell" hidden>
   <aside class="side">
-    <div class="side__mark">La Biblia<br>y Nosotras</div>
+    <a class="side__mark" href="/" aria-label="Ver sitio de comunidades">La Biblia<br>y Nosotras</a>
     <button class="drawer-btn" id="drawerBtn" aria-expanded="false" aria-controls="nav">Menú</button>
     <nav class="side__nav" role="tablist" id="nav" aria-label="Panel">
       <button type="button" class="side__link" data-view="dashboard" role="tab" aria-selected="true">Inicio</button>
@@ -51,6 +52,7 @@
     </nav>
     <div class="side__foot">
       <p id="who"></p>
+      <div class="side__portal"><a href="/" target="_blank">Ver sitio público ↗</a><a href="/registrar/" target="_blank">Abrir registro ↗</a></div>
       <button class="drawer-btn" id="logout" style="margin-top:var(--s3)">Cerrar sesión</button>
     </div>
   </aside>

@@ -127,6 +127,7 @@
   width:34px; height:34px; border-radius:50%;
   display:grid; place-items:center;
   background:var(--pink);
+  text-decoration:none;
 }
 .panel__sello img{ width:18px; height:18px; opacity:.85 }
 .panel__quien{ flex:1; min-width:0 }
@@ -150,6 +151,17 @@
   color:var(--subtle); text-decoration:none;
 }
 .panel__salir:hover{ color:var(--red) }
+
+.panel__nav{ flex:0 0 auto; display:flex; align-items:center; gap:2px }
+.panel__nav a{
+  min-height:40px; padding:10px 11px; display:inline-flex; align-items:center;
+  border-radius:99px; color:var(--subtle); text-decoration:none;
+  font-size:.62rem; font-weight:bold; letter-spacing:.08em; text-transform:uppercase;
+  transition:color var(--t-control), background var(--t-control);
+}
+.panel__nav a:hover{ color:var(--black); background:var(--rosa-pálido) }
+.panel__nav a:last-child{ color:var(--cream); background:var(--red-tinta) }
+.panel__nav a:last-child:hover{ background:var(--black) }
 
 /* ── El hilo ───────────────────────────────────────────────── */
 .hilo{
@@ -393,6 +405,9 @@
   .ficha__nombre{ font-size:1.15rem }
   .enlace{ max-width:100%; padding:var(--s5) var(--s4) }
   .enlace__titulo{ font-size:1.2rem }
+  .panel__nav a{ padding-inline:9px; font-size:.58rem }
+  .panel__nav a:first-child{ display:none }
+  .panel__quien{ display:none }
 }
 
 /* Pantallas muy estrechas: 320 px */
@@ -400,6 +415,7 @@
   .hilo,.barra,.panel__cab,.ayuda{ padding-inline:var(--s3) }
   .burbuja{ font-size:.92rem; max-width:92% }
   .panel__salir{ font-size:.62rem; letter-spacing:.1em }
+  .panel__nav a:nth-child(2){ display:none }
 }
 
 /* Pantalla baja o apaisada, con el teclado abierto */

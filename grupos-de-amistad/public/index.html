@@ -9,19 +9,27 @@
 <meta name="color-scheme" content="light">
 <link rel="stylesheet" href="assets/css/tokens.css">
 <link rel="stylesheet" href="assets/css/grupos.css">
+<link rel="stylesheet" href="assets/css/shell.css">
 </head>
 <body>
 
 <a class="skip" href="#contenido">Saltar al contenido</a>
 
-<header class="nav">
-  <div class="wrap nav__inner">
-    <a class="nav__mark" href="/">La Biblia y Nosotras</a>
-    <nav aria-label="Principal">
-      <a class="nav__link" href="/acompanamiento/">Empezar</a>
+<header class="site-header">
+  <div class="site-header__inner">
+    <a class="site-brand" data-landing href="https://lbyn-lanzamiento.pages.dev/" aria-label="La Biblia y Nosotras, portada">
+      <span class="site-brand__seal"><img src="assets/img/isotipo-lbyn.png" alt="" width="23" height="23"></span>
+      <span class="site-brand__type"><strong>La Biblia</strong><span>y Nosotras</span></span>
+    </a>
+    <nav class="site-links" aria-label="Principal">
+      <a href="/" aria-current="page">Comunidad</a>
+      <a href="/acompanamiento/">Unirme</a>
+      <a class="site-links__primary" href="/registrar/">Abrir un grupo</a>
+      <a href="/estado/">Mi solicitud</a>
     </nav>
   </div>
 </header>
+<div class="site-ribbon">Seis semanas · una Biblia abierta · una mesa para ti</div>
 
 <main id="contenido">
 
@@ -47,8 +55,8 @@
 
     <div class="grid umbral__foot">
       <p class="lead umbral__support">
-        Empieza una conversación con nosotras. Te acompañamos estas seis semanas
-        y, al final, te ayudamos a encontrar una comunidad cerca de ti.
+        Empieza una conversación con nosotras. Con tu código postal buscamos
+        mesas aceptadas, activas y con un lugar disponible cerca de ti.
       </p>
       <p class="umbral__scroll" aria-hidden="true">Sigue bajando</p>
     </div>
@@ -60,13 +68,13 @@
 
     <a class="path path--find" href="/acompanamiento/">
       <span class="path__num" aria-hidden="true">01</span>
-      <span class="path__title heading-lg">Quiero ser parte de las seis semanas</span>
+      <span class="path__title heading-lg">Quiero encontrar mi lugar</span>
       <span class="path__desc">
-        Una conversación, no un formulario. Nos cuentas cómo estás, te
-        acompañamos, y al final te presentamos tu comunidad.
+        Una conversación breve y cercana. Comparte tu código postal y te
+        mostramos únicamente grupos revisados por el equipo.
       </span>
       <span class="path__cta">
-        Comenzar mi acompañamiento
+        Buscar mi grupo
         <span class="path__arrow" aria-hidden="true">→</span>
       </span>
     </a>
@@ -112,15 +120,17 @@
 
 </main>
 
-<footer class="section wrap pie-seccion">
-  <p class="eyebrow">La Biblia y Nosotras</p>
-  <p class="mt-3 apunte medida-52">
-    ¿Ya enviaste una solicitud?
-    <a href="/estado/" class="subrayado-fino">Consulta su avance con tu folio</a>.
-    <br>
-    ¿Prefieres buscar un grupo por tu cuenta?
-    <a href="/asistir/" class="subrayado-fino">Buscar sin conversar</a>.
-  </p>
+<section class="site-journey" aria-label="Elige tu siguiente paso">
+  <a href="/acompanamiento/"><span class="site-journey__kicker">Quiero participar</span><span class="site-journey__title">Encontrar mi grupo <span aria-hidden="true">→</span></span></a>
+  <a href="/registrar/"><span class="site-journey__kicker">Quiero guiar</span><span class="site-journey__title">Registrar un grupo <span aria-hidden="true">→</span></span></a>
+  <a href="/estado/"><span class="site-journey__kicker">Ya envié mis datos</span><span class="site-journey__title">Consultar mi solicitud <span aria-hidden="true">→</span></span></a>
+</section>
+<footer class="site-footer">
+  <div class="site-footer__inner">
+    <div class="site-footer__brand"><img src="assets/img/isotipo-lbyn.png" alt="" width="34" height="34"><p><strong>La Biblia y Nosotras</strong><span>Abrimos la Biblia. Compartimos la vida.</span></p></div>
+    <nav class="site-footer__links" aria-label="Enlaces secundarios"><a data-landing href="https://lbyn-lanzamiento.pages.dev/">Portada</a><a href="/privacidad/">Privacidad</a><a href="/panel/">Acceso del equipo</a></nav>
+    <p class="site-footer__legal">© 2026 La Biblia y Nosotras · Hecho con cuidado en México</p>
+  </div>
 </footer>
 
 <script>

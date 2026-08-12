@@ -3,19 +3,26 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Consultar mi solicitud — Grupos de amistad</title>
+<title>Consultar mi solicitud — La Biblia y Nosotras</title>
 <meta name="robots" content="noindex">
 <link rel="stylesheet" href="../assets/css/tokens.css">
 <link rel="stylesheet" href="../assets/css/grupos.css">
+<link rel="stylesheet" href="../assets/css/shell.css">
 </head>
 <body>
-<header class="nav"><div class="wrap nav__inner">
-  <a class="nav__mark" href="/">La Biblia y Nosotras</a>
+<header class="site-header"><div class="site-header__inner">
+  <a class="site-brand" data-landing href="https://lbyn-lanzamiento.pages.dev/" aria-label="La Biblia y Nosotras, portada"><span class="site-brand__seal"><img src="../assets/img/isotipo-lbyn.png" alt="" width="23" height="23"></span><span class="site-brand__type"><strong>La Biblia</strong><span>y Nosotras</span></span></a>
+  <nav class="site-links" aria-label="Principal"><a href="/">Comunidad</a><a href="/acompanamiento/">Unirme</a><a class="site-links__primary" href="/registrar/">Abrir un grupo</a><a href="/estado/" aria-current="page">Mi solicitud</a></nav>
 </div></header>
+<div class="site-ribbon">Tu folio guarda el camino de tu solicitud</div>
 
-<main class="section wrap medida-form">
+<main class="section wrap">
+  <section class="route-intro" data-letters="LBYN" aria-label="Seguimiento de solicitudes">
+    <p class="route-intro__eyebrow">Seguimiento</p><h1 class="route-intro__claim">Tu mesa ya empezó a tomar forma.</h1><p class="route-intro__copy">Escribe el folio que recibiste al registrarte y consulta el estado actual.</p>
+  </section>
+  <div class="route-card medida-form">
   <p class="eyebrow">Consulta</p>
-  <h1 class="heading-lg mt-3 medida-14">¿Cómo va mi solicitud?</h1>
+  <h2 class="heading-lg mt-3 medida-14">¿Cómo va mi solicitud?</h2>
 
   <form id="f" class="mt-6">
     <div class="field">
@@ -33,7 +40,11 @@
     <p class="heading-md mt-3" id="outState" tabindex="-1"></p>
     <p class="field__help mt-3" id="outNote"></p>
   </div>
+  </div>
 </main>
+
+<section class="site-journey" aria-label="Otros caminos"><a href="/acompanamiento/"><span class="site-journey__kicker">Quiero participar</span><span class="site-journey__title">Encontrar mi grupo <span aria-hidden="true">→</span></span></a><a href="/registrar/"><span class="site-journey__kicker">Nueva solicitud</span><span class="site-journey__title">Registrar un grupo <span aria-hidden="true">→</span></span></a><a href="/"><span class="site-journey__kicker">Conocer la experiencia</span><span class="site-journey__title">Volver a comunidad <span aria-hidden="true">→</span></span></a></section>
+<footer class="site-footer"><div class="site-footer__inner"><div class="site-footer__brand"><img src="../assets/img/isotipo-lbyn.png" alt="" width="34" height="34"><p><strong>La Biblia y Nosotras</strong><span>Cada mesa se revisa con cuidado.</span></p></div><nav class="site-footer__links" aria-label="Enlaces secundarios"><a data-landing href="https://lbyn-lanzamiento.pages.dev/">Portada</a><a href="/privacidad/">Privacidad</a><a href="/panel/">Acceso del equipo</a></nav><p class="site-footer__legal">© 2026 La Biblia y Nosotras</p></div></footer>
 
 <script>
 document.getElementById('f').addEventListener('submit', async function (e) {
