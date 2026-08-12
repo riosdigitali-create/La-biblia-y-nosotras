@@ -590,6 +590,43 @@
     @keyframes settle { from { opacity: .5; transform: scale(1.08); } to { opacity: 1; transform: scale(1.025); } }
     @keyframes tick { 0% { opacity: .45; transform: translateY(-8px); } 100% { opacity: 1; transform: none; } }
 
+    @media (max-width: 899px) {
+      .hero {
+        min-height: auto;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .hero__header { order: 1; }
+      .hero__media {
+        position: relative;
+        z-index: 0;
+        inset: auto;
+        order: 2;
+        width: 100%;
+        height: auto;
+        aspect-ratio: 852 / 480;
+        border-block: 1px solid var(--rule);
+      }
+      .hero__media::after {
+        background: linear-gradient(180deg, rgba(244,243,234,.04), transparent 72%);
+      }
+      .hero__photo {
+        object-fit: contain;
+        object-position: center;
+        transform: none;
+        animation: none;
+      }
+      .hero__paper { display: none; }
+      .hero__copy {
+        order: 3;
+        align-self: stretch;
+        width: 100%;
+        padding: clamp(2.5rem, 8vw, 4.5rem) var(--gutter) clamp(1.75rem, 6vw, 3rem);
+      }
+      .hero__footer { order: 4; }
+    }
+
     @media (min-width: 900px) {
       .hero {
         grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr);
@@ -619,8 +656,8 @@
       .hero__eyebrow { max-width: 22ch; text-align: right; }
       .hero__nav a { padding-inline: .8rem; }
       .hero__nav a:first-child { display: none; }
-      .hero__copy { align-self: end; padding-bottom: 4.5rem; }
-      .hero__title { font-size: clamp(3.05rem, 16vw, 5rem); }
+      .hero__copy { align-self: stretch; padding-bottom: 2.5rem; }
+      .hero__title { width: 100%; font-size: clamp(2.65rem, 14vw, 4.5rem); }
       .hero__intro { max-width: 21ch; font-size: clamp(1rem, 4.5vw, 1.35rem); }
       .hero__when { max-width: 20ch; }
       .scroll-cue span { display: none; }
