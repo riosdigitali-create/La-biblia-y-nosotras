@@ -2,8 +2,8 @@
 
 ## Por qué está separado de la landing
 
-`labibliaynosotras.com` es un `index.html` de 163 KB servido por GitHub Pages
-desde `riosdigitali-create/La-biblia-y-nosotras`. No ejecuta código de servidor.
+La portada de lanzamiento vive en `public/` dentro del mismo repositorio y se
+publica en Cloudflare Pages. No ejecuta código de servidor.
 
 Grupos de amistad necesita base de datos, sesiones, estados y un panel. Son dos
 ciclos de vida distintos: la landing es un artefacto de campaña con fecha; esto
