@@ -32,8 +32,10 @@
          2 · PAGO     quién eres y con qué pagas.
          3 · GRACIAS  agradecimiento y petición de oración.
 
-       Toda la configuración de Stripe vive en `LBYN_STRIPE`, al
-       final del documento. Aquí no hay ninguna credencial.
+       El cobro NO ocurre aquí: al terminar el paso 2 la persona
+       viaja a Stripe Checkout —la página de Stripe— y vuelve. En
+       este archivo no hay ni puede haber ninguna credencial: ni
+       llave pública, ni secreta. Sólo la dirección de la API.
        ═══════════════════════════════════════════════════════════ */
 
     @font-face {
@@ -752,9 +754,9 @@
 
         <!-- ── PASO 0 · reposo ─────────────────────────────── -->
         <div class="paso" id="paso-0">
-          <button class="button" type="button" id="ir-monto">
+          <a class="button" id="ir-monto" href="https://donate.stripe.com/7sY4gt4JZ8KmcCT4Z85ZC00">
             Quiero donar <span aria-hidden="true">→</span>
-          </button>
+          </a>
         </div>
 
         <!-- ── PASO 1 · el monto ───────────────────────────── -->
@@ -770,7 +772,7 @@
               <span class="libre__signo" aria-hidden="true">$</span>
               <input id="monto-otro" name="monto" type="text"
                      inputmode="numeric" autocomplete="off"
-                     maxlength="7" placeholder="0" aria-describedby="monto-pista">
+                     maxlength="6" placeholder="0" aria-describedby="monto-pista">
               <span class="libre__moneda" aria-hidden="true">MXN</span>
             </div>
             <p class="libre__pista" id="monto-pista">
@@ -825,12 +827,14 @@
                    autocomplete="tel" maxlength="20" placeholder="10 dígitos">
           </p>
 
-          <!-- Aquí monta Stripe su Payment Element. Lo que hay dentro
-               es el mensaje de espera, y desaparece al montar. -->
+          <!-- El pago NO se captura en esta página. Al continuar,
+               Stripe abre la suya y ahí se teclea la tarjeta. Los
+               identificadores se conservan: el JavaScript los usa. -->
           <div class="pago__caja" id="stripe-payment-element">
             <p class="pago__espera" id="pago-espera">
-              <b>Aquí va el pago seguro</b>
-              Tarjeta de crédito o débito, procesada por Stripe.
+              <b>El pago se hace en Stripe</b>
+              Al continuar se abre la página segura de Stripe. Tu tarjeta
+              se teclea ahí, nunca aquí. Al terminar vuelves sola.
             </p>
           </div>
 
@@ -844,14 +848,14 @@
 
           <div class="envio">
             <button class="button" type="submit" id="donar">
-              <span id="donar-texto">Donar $150 MXN</span>
+              <span id="donar-texto">Continuar al pago seguro</span>
               <span aria-hidden="true">→</span>
             </button>
             <p class="envio__msg" id="donar-msg" role="status" aria-live="polite"></p>
             <p class="envio__nota">
-              Al donar aceptas nuestro
+              Al continuar aceptas nuestro
               <a data-ruta="privacidad" href="/privacidad/">aviso de privacidad</a>.
-              Te mandamos el recibo al correo.
+              El recibo lo manda Stripe a tu correo.
             </p>
             <button class="atras" type="button" data-atras="1">Cambiar el monto</button>
           </div>
@@ -956,74 +960,31 @@ window.LBYN_RUTAS = {
 })();
 </script>
 
-<!-- ═══════════════════════════════════════════════════════════════════
-     STRIPE · LA BIBLIOTECA
-     Se carga siempre desde el dominio de Stripe: nunca se copia ni se
-     empaqueta (lo exige su cumplimiento PCI).
-     ═══════════════════════════════════════════════════════════════════ -->
-<script src="https://js.stripe.com/v3/"></script>
+<!-- Aquí vivía js.stripe.com. Ya no hace falta: con Checkout el
+     navegador no toca la tarjeta, así que no hay nada que cargar. -->
 
 <!-- ═══════════════════════════════════════════════════════════════════
-     CONFIGURACIÓN · ESTE ES EL ÚNICO BLOQUE QUE SE EDITA
+     CONFIGURACIÓN · lo único editable de esta página
 
-     1 · LLAVE PÚBLICA
-         Panel de Stripe → Desarrolladores → Claves de API.
-         `pk_test_…` en pruebas, `pk_live_…` en producción. La llave
-         SECRETA (`sk_…`) NUNCA se escribe aquí: vive en el servidor.
+     Y es UNA dirección, no una credencial.
 
-     2 · ENDPOINT DEL SERVIDOR
-         Crea el PaymentIntent con la llave secreta y devuelve
-         `{ "clientSecret": "pi_..._secret_..." }`. Recibe por POST:
+     Las llaves de Stripe viven en el servidor (Cloudflare Pages →
+     lbyn-grupos → Variables y secretos). Aquí no hay ninguna, ni
+     debe haberla nunca: cualquier cosa escrita en este archivo la
+     puede leer quien abra la página.
 
-           { amount: 15000,          // en centavos, entero
-             currency: 'mxn',
-             nombre, correo, telefono }
+     API es de dónde cuelgan los tres endpoints:
+       POST  /api/stripe/checkout      crea la sesión de pago
+       GET   /api/stripe/estado        pregunta en qué quedó
+       POST  /api/donativos/peticion   guarda la petición de oración
 
-         Ejemplo mínimo (Node):
-
-           const intent = await stripe.paymentIntents.create({
-             amount: body.amount,
-             currency: body.currency,
-             receipt_email: body.correo,
-             description: 'Donativo · La Biblia y Nosotras',
-             metadata: { nombre: body.nombre },
-             automatic_payment_methods: { enabled: true }
-           });
-           return Response.json({ clientSecret: intent.client_secret });
-
-         IMPORTANTE: valida el monto en el servidor. Nunca confíes en
-         el que llega del navegador.
-
-     3 · WEBHOOK (del lado del servidor, recomendado)
-         Escucha `payment_intent.succeeded` para registrar el donativo
-         y mandar el recibo. El navegador puede cerrarse antes de
-         volver: el webhook es la única fuente fiable.
-
-     4 · DESTINO_PETICION
-         A dónde van las peticiones de oración del paso 3. Puede ser un
-         webhook de Make, un Worker o cualquier endpoint que acepte
-         POST con `{ peticion, nombre, correo, monto, enviado_en }`.
+     Vacío = se toma de LBYN_RUTAS.ORIGEN, que ya apunta ahí.
      ═══════════════════════════════════════════════════════════════════ -->
 <script>
-window.LBYN_STRIPE = {
-
-  /* ↓↓↓ 1 · LLAVE PÚBLICA DE STRIPE ↓↓↓ */
-  LLAVE_PUBLICA : '',            /* 'pk_live_…' o 'pk_test_…' */
-
-  /* ↓↓↓ 2 · ENDPOINT QUE CREA EL PAYMENT INTENT ↓↓↓ */
-  ENDPOINT      : '',            /* '/api/donativos/intent' */
-
-  /* A dónde vuelve Stripe si el método de pago exige salir de la
-     página (3-D Secure, OXXO, transferencia…). URL absoluta y
-     pública. Vacío = esta misma página. */
-  URL_RETORNO   : '',
-
-  /* ↓↓↓ 4 · DÓNDE CAEN LAS PETICIONES DE ORACIÓN ↓↓↓ */
-  DESTINO_PETICION : '',         /* webhook de Make, Worker, etc. */
-
-  MONEDA        : 'mxn',
-  MONTO_MINIMO  : 20,            /* en pesos: Stripe MXN no admite menos de 10 */
-  MONTO_MAXIMO  : 200000
+window.LBYN_PAGOS = {
+  API          : '',        /* vacío = usa LBYN_RUTAS.ORIGEN */
+  MONTO_MINIMO : 20,        /* pesos. El servidor lo vuelve a validar. */
+  MONTO_MAXIMO : 200000
 };
 </script>
 
@@ -1037,7 +998,7 @@ window.LBYN_STRIPE = {
 window.LBYN_DONATIVO = (function () {
   'use strict';
 
-  var CFG = window.LBYN_STRIPE || {};
+  var CFG = window.LBYN_PAGOS || {};
 
   var pasos = [
     document.getElementById('paso-0'),
@@ -1106,7 +1067,7 @@ window.LBYN_DONATIVO = (function () {
     if (foco) setTimeout(function () { foco.focus({ preventScroll:true }); }, quieto ? 0 : 520);
   }
 
-  document.getElementById('ir-monto').addEventListener('click', function () { ir(1); });
+  /* El boton va directo a Stripe. */ void ir;
 
   document.querySelectorAll('[data-atras]').forEach(function (b) {
     b.addEventListener('click', function () { ir(parseInt(b.getAttribute('data-atras'), 10)); });
@@ -1148,7 +1109,9 @@ window.LBYN_DONATIVO = (function () {
   /* Sólo dígitos, con comas mientras escribe. El cursor se queda
      al final: es una cifra, no un texto que se edite por dentro. */
   otro.addEventListener('input', function () {
-    var n = otro.value.replace(/\D/g, '').slice(0, 7);
+    /* Seis cifras: el máximo es $200,000 y con siete la caja se
+       salía de pantalla en teléfonos angostos. */
+    var n = otro.value.replace(/\D/g, '').slice(0, 6);
     otro.value = n ? conComas(parseInt(n, 10)) : '';
     pintar();
     limpiar(f1);
@@ -1257,88 +1220,42 @@ window.LBYN_DONATIVO = (function () {
 </script>
 
 <!-- ═══════════════════════════════════════════════════════════════════
-     LA CAPA DE PAGO · STRIPE
+     LA CAPA DE PAGO · STRIPE CHECKOUT
 
-     Flujo, tal como Stripe lo recomienda hoy (intención diferida):
+     Aquí no se cobra. Aquí se pide permiso para cobrar.
 
-       1 · Al entrar al paso 2 se crea `elements` con
-           { mode:'payment', amount, currency } y se monta el
-           Payment Element. El monto ya se conoce: viene del paso 1.
-       2 · Al enviar: `elements.submit()` valida los campos de pago.
-       3 · Se pide el clientSecret al servidor (ENDPOINT).
-       4 · `stripe.confirmPayment({ elements, clientSecret, … })`.
-       5 · Salido bien, se pasa al paso 3.
+     El navegador manda dos datos —cuánto y quién— y el servidor
+     devuelve una dirección de Stripe. La persona se va allá, teclea
+     su tarjeta en la página de Stripe, y vuelve con un identificador
+     de sesión en la URL.
 
-     Sin LLAVE_PUBLICA o sin ENDPOINT nada de esto arranca: la hoja se
-     ve completa y el botón dice exactamente qué falta configurar.
+     Lo que eso significa en la práctica:
+
+       · Ningún dato de tarjeta pasa por este dominio. Ni se ve, ni
+         se guarda, ni se puede filtrar desde aquí.
+       · No hace falta llave pública ni js.stripe.com.
+       · Volver a esta página NO prueba que se pagó: cualquiera
+         puede escribir la URL. Por eso, al volver, se le pregunta
+         al servidor —y el servidor a Stripe— en qué quedó de verdad.
+
+       0 · monto  →  1 · nombre y correo  →  Stripe  →  vuelta
      ═══════════════════════════════════════════════════════════════════ -->
 <script>
 (function () {
   'use strict';
 
   var D   = window.LBYN_DONATIVO;
-  var CFG = window.LBYN_STRIPE || {};
+  var CFG = window.LBYN_PAGOS || {};
   if (!D) return;
 
-  var listo    = !!(window.Stripe && CFG.LLAVE_PUBLICA && CFG.ENDPOINT);
-  var stripe   = null;
-  var elements = null;
-  var montado  = false;
+  /* La API vive en el proyecto de Cloudflare. Si no se escribió
+     nada, se toma la misma dirección que ya usan los grupos. */
+  var API = String(
+    CFG.API || (window.LBYN_RUTAS && window.LBYN_RUTAS.ORIGEN) || ''
+  ).replace(/\/+$/, '');
 
-  /* ── La piel del Payment Element ─────────────────────────────
-     Los mismos colores y la misma tipografía que el resto de la
-     hoja: el bloque de pago no debe parecer un injerto. */
-  var APARIENCIA = {
-    theme : 'flat',
-    variables : {
-      colorPrimary     : '#C00A02',
-      colorBackground  : '#F4F3EA',
-      colorText        : '#151714',
-      colorDanger      : '#C00A02',
-      fontFamily       : 'Aloe, system-ui, -apple-system, Segoe UI, sans-serif',
-      fontSizeBase     : '16px',
-      borderRadius     : '2px',
-      spacingUnit      : '4px'
-    },
-    rules : {
-      '.Input'        : { border:'1px solid rgba(21,23,20,.20)', backgroundColor:'#FFFDF7', boxShadow:'none' },
-      '.Input:focus'  : { border:'1px solid #C00A02', boxShadow:'inset 0 -2px 0 #C00A02' },
-      '.Label'        : { fontSize:'11px', letterSpacing:'.16em', textTransform:'uppercase', fontWeight:'700' },
-      '.Tab'          : { border:'1px solid rgba(21,23,20,.20)', backgroundColor:'#FFFDF7' },
-      '.Tab--selected': { border:'1px solid #C00A02', color:'#C00A02' }
-    }
-  };
+  /* ── Ida ─────────────────────────────────────────────────── */
 
-  /* ── Montaje: sólo al entrar al paso del pago ────────────── */
-  D.alEntrarAlPago(function () {
-    if (!listo) return;
-
-    if (montado) {                     /* ya estaba: sólo el monto cambió */
-      var c = D.centavos();
-      if (c > 0) elements.update({ amount:c });
-      return;
-    }
-
-    stripe = window.Stripe(CFG.LLAVE_PUBLICA);
-
-    elements = stripe.elements({
-      mode       : 'payment',
-      amount     : Math.max(D.centavos(), 1000),
-      currency   : (CFG.MONEDA || 'mxn'),
-      appearance : APARIENCIA
-    });
-
-    var espera = document.getElementById('pago-espera');
-    if (espera) espera.remove();
-
-    elements.create('payment', {
-      layout : { type:'tabs', defaultCollapsed:false }
-    }).mount('#stripe-payment-element');
-
-    montado = true;
-  });
-
-  /* ── El envío ────────────────────────────────────────────── */
   D.forma2.addEventListener('submit', function (e) {
     e.preventDefault();
     D.limpiar();
@@ -1350,122 +1267,154 @@ window.LBYN_DONATIVO = (function () {
       return;
     }
 
-    /* Sin configuración no se intenta cobrar: se dice qué falta. */
-    if (!listo) {
-      D.decir(
-        !window.Stripe
-          ? 'No se pudo cargar Stripe. Revisa la conexión e inténtalo otra vez.'
-          : 'Falta conectar Stripe: llave pública y endpoint (LBYN_STRIPE).',
-        'error');
+    if (!API) {
+      D.decir('El cobro todavía no está conectado. Escríbenos y lo resolvemos.', 'error');
       return;
     }
 
+    /* Doble clic: el botón se apaga antes de salir. Y si algo
+       falla, se vuelve a encender abajo. */
     D.ocupado(true);
-    D.decir('Preparando el pago…');
+    D.decir('Abriendo el pago seguro…');
 
-    var cuerpo = D.datos();
+    var d = D.datos();
 
-    /* 2 · Stripe valida sus propios campos antes de crear nada. */
-    elements.submit()
-      .then(function (r) {
-        if (r.error) throw r.error;
-
-        /* 3 · El servidor crea el PaymentIntent y devuelve el secreto. */
-        return fetch(CFG.ENDPOINT, {
-          method  : 'POST',
-          headers : { 'Content-Type':'application/json' },
-          body    : JSON.stringify(cuerpo)
-        });
+    fetch(API + '/api/stripe/checkout', {
+      method      : 'POST',
+      headers     : { 'Content-Type':'application/json' },
+      credentials : 'omit',
+      body        : JSON.stringify({
+        /* En PESOS. El servidor lo valida otra vez y decide: lo
+           que llegue de aquí no manda nada. */
+        monto   : D.pesos(),
+        nombre  : d.nombre,
+        correo  : d.correo,
+        origen  : 'donaciones',
+        campana : 'general'
       })
-      .then(function (r) {
-        if (!r.ok) throw new Error('El servidor respondió ' + r.status);
-        return r.json();
-      })
-      .then(function (json) {
-        if (!json || !json.clientSecret) throw new Error('Falta clientSecret');
-
-        /* 4 · Y se confirma. Si el método exige salir de la página,
-               Stripe se lleva a la persona y la devuelve a URL_RETORNO. */
-        return stripe.confirmPayment({
-          elements     : elements,
-          clientSecret : json.clientSecret,
-          confirmParams: {
-            return_url    : CFG.URL_RETORNO || window.location.href,
-            receipt_email : cuerpo.correo,
-            payment_method_data : {
-              billing_details : {
-                name  : cuerpo.nombre,
-                email : cuerpo.correo,
-                phone : cuerpo.telefono || undefined
-              }
-            }
-          },
-          redirect : 'if_required'
-        });
-      })
-      .then(function (r) {
-        if (r && r.error) throw r.error;
-
-        /* 5 · Sin redirección: el cobro terminó aquí mismo. */
-        D.ocupado(false);
-        D.decir('');
-        D.agradecer(
-          'Tu donativo de\u00a0$' + D.conComas(D.pesos()) +
-          ' MXN quedó registrado. Te\u00a0mandamos el\u00a0recibo al\u00a0correo.');
-      })
-      .catch(function (err) {
-        D.ocupado(false);
-        D.decir(
-          (err && err.message)
-            ? err.message
-            : 'No pudimos completar el cobro. Inténtalo otra vez.',
-          'error');
+    })
+    .then(function (r) {
+      return r.json().catch(function () { return {}; }).then(function (j) {
+        return { estado:r.status, cuerpo:j };
       });
+    })
+    .then(function (r) {
+      var j = r.cuerpo || {};
+      if (!j.ok || !j.url) {
+        throw new Error(
+          j.message ||
+          (r.estado === 503
+            ? 'El cobro todavía no está activado.'
+            : 'No pudimos abrir el pago. Inténtalo otra vez.')
+        );
+      }
+      /* Se recuerda el monto por si al volver hace falta y la
+         consulta al servidor tardara. */
+      try { sessionStorage.setItem('lbyn_monto', String(D.pesos())); } catch (x) {}
+      window.location.href = j.url;
+    })
+    .catch(function (err) {
+      D.ocupado(false);
+      D.decir((err && err.message) || 'No pudimos abrir el pago. Inténtalo otra vez.', 'error');
+    });
   });
 
-  /* ── Vuelta desde una redirección (3-D Secure, OXXO…) ────────
-     Stripe regresa con `payment_intent_client_secret` en la URL. Se
-     lee el estado y se salta directo al paso 3, sin cobrar de nuevo. */
-  (function alVolver() {
-    if (!listo) return;
-    var url = new URL(window.location.href);
-    var secreto = url.searchParams.get('payment_intent_client_secret');
-    if (!secreto) return;
+  /* ── Vuelta ──────────────────────────────────────────────────
+     Stripe devuelve a esta misma página con `session_id`. Ese dato
+     no vale como prueba: se usa sólo para preguntar. La respuesta
+     buena viene del webhook, que ya escribió el estado real; si el
+     webhook aún no llegó, el servidor le pregunta a Stripe. */
 
-    window.Stripe(CFG.LLAVE_PUBLICA)
-      .retrievePaymentIntent(secreto)
-      .then(function (r) {
-        var pi = r && r.paymentIntent;
-        if (!pi) return;
-        if (pi.status === 'succeeded') {
-          D.agradecer('Tu donativo quedó registrado. Te\u00a0mandamos el\u00a0recibo al\u00a0correo.');
-        } else if (pi.status === 'processing') {
-          D.agradecer('Tu pago se\u00a0está procesando. Te\u00a0avisamos por\u00a0correo en\u00a0cuanto se\u00a0confirme.');
-        } else {
-          D.ir(2);
-          D.decir('El pago no se completó. Puedes intentarlo otra vez.', 'error');
-        }
-      });
-  })();
+  var url     = new URL(window.location.href);
+  var sesion  = url.searchParams.get('session_id');
+  var cancelo = url.searchParams.get('estado') === 'cancelado';
+
+  if (cancelo) {
+    D.ir(1);
+    D.decir('');
+    var aviso = document.querySelector('[data-err="monto"]');
+    if (aviso) aviso.textContent = 'No se cobró nada. Puedes intentarlo cuando quieras.';
+    limpiarUrl();
+  }
+
+  function limpiarUrl() {
+    try { window.history.replaceState({}, '', window.location.pathname); } catch (x) {}
+  }
+
+  function guardado() {
+    try { return parseInt(sessionStorage.getItem('lbyn_monto'), 10) || 0; } catch (x) { return 0; }
+  }
+
+  if (sesion && API) {
+    /* Se entra directo al paso 3 con un texto prudente: todavía no
+       sabemos si se pagó, y no se va a decir que sí sin saberlo. */
+    D.agradecer('Estamos confirmando tu donativo…');
+
+    fetch(API + '/api/stripe/estado?session_id=' + encodeURIComponent(sesion), {
+      credentials : 'omit'
+    })
+    .then(function (r) { return r.json(); })
+    .then(function (j) {
+      var t = document.getElementById('gracias-texto');
+      var monto = (j && j.monto) || guardado();
+      var conMonto = monto ? ' de $' + D.conComas(monto) + ' MXN' : '';
+
+      if (!j || !j.ok) {
+        if (t) t.textContent = 'No pudimos confirmarlo desde aquí. Si el cargo aparece en tu banco, ya quedó registrado.';
+        return;
+      }
+
+      /* El identificador interno viaja con la petición de oración,
+         para saber de qué donativo vino. */
+      if (j.donativo_id) window.LBYN_DONATIVO_ID = j.donativo_id;
+      /* Al volver de Stripe la página se recargó y los campos están
+         vacíos. El nombre se recupera de aquí para la petición. */
+      if (j.nombre) window.LBYN_DONANTE = j.nombre;
+
+      if (j.estado === 'pagado') {
+        if (t) t.textContent = 'Tu donativo' + conMonto + ' quedó registrado. Stripe te manda el recibo al correo.';
+      } else if (j.estado === 'procesando') {
+        if (t) t.textContent = 'Tu pago' + conMonto + ' se está procesando. Te avisamos por correo en cuanto se confirme.';
+      } else if (j.estado === 'pendiente') {
+        if (t) t.textContent = 'Todavía no nos llega la confirmación. Si el cargo aparece en tu banco, ya quedó registrado.';
+      } else {
+        /* fallido o expirado: no se agradece un cobro que no fue. */
+        D.ir(1);
+        D.decir('');
+        var caja = document.querySelector('[data-err="monto"]');
+        if (caja) caja.textContent = 'El pago no se completó. Puedes intentarlo otra vez.';
+      }
+    })
+    .catch(function () {
+      var t = document.getElementById('gracias-texto');
+      if (t) t.textContent = 'No pudimos confirmarlo desde aquí. Si el cargo aparece en tu banco, ya quedó registrado.';
+    });
+  }
 })();
 </script>
 
 <!-- ═══════════════════════════════════════════════════════════════════
      LA PETICIÓN DE ORACIÓN
 
-     Llega después del pago y va a su propio destino: no es un campo
-     más del cobro. Se manda a `DESTINO_PETICION` (webhook de Make, un
-     Worker, lo que sea) junto con el nombre, el correo y el monto,
-     para saber de quién viene.
+     Llega después del pago, cuando ya no hay nada que cobrar, y va a
+     su propio endpoint: se guarda aparte del donativo porque es una
+     confidencia, no un renglón de contabilidad.
+
+     Si hubo donativo, se manda su identificador para poder unirlos.
+     Si no lo hubo, la petición se guarda igual.
      ═══════════════════════════════════════════════════════════════════ -->
 <script>
 (function () {
   'use strict';
 
-  var D = window.LBYN_DONATIVO;
-  var CFG = window.LBYN_STRIPE || {};
+  var D     = window.LBYN_DONATIVO;
+  var CFG   = window.LBYN_PAGOS || {};
   var forma = document.getElementById('forma-peticion');
   if (!D || !forma) return;
+
+  var API = String(
+    CFG.API || (window.LBYN_RUTAS && window.LBYN_RUTAS.ORIGEN) || ''
+  ).replace(/\/+$/, '');
 
   var campo = document.getElementById('peticion');
   var boton = document.getElementById('enviar-peticion');
@@ -1486,36 +1435,34 @@ window.LBYN_DONATIVO = (function () {
       return;
     }
 
-    var d = D.datos();
-    var cuerpo = {
-      peticion   : texto,
-      nombre     : d.nombre,
-      correo     : d.correo,
-      monto      : d.amount / 100,
-      origen     : 'donativos',
-      enviado_en : new Date().toISOString()
-    };
-
-    boton.disabled = true;
-    msg.textContent = 'Mandando…';
-
-    if (!CFG.DESTINO_PETICION) {
-      boton.disabled = false;
-      msg.textContent = 'Falta conectar el destino de las peticiones (DESTINO_PETICION).';
+    if (!API) {
+      msg.textContent = 'No pudimos mandarla ahora. Escríbenos por WhatsApp y la recibimos igual.';
       msg.setAttribute('data-estado', 'error');
       return;
     }
 
-    fetch(CFG.DESTINO_PETICION, {
-      method  : 'POST',
-      headers : { 'Content-Type':'application/json' },
-      body    : JSON.stringify(cuerpo)
+    var d = D.datos();
+
+    boton.disabled = true;
+    msg.textContent = 'Mandando…';
+
+    fetch(API + '/api/donativos/peticion', {
+      method      : 'POST',
+      headers     : { 'Content-Type':'application/json' },
+      credentials : 'omit',
+      body        : JSON.stringify({
+        texto       : texto,
+        nombre      : d.nombre || window.LBYN_DONANTE || '',
+        correo      : d.correo,
+        origen      : 'donaciones',
+        donativo_id : window.LBYN_DONATIVO_ID || ''
+      })
     })
     .then(function (r) {
       if (!r.ok) throw new Error(r.status);
       forma.innerHTML =
         '<p class="peticion__titulo">Recibimos tu petición.</p>' +
-        '<p class="peticion__nota">La leemos nosotras y la llevamos a la mesa esta semana. Gracias por confiárnosla.</p>';
+        '<p class="peticion__nota">La leemos nosotras y la llevamos a la mesa esta semana. Gracias por confiárnosla.</p>';
     })
     .catch(function () {
       boton.disabled = false;
@@ -1535,5 +1482,28 @@ window.LBYN_DONATIVO = (function () {
 })();
 </script>
 
+<!-- ═══════════════════════════════════════════════════════════════════
+     LA VUELTA DE STRIPE
+     El enlace de pago regresa aquí con ?gracias=1. No prueba el pago
+     —eso lo dice el recibo de Stripe— pero cierra el gesto: quien
+     acaba de donar ve una línea, no un botón que le pide donar otra vez.
+     ═══════════════════════════════════════════════════════════════════ -->
+<script>
+(function () {
+  'use strict';
+  if (!/[?&]gracias=1/.test(window.location.search)) return;
+  var p0 = document.getElementById('paso-0');
+  if (!p0) return;
+  var t = document.createElement('h2');
+  t.className = 'paso__titulo';
+  t.textContent = 'Gracias por sembrar.';
+  var d = document.createElement('p');
+  d.className = 'voz__eyebrow';
+  d.textContent = 'Stripe te manda el recibo a tu correo.';
+  p0.textContent = '';
+  p0.appendChild(t);
+  p0.appendChild(d);
+})();
+</script>
 </body>
 </html>
