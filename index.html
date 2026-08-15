@@ -1,0 +1,638 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#F4F3EA">
+  <meta name="color-scheme" content="light">
+
+  <title>La Biblia y Nosotras</title>
+  <meta name="description" content="La Palabra nos reúne. Abre tu grupo o únete a uno que ya camina.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="es_MX">
+  <meta property="og:title" content="La Biblia y Nosotras">
+  <meta property="og:description" content="La Palabra nos reúne. La historia ya comenzó.">
+  <meta property="og:image" content="https://labibliaynosotras.com/assets/video/lbyn-portada-poster.webp">
+  <meta property="og:image:alt" content="La Biblia y Nosotras, en el desierto">
+
+  <link rel="icon" href="isotipo-lbyn.png">
+  <link rel="preload" href="assets/video/lbyn-portada-poster.webp" as="image" fetchpriority="high">
+  <link rel="preload" href="LibreBaskerville-Bold%20(1).ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="AloeveraDisplay-Medium%20(1).otf" as="font" type="font/otf" crossorigin>
+
+  <style>
+    @font-face {
+      font-family: "Libre";
+      src: url("LibreBaskerville-Bold%20(1).ttf") format("truetype");
+      font-weight: 700;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: "Aloe";
+      src: url("AloeveraDisplay-Medium%20(1).otf") format("opentype");
+      font-weight: 500;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    :root {
+      --black: #151714;
+      --cream: #F4F3EA;
+      --paper: #FFFDF7;
+      --red: #FF0C00;
+      --red-ink: #C00A02;
+      --pink: #FF88B0;
+      --pink-soft: #F7B8C8;
+      --wine: #5C1030;
+      --blue: #00C5FF;
+      --yellow: #FFD609;
+      --rule: rgba(21, 23, 20, .18);
+      --muted: rgba(21, 23, 20, .64);
+      --gutter: clamp(1.25rem, 5vw, 4.5rem);
+      --ease: cubic-bezier(.16, 1, .3, 1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0;
+      color: var(--black);
+      background: var(--cream);
+      font-family: "Aloe", system-ui, -apple-system, "Segoe UI", sans-serif;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      pointer-events: none;
+      opacity: .16;
+      mix-blend-mode: multiply;
+      background:
+        repeating-radial-gradient(circle at 18% 28%, rgba(21,23,20,.10) 0 .45px, transparent .8px 4px),
+        repeating-linear-gradient(97deg, transparent 0 11px, rgba(21,23,20,.025) 12px 13px);
+      background-size: 93px 87px, 211px 179px;
+    }
+
+    img { display: block; max-width: 100%; }
+    a { color: inherit; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    a:focus-visible, button:focus-visible {
+      outline: 3px solid #0011E4;
+      outline-offset: 4px;
+    }
+    [hidden] { display: none !important; }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .launch-bar {
+      min-height: 46px;
+      padding: .65rem var(--gutter);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      color: var(--cream);
+      background: var(--red-ink);
+      border-bottom: 1px solid rgba(244, 243, 234, .22);
+      font-size: clamp(.62rem, 1.4vw, .76rem);
+      font-weight: 700;
+      letter-spacing: .16em;
+      line-height: 1.3;
+      text-transform: uppercase;
+    }
+
+    .launch-bar__date { color: rgba(244, 243, 234, .82); text-align: right; }
+
+    .hero {
+      position: relative;
+      isolation: isolate;
+      min-height: calc(100svh - 46px);
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: minmax(0, 1.12fr) minmax(0, .88fr);
+      grid-template-rows: auto 1fr auto;
+      background: var(--cream);
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .hero__media {
+      position: absolute;
+      z-index: -2;
+      inset: 0 0 auto 42%;
+      height: 63%;
+      overflow: hidden;
+      background: #5e8aa2;
+    }
+
+    .hero__media::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, rgba(244,243,234,.08), transparent 42%);
+    }
+
+    .hero__photo {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: 57% center;
+      filter: saturate(.95) contrast(1.02);
+      transform: scale(1.025);
+      animation: settle 1.4s var(--ease) both;
+    }
+
+    .hero__paper {
+      position: absolute;
+      z-index: -1;
+      inset: 0 39% 35% 0;
+      background: var(--cream);
+      clip-path: polygon(0 0, 92% 0, 98% 5%, 94% 10%, 99% 16%, 95% 22%, 100% 30%, 96% 38%, 99% 46%, 94% 55%, 100% 64%, 95% 73%, 99% 82%, 93% 91%, 96% 100%, 0 100%);
+    }
+
+    .hero__header {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 1rem var(--gutter);
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: .7rem;
+      color: var(--black);
+      text-decoration: none;
+      font-family: "Libre", Georgia, serif;
+      font-size: clamp(.78rem, 1.5vw, .95rem);
+    }
+
+    .brand img { width: 25px; height: 25px; object-fit: contain; }
+
+    .hero__eyebrow {
+      margin: 0;
+      color: var(--red-ink);
+      font-size: clamp(.6rem, 1.45vw, .76rem);
+      font-weight: 700;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+    }
+
+    .hero__nav { display: flex; align-items: center; gap: .45rem; }
+    .hero__nav a {
+      min-height: 42px;
+      padding: .72rem 1rem;
+      display: inline-flex;
+      align-items: center;
+      border-radius: 99px;
+      color: var(--black);
+      background: rgba(244,243,234,.88);
+      font-size: clamp(.6rem, 1.25vw, .72rem);
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-decoration: none;
+      text-transform: uppercase;
+      backdrop-filter: blur(8px);
+    }
+    .hero__nav a:hover { color: var(--cream); background: var(--black); }
+    .hero__nav a:last-child { color: var(--cream); background: var(--red-ink); }
+
+    .hero__copy {
+      grid-column: 1 / -1;
+      align-self: center;
+      width: min(92%, 760px);
+      padding: clamp(2.5rem, 8vh, 6.5rem) var(--gutter) clamp(1.5rem, 4vh, 3rem);
+      animation: rise .9s var(--ease) .08s both;
+    }
+
+    .hero__title {
+      width: min-content;
+      margin: 0;
+      font-family: "Libre", Georgia, serif;
+      font-size: clamp(3.2rem, 13vw, 7.5rem);
+      line-height: .93;
+      letter-spacing: -.065em;
+      text-wrap: balance;
+    }
+
+    .hero__title span { display: block; white-space: nowrap; }
+
+    .hero__stroke {
+      position: relative;
+      width: min(82vw, 620px);
+      height: 12px;
+      margin: clamp(1rem, 2.2vh, 1.6rem) 0 clamp(1.2rem, 3vh, 2rem);
+      overflow: hidden;
+    }
+
+    .hero__stroke::before,
+    .hero__stroke::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 4px;
+      border-radius: 999px 16px 999px 8px;
+      background: var(--red);
+      transform-origin: left center;
+      animation: draw 1s var(--ease) .55s both;
+    }
+
+    .hero__stroke::before { top: 2px; transform: rotate(-.5deg); }
+    .hero__stroke::after { top: 6px; right: 7%; opacity: .56; transform: rotate(.25deg); }
+
+    .hero__intro {
+      max-width: 27ch;
+      margin: 0;
+      font-family: "Libre", Georgia, serif;
+      font-size: clamp(1.1rem, 3.6vw, 1.75rem);
+      line-height: 1.35;
+    }
+
+    .hero__footer {
+      grid-column: 1 / -1;
+      align-self: end;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 1.25rem var(--gutter) 1.65rem;
+    }
+
+    .hero__when {
+      margin: 0;
+      color: var(--muted);
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .13em;
+      line-height: 1.5;
+      text-transform: uppercase;
+    }
+
+    .scroll-cue {
+      display: inline-flex;
+      align-items: center;
+      gap: .65rem;
+      color: var(--black);
+      font-size: .67rem;
+      font-weight: 700;
+      letter-spacing: .16em;
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+
+    .scroll-cue::after {
+      content: "↓";
+      display: grid;
+      width: 34px;
+      height: 34px;
+      place-items: center;
+      border: 1px solid var(--black);
+      border-radius: 50%;
+      font-size: 1rem;
+      transition: transform .2s var(--ease), background .2s var(--ease), color .2s var(--ease);
+    }
+
+    .scroll-cue:hover::after { transform: translateY(4px); color: var(--cream); background: var(--black); }
+
+    .closing {
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
+      padding: clamp(5rem, 13vw, 9rem) var(--gutter) clamp(4rem, 10vw, 7rem);
+      text-align: center;
+      background: var(--cream);
+    }
+
+    .closing::before {
+      content: "LBYN";
+      position: absolute;
+      z-index: -1;
+      left: 50%;
+      top: 48%;
+      color: var(--pink);
+      opacity: .1;
+      font-family: "Libre", Georgia, serif;
+      font-size: clamp(9rem, 30vw, 28rem);
+      font-weight: 700;
+      letter-spacing: -.1em;
+      line-height: .7;
+      transform: translate(-50%, -50%);
+      white-space: nowrap;
+    }
+
+    .closing__eyebrow {
+      margin: 0 0 1rem;
+      color: var(--red-ink);
+      font-size: .74rem;
+      font-weight: 700;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+    }
+
+    .closing__title {
+      max-width: none;
+      margin: 0 auto 2.2rem;
+      font-family: "Libre", Georgia, serif;
+      font-size: clamp(1.75rem, 5.2vw, 3.5rem);
+      line-height: 1.06;
+      letter-spacing: -.045em;
+    }
+
+    /* Composición escrita a mano: el equilibrio automático sobra. */
+    .closing__title .linea { display: block; }
+
+    .button {
+      display: inline-flex;
+      min-height: 58px;
+      align-items: center;
+      justify-content: center;
+      gap: .8rem;
+      padding: 1rem 2rem;
+      border: 1px solid transparent;
+      border-radius: 2px;
+      color: var(--cream);
+      background: var(--red-ink);
+      font-size: clamp(.78rem, 1.7vw, .92rem);
+      font-weight: 700;
+      letter-spacing: .11em;
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: color .2s var(--ease), background .2s var(--ease), transform .2s var(--ease);
+    }
+
+    .button:hover { background: var(--black); transform: translateY(-2px); }
+    .button--light { color: var(--black); background: var(--cream); }
+    .button--light:hover { color: var(--cream); background: var(--black); }
+    .button--outline { color: var(--red-ink); border-color: var(--red-ink); background: transparent; }
+    .button--outline:hover { color: var(--cream); background: var(--red-ink); }
+
+    .closing__actions {
+      width: min(100%, 760px);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: .8rem;
+    }
+
+    .closing__actions .button { width: 100%; }
+
+    .closing__seed { margin: 2.2rem 0 0; }
+
+    .closing__soon {
+      margin: 2rem 0 0;
+      color: var(--wine);
+      font-family: "Libre", Georgia, serif;
+      font-size: clamp(1.15rem, 3vw, 1.55rem);
+      font-style: italic;
+    }
+
+    .footer {
+      padding: clamp(3.5rem, 8vw, 5.5rem) var(--gutter);
+      color: var(--cream);
+      background: var(--black);
+      text-align: center;
+    }
+
+    .footer img {
+      width: 36px;
+      margin: 0 auto 1.5rem;
+      filter: invert(1);
+    }
+
+    .footer__line {
+      margin: 0;
+      font-family: "Libre", Georgia, serif;
+      font-size: clamp(1.05rem, 3vw, 1.4rem);
+      line-height: 1.7;
+    }
+
+    .footer__legal {
+      margin: 2rem 0 0;
+      color: rgba(244, 243, 234, .55);
+      font-size: .68rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .footer__panel {
+      display: inline-block;
+      margin-top: 1.5rem;
+      color: rgba(244, 243, 234, .55);
+      font-size: .66rem;
+      letter-spacing: .12em;
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+
+    .footer__panel:hover { color: var(--cream); }
+
+    .noscript {
+      padding: 1rem var(--gutter);
+      color: var(--cream);
+      background: var(--black);
+      text-align: center;
+    }
+
+    @keyframes draw { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+    @keyframes rise { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+    @keyframes settle { from { opacity: .5; transform: scale(1.08); } to { opacity: 1; transform: scale(1.025); } }
+
+    @media (max-width: 899px) {
+      .hero {
+        min-height: auto;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .hero__header { order: 1; }
+      .hero__media {
+        position: relative;
+        z-index: 0;
+        inset: auto;
+        order: 2;
+        width: 100%;
+        height: auto;
+        aspect-ratio: 852 / 480;
+        border-block: 1px solid var(--rule);
+      }
+      .hero__media::after {
+        background: linear-gradient(180deg, rgba(244,243,234,.04), transparent 72%);
+      }
+      .hero__photo {
+        object-fit: contain;
+        object-position: center;
+        transform: none;
+        animation: none;
+      }
+      .hero__paper { display: none; }
+      .hero__copy {
+        order: 3;
+        align-self: stretch;
+        width: 100%;
+        padding: clamp(2.5rem, 8vw, 4.5rem) var(--gutter) clamp(1.75rem, 6vw, 3rem);
+      }
+      .hero__footer { order: 4; }
+    }
+
+    @media (min-width: 900px) {
+      .hero {
+        grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr);
+        grid-template-rows: auto 1fr auto;
+      }
+
+      .hero__media { inset: 0 0 0 50%; height: 100%; }
+      .hero__paper {
+        inset: 0 47% 0 0;
+        clip-path: polygon(0 0, 95% 0, 98% 8%, 96% 16%, 100% 26%, 97% 38%, 99% 49%, 96% 61%, 100% 73%, 96% 84%, 99% 94%, 96% 100%, 0 100%);
+      }
+      .hero__header { padding-top: 1.35rem; }
+      .hero__copy { grid-column: 1; width: 100%; }
+      .hero__title { font-size: clamp(4.4rem, 7.1vw, 7.5rem); }
+      .hero__stroke { width: min(40vw, 570px); }
+      .hero__footer { grid-column: 1; }
+
+    }
+
+    @media (max-width: 560px) {
+      .launch-bar__date { display: none; }
+      .hero__header { align-items: flex-start; }
+      .brand span { display: none; }
+      .hero__eyebrow { max-width: 22ch; text-align: right; }
+      .hero__nav a { padding-inline: .8rem; }
+      .hero__copy { align-self: stretch; padding-bottom: 2.5rem; }
+      .hero__title { width: 100%; font-size: clamp(2.65rem, 14vw, 4.5rem); }
+      .hero__intro { max-width: 21ch; font-size: clamp(1rem, 4.5vw, 1.35rem); }
+      .hero__when { max-width: 20ch; }
+      .scroll-cue span { display: none; }
+      .button { width: min(100%, 360px); }
+      .closing__actions { grid-template-columns: 1fr; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after {
+        animation-duration: .001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .001ms !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="launch-bar">
+    <span>La Biblia y Nosotras</span>
+    <span class="launch-bar__date">Abrimos la Biblia. Compartimos la vida.</span>
+  </div>
+
+  <main>
+    <header class="hero" aria-labelledby="hero-title">
+      <div class="hero__media">
+        <video class="hero__photo" id="hero-video"
+               muted loop playsinline preload="metadata"
+               poster="assets/video/lbyn-portada-poster.webp"
+               aria-hidden="true" tabindex="-1">
+          <source src="assets/video/lbyn-portada.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="hero__paper" aria-hidden="true"></div>
+
+      <div class="hero__header">
+        <a class="brand" href="#top" aria-label="La Biblia y Nosotras, inicio">
+          <img src="isotipo-lbyn.png" alt="" width="25" height="25">
+          <span>La Biblia y Nosotras</span>
+        </a>
+        <nav class="hero__nav" aria-label="Comunidad LBYN">
+          <a href="https://lbyn-grupos.pages.dev/acompanamiento/">Unirme</a>
+          <a href="https://lbyn-grupos.pages.dev/registrar/">Abrir un grupo</a>
+          <a href="https://donate.stripe.com/7sY4gt4JZ8KmcCT4Z85ZC00">Donar</a>
+        </nav>
+      </div>
+
+      <div class="hero__copy" id="top">
+        <h1 class="hero__title" id="hero-title">
+          <span>La Biblia</span>
+          <span>y Nosotras</span>
+        </h1>
+        <div class="hero__stroke" aria-hidden="true"></div>
+        <p class="hero__intro">La Palabra nos reúne.<br>La historia ya comenzó.</p>
+      </div>
+
+      <div class="hero__footer">
+        <p class="hero__when">Círculos de amigas<br>en toda la República</p>
+        <a class="scroll-cue" href="#cierre"><span>Descubre</span></a>
+      </div>
+    </header>
+
+    <section class="closing" id="cierre" aria-labelledby="closing-title">
+      <p class="closing__eyebrow">Esto apenas comienza</p>
+      <h2 class="closing__title" id="closing-title">
+        <span class="linea">Esto no es solo leer la Biblia.</span>
+        <span class="linea">Es encontrarnos dentro</span>
+        <span class="linea">de su historia.</span>
+      </h2>
+      <div class="closing__actions">
+        <a class="button" href="https://lbyn-grupos.pages.dev/registrar/">Quiero registrar un grupo <span aria-hidden="true">→</span></a>
+        <a class="button button--outline" href="https://lbyn-grupos.pages.dev/acompanamiento/">Quiero unirme a un grupo <span aria-hidden="true">→</span></a>
+      </div>
+      <p class="closing__soon">Encuentra tu lugar. Caminemos juntas.</p>
+      <p class="closing__seed">
+        <a class="button button--outline" href="https://donate.stripe.com/7sY4gt4JZ8KmcCT4Z85ZC00">Sembrar en esta historia <span aria-hidden="true">→</span></a>
+      </p>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <img src="isotipo-lbyn.png" alt="" width="36" height="36" loading="lazy">
+    <p class="footer__line">Abrimos la Biblia. Compartimos la vida.<br>Caminamos con Jesús.</p>
+    <a class="footer__panel" href="https://lbyn-grupos.pages.dev/panel/">Acceso del equipo</a>
+    <p class="footer__legal">© 2026 La Biblia y Nosotras · Hecho con cuidado en México</p>
+  </footer>
+
+  <script>
+    (() => {
+      "use strict";
+
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const saveData = Boolean(navigator.connection && navigator.connection.saveData);
+      const heroVideo = document.getElementById("hero-video");
+
+      /* El clip de portada corre solo, mudo y en bucle. Se detiene
+         fuera de pantalla y con la pestaña oculta: no gasta batería. */
+      if (heroVideo && !reduceMotion && !saveData) {
+        const playVideo = () => heroVideo.play().catch(() => {});
+        const videoObserver = new IntersectionObserver(entries => {
+          if (entries[0].isIntersecting && !document.hidden) playVideo();
+          else heroVideo.pause();
+        }, { threshold: .08 });
+
+        videoObserver.observe(heroVideo);
+        document.addEventListener("visibilitychange", () => {
+          if (document.hidden) heroVideo.pause();
+          else if (heroVideo.getBoundingClientRect().bottom > 0) playVideo();
+        });
+      }
+
+    })();
+  </script>
+</body>
+</html>
