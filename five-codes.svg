@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" role="img" aria-labelledby="title desc">
+  <title id="title">Los cinco códigos alrededor del núcleo Worshipper</title>
+  <desc id="desc">Warrior, King, Visionary, Builder y Guardian conectados al núcleo Worshipper.</desc>
+  <defs><radialGradient id="core"><stop stop-color="#2C263E"/><stop offset="1" stop-color="#050506"/></radialGradient></defs>
+  <rect width="800" height="800" fill="#050506"/>
+  <circle cx="400" cy="400" r="270" fill="none" stroke="#B7A6FF" stroke-opacity=".25"/>
+  <circle cx="400" cy="400" r="170" fill="none" stroke="#C5A46D" stroke-opacity=".2" stroke-dasharray="5 12"/>
+  <g stroke="#B7A6FF" stroke-opacity=".35"><path d="M400 400V130"/><path d="M400 400L657 317"/><path d="M400 400L559 618"/><path d="M400 400L241 618"/><path d="M400 400L143 317"/></g>
+  <g fill="#17181D" stroke="#B7A6FF"><circle cx="400" cy="130" r="52"/><circle cx="657" cy="317" r="52"/><circle cx="559" cy="618" r="52"/><circle cx="241" cy="618" r="52"/><circle cx="143" cy="317" r="52"/></g>
+  <circle cx="400" cy="400" r="104" fill="url(#core)" stroke="#B7A6FF"/>
+  <g font-family="Arial" text-anchor="middle" fill="#F4F1EA" font-size="14" font-weight="700"><text x="400" y="135">WARRIOR</text><text x="657" y="322">KING</text><text x="559" y="623">VISIONARY</text><text x="241" y="623">BUILDER</text><text x="143" y="322">GUARDIAN</text><text x="400" y="395" font-size="18">WORSHIPPER</text><text x="400" y="420" font-size="10" fill="#B7A6FF">THE CORE</text></g>
+</svg>
