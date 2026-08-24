@@ -1,277 +1,693 @@
 <!doctype html>
-<html lang="es">
+<html lang="es-MX">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#050506">
-  <meta name="description" content="Propuesta tecnológica interactiva MVP / V1 para The New Knights Protocol™.">
-  <meta property="og:title" content="The New Knights Protocol™ — Propuesta tecnológica">
-  <meta property="og:description" content="The operating system for 90 days of transformation.">
-  <title>The New Knights Protocol™ — Propuesta tecnológica</title>
-  <link rel="stylesheet" href="./styles.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#F4F3EA">
+  <meta name="color-scheme" content="light">
+
+  <title>La Biblia y Nosotras</title>
+  <meta name="description" content="Abre tu círculo de amigas o déjanos tu WhatsApp para ayudarte a encontrar uno cerca de ti.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="es_MX">
+  <meta property="og:title" content="La Biblia y Nosotras">
+  <meta property="og:description" content="La Palabra nos reúne. La historia ya comenzó.">
+  <meta property="og:image" content="https://labibliaynosotras.com/assets/video/lbyn-portada-poster.webp">
+  <meta property="og:image:alt" content="La Biblia y Nosotras, en el desierto">
+
+  <link rel="icon" href="isotipo-lbyn.png">
+  <link rel="preload" href="assets/video/lbyn-portada-poster.webp" as="image" fetchpriority="high">
+  <link rel="preload" href="LibreBaskerville-Bold%20(1).ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="AloeveraDisplay-Medium%20(1).otf" as="font" type="font/otf" crossorigin>
+
+  <style>
+    @font-face {
+      font-family: "Libre";
+      src: url("LibreBaskerville-Bold%20(1).ttf") format("truetype");
+      font-weight: 700;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: "Aloe";
+      src: url("AloeveraDisplay-Medium%20(1).otf") format("opentype");
+      font-weight: 500;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    :root {
+      --black: #151714;
+      --cream: #F4F3EA;
+      --paper: #FFFDF7;
+      --red: #FF0C00;
+      --red-ink: #C00A02;
+      --pink: #FF88B0;
+      --pink-soft: #F7B8C8;
+      --wine: #5C1030;
+      --blue: #00C5FF;
+      --yellow: #FFD609;
+      --rule: rgba(21, 23, 20, .18);
+      --muted: rgba(21, 23, 20, .64);
+      --gutter: clamp(1.25rem, 5vw, 4.5rem);
+      --ease: cubic-bezier(.16, 1, .3, 1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0;
+      color: var(--black);
+      background: var(--cream);
+      font-family: "Aloe", system-ui, -apple-system, "Segoe UI", sans-serif;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      pointer-events: none;
+      opacity: .16;
+      mix-blend-mode: multiply;
+      background:
+        repeating-radial-gradient(circle at 18% 28%, rgba(21,23,20,.10) 0 .45px, transparent .8px 4px),
+        repeating-linear-gradient(97deg, transparent 0 11px, rgba(21,23,20,.025) 12px 13px);
+      background-size: 93px 87px, 211px 179px;
+    }
+
+    img { display: block; max-width: 100%; }
+    a { color: inherit; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    a:focus-visible, button:focus-visible {
+      outline: 3px solid #0011E4;
+      outline-offset: 4px;
+    }
+    [hidden] { display: none !important; }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .launch-bar {
+      min-height: 46px;
+      padding: .65rem var(--gutter);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      color: var(--cream);
+      background: var(--red-ink);
+      border-bottom: 1px solid rgba(244, 243, 234, .22);
+      font-size: clamp(.62rem, 1.4vw, .76rem);
+      font-weight: 700;
+      letter-spacing: .16em;
+      line-height: 1.3;
+      text-transform: uppercase;
+    }
+
+    .launch-bar__date { color: rgba(244, 243, 234, .82); text-align: right; }
+
+    .hero {
+      position: relative;
+      isolation: isolate;
+      min-height: calc(100svh - 46px);
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: minmax(0, 1.12fr) minmax(0, .88fr);
+      grid-template-rows: auto 1fr auto;
+      background: var(--cream);
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .hero__media {
+      position: absolute;
+      z-index: -2;
+      inset: 0 0 auto 42%;
+      height: 63%;
+      overflow: hidden;
+      background: #5e8aa2;
+    }
+
+    .hero__media::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, rgba(244,243,234,.08), transparent 42%);
+    }
+
+    .hero__photo {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: 57% center;
+      filter: saturate(.95) contrast(1.02);
+      transform: scale(1.025);
+      animation: settle 1.4s var(--ease) both;
+    }
+
+    .hero__paper {
+      position: absolute;
+      z-index: -1;
+      inset: 0 39% 35% 0;
+      background: var(--cream);
+      clip-path: polygon(0 0, 92% 0, 98% 5%, 94% 10%, 99% 16%, 95% 22%, 100% 30%, 96% 38%, 99% 46%, 94% 55%, 100% 64%, 95% 73%, 99% 82%, 93% 91%, 96% 100%, 0 100%);
+    }
+
+    .hero__header {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 1rem var(--gutter);
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: .7rem;
+      color: var(--black);
+      text-decoration: none;
+      font-family: "Libre", Georgia, serif;
+      font-size: clamp(.78rem, 1.5vw, .95rem);
+    }
+
+    .brand img { width: 25px; height: 25px; object-fit: contain; }
+
+    .hero__eyebrow {
+      margin: 0;
+      color: var(--red-ink);
+      font-size: clamp(.6rem, 1.45vw, .76rem);
+      font-weight: 700;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+    }
+
+    .hero__nav { display: flex; align-items: center; gap: .45rem; }
+    .hero__nav a {
+      min-height: 42px;
+      padding: .72rem 1rem;
+      display: inline-flex;
+      align-items: center;
+      border-radius: 99px;
+      color: var(--black);
+      background: rgba(244,243,234,.88);
+      font-size: clamp(.6rem, 1.25vw, .72rem);
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-decoration: none;
+      text-transform: uppercase;
+      backdrop-filter: blur(8px);
+    }
+    .hero__nav a:hover { color: var(--cream); background: var(--black); }
+    .hero__nav a:last-child { color: var(--cream); background: var(--red-ink); }
+
+    .hero__copy {
+      grid-column: 1 / -1;
+      align-self: center;
+      width: min(92%, 760px);
+      padding: clamp(2.5rem, 8vh, 6.5rem) var(--gutter) clamp(1.5rem, 4vh, 3rem);
+      animation: rise .9s var(--ease) .08s both;
+    }
+
+    .hero__title {
+      width: min-content;
+      margin: 0;
+      font-family: "Libre", Georgia, serif;
+      font-size: clamp(3.2rem, 13vw, 7.5rem);
+      line-height: .93;
+      letter-spacing: -.065em;
+      text-wrap: balance;
+    }
+
+    .hero__title span { display: block; white-space: nowrap; }
+
+    .hero__stroke {
+      position: relative;
+      width: min(82vw, 620px);
+      height: 12px;
+      margin: clamp(1rem, 2.2vh, 1.6rem) 0 clamp(1.2rem, 3vh, 2rem);
+      overflow: hidden;
+    }
+
+    .hero__stroke::before,
+    .hero__stroke::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 4px;
+      border-radius: 999px 16px 999px 8px;
+      background: var(--red);
+      transform-origin: left center;
+      animation: draw 1s var(--ease) .55s both;
+    }
+
+    .hero__stroke::before { top: 2px; transform: rotate(-.5deg); }
+    .hero__stroke::after { top: 6px; right: 7%; opacity: .56; transform: rotate(.25deg); }
+
+    .hero__intro {
+      max-width: 27ch;
+      margin: 0;
+      font-family: "Libre", Georgia, serif;
+      font-size: clamp(1.1rem, 3.6vw, 1.75rem);
+      line-height: 1.35;
+    }
+
+    .hero__actions {
+      width: min(100%, 620px);
+      margin-top: clamp(1.35rem, 3vh, 2rem);
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: .65rem;
+    }
+
+    .hero__action {
+      min-height: 112px;
+      padding: 1rem 1.1rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: .45rem;
+      border: 1px solid var(--black);
+      color: var(--black);
+      background: rgba(255,253,247,.88);
+      text-decoration: none;
+      transition: transform .2s var(--ease), color .2s var(--ease), background .2s var(--ease);
+    }
+
+    .hero__action:hover { transform: translateY(-3px); color: var(--cream); background: var(--black); }
+    .hero__action--primary { color: var(--cream); border-color: var(--red-ink); background: var(--red-ink); }
+    .hero__action--primary:hover { background: var(--black); border-color: var(--black); }
+    .hero__action small {
+      font-size: .6rem;
+      font-weight: 700;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      opacity: .72;
+    }
+    .hero__action strong {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: .75rem;
+      font-family: "Libre", Georgia, serif;
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      line-height: 1.15;
+    }
+    .hero__action strong::after { content: "→"; font-family: "Aloe", sans-serif; }
+
+    .hero__footer {
+      grid-column: 1 / -1;
+      align-self: end;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 1.25rem var(--gutter) 1.65rem;
+    }
+
+    .hero__when {
+      margin: 0;
+      color: var(--muted);
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .13em;
+      line-height: 1.5;
+      text-transform: uppercase;
+    }
+
+    .scroll-cue {
+      display: inline-flex;
+      align-items: center;
+      gap: .65rem;
+      color: var(--black);
+      font-size: .67rem;
+      font-weight: 700;
+      letter-spacing: .16em;
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+
+    .scroll-cue::after {
+      content: "↓";
+      display: grid;
+      width: 34px;
+      height: 34px;
+      place-items: center;
+      border: 1px solid var(--black);
+      border-radius: 50%;
+      font-size: 1rem;
+      transition: transform .2s var(--ease), background .2s var(--ease), color .2s var(--ease);
+    }
+
+    .scroll-cue:hover::after { transform: translateY(4px); color: var(--cream); background: var(--black); }
+
+    .closing {
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
+      padding: clamp(5rem, 13vw, 9rem) var(--gutter) clamp(4rem, 10vw, 7rem);
+      text-align: center;
+      background: var(--cream);
+    }
+
+    .closing::before {
+      content: "LBYN";
+      position: absolute;
+      z-index: -1;
+      left: 50%;
+      top: 48%;
+      color: var(--pink);
+      opacity: .1;
+      font-family: "Libre", Georgia, serif;
+      font-size: clamp(9rem, 30vw, 28rem);
+      font-weight: 700;
+      letter-spacing: -.1em;
+      line-height: .7;
+      transform: translate(-50%, -50%);
+      white-space: nowrap;
+    }
+
+    .closing__eyebrow {
+      margin: 0 0 1rem;
+      color: var(--red-ink);
+      font-size: .74rem;
+      font-weight: 700;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+    }
+
+    .closing__title {
+      max-width: none;
+      margin: 0 auto 2.2rem;
+      font-family: "Libre", Georgia, serif;
+      font-size: clamp(1.75rem, 5.2vw, 3.5rem);
+      line-height: 1.06;
+      letter-spacing: -.045em;
+    }
+
+    /* Composición escrita a mano: el equilibrio automático sobra. */
+    .closing__title .linea { display: block; }
+
+    .button {
+      display: inline-flex;
+      min-height: 58px;
+      align-items: center;
+      justify-content: center;
+      gap: .8rem;
+      padding: 1rem 2rem;
+      border: 1px solid transparent;
+      border-radius: 2px;
+      color: var(--cream);
+      background: var(--red-ink);
+      font-size: clamp(.78rem, 1.7vw, .92rem);
+      font-weight: 700;
+      letter-spacing: .11em;
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: color .2s var(--ease), background .2s var(--ease), transform .2s var(--ease);
+    }
+
+    .button:hover { background: var(--black); transform: translateY(-2px); }
+    .button--light { color: var(--black); background: var(--cream); }
+    .button--light:hover { color: var(--cream); background: var(--black); }
+    .button--outline { color: var(--red-ink); border-color: var(--red-ink); background: transparent; }
+    .button--outline:hover { color: var(--cream); background: var(--red-ink); }
+
+    .closing__actions {
+      width: min(100%, 760px);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: .8rem;
+    }
+
+    .closing__actions .button { width: 100%; }
+
+    .closing__seed { margin: 2.2rem 0 0; }
+
+    .closing__soon {
+      margin: 2rem 0 0;
+      color: var(--wine);
+      font-family: "Libre", Georgia, serif;
+      font-size: clamp(1.15rem, 3vw, 1.55rem);
+      font-style: italic;
+    }
+
+    .footer {
+      padding: clamp(3.5rem, 8vw, 5.5rem) var(--gutter);
+      color: var(--cream);
+      background: var(--black);
+      text-align: center;
+    }
+
+    .footer img {
+      width: 36px;
+      margin: 0 auto 1.5rem;
+      filter: invert(1);
+    }
+
+    .footer__line {
+      margin: 0;
+      font-family: "Libre", Georgia, serif;
+      font-size: clamp(1.05rem, 3vw, 1.4rem);
+      line-height: 1.7;
+    }
+
+    .footer__legal {
+      margin: 2rem 0 0;
+      color: rgba(244, 243, 234, .55);
+      font-size: .68rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .footer__panel {
+      display: inline-block;
+      margin-top: 1.5rem;
+      color: rgba(244, 243, 234, .55);
+      font-size: .66rem;
+      letter-spacing: .12em;
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+
+    .footer__panel:hover { color: var(--cream); }
+
+    .noscript {
+      padding: 1rem var(--gutter);
+      color: var(--cream);
+      background: var(--black);
+      text-align: center;
+    }
+
+    @keyframes draw { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+    @keyframes rise { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+    @keyframes settle { from { opacity: .5; transform: scale(1.08); } to { opacity: 1; transform: scale(1.025); } }
+
+    @media (max-width: 899px) {
+      .hero {
+        min-height: auto;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .hero__header { order: 1; }
+      .hero__media {
+        position: relative;
+        z-index: 0;
+        inset: auto;
+        order: 3;
+        width: 100%;
+        height: auto;
+        aspect-ratio: 852 / 480;
+        border-block: 1px solid var(--rule);
+      }
+      .hero__media::after {
+        background: linear-gradient(180deg, rgba(244,243,234,.04), transparent 72%);
+      }
+      .hero__photo {
+        object-fit: contain;
+        object-position: center;
+        transform: none;
+        animation: none;
+      }
+      .hero__paper { display: none; }
+      .hero__copy {
+        order: 2;
+        align-self: stretch;
+        width: 100%;
+        padding: clamp(2.5rem, 8vw, 4.5rem) var(--gutter) clamp(1.75rem, 6vw, 3rem);
+      }
+      .hero__footer { order: 4; }
+    }
+
+    @media (min-width: 900px) {
+      .hero {
+        grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr);
+        grid-template-rows: auto 1fr auto;
+      }
+
+      .hero__media { inset: 0 0 0 50%; height: 100%; }
+      .hero__paper {
+        inset: 0 47% 0 0;
+        clip-path: polygon(0 0, 95% 0, 98% 8%, 96% 16%, 100% 26%, 97% 38%, 99% 49%, 96% 61%, 100% 73%, 96% 84%, 99% 94%, 96% 100%, 0 100%);
+      }
+      .hero__header { padding-top: 1.35rem; }
+      .hero__copy { grid-column: 1; width: 100%; }
+      .hero__title { font-size: clamp(4.4rem, 7.1vw, 7.5rem); }
+      .hero__stroke { width: min(40vw, 570px); }
+      .hero__footer { grid-column: 1; }
+
+    }
+
+    @media (max-width: 560px) {
+      .launch-bar__date { display: none; }
+      .hero__header { align-items: flex-start; }
+      .brand span { display: none; }
+      .hero__eyebrow { max-width: 22ch; text-align: right; }
+      .hero__nav a { padding-inline: .8rem; }
+      .hero__copy { align-self: stretch; padding-bottom: 2.5rem; }
+      .hero__title { width: 100%; font-size: clamp(2.65rem, 14vw, 4.5rem); }
+      .hero__intro { max-width: 21ch; font-size: clamp(1rem, 4.5vw, 1.35rem); }
+      .hero__actions { grid-template-columns: 1fr; }
+      .hero__action { min-height: 94px; }
+      .hero__when { max-width: 20ch; }
+      .scroll-cue span { display: none; }
+      .button { width: min(100%, 360px); }
+      .closing__actions { grid-template-columns: 1fr; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after {
+        animation-duration: .001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .001ms !important;
+      }
+    }
+  </style>
 </head>
+
 <body>
-  <div class="reading-progress" aria-hidden="true"><i id="readingBar"></i></div>
-  <header class="site-header" id="top">
-    <a class="brand" href="#top" aria-label="Inicio"><span class="brand-glyph">NK</span><span>THE NEW KNIGHTS <br>PROTOCOL™</span></a>
-    <nav class="desktop-nav" aria-label="Navegación principal">
-      <a href="#system">Sistema</a><a href="#experience">Experiencia</a><a href="#architecture">Tecnología</a><a href="#scope">Alcance</a><a href="#investment">Inversión</a>
-    </nav>
-    <button class="menu-button" id="menuButton" aria-expanded="false" aria-controls="mobileNav">ÍNDICE <span>＋</span></button>
-    <span class="system-status"><i></i> MVP / V1</span>
-  </header>
-  <nav class="mobile-nav" id="mobileNav" aria-hidden="true">
-    <a href="#system">01 — El sistema</a><a href="#journey">02 — Journey</a><a href="#experience">03 — Experiencia</a><a href="#architecture">04 — Tecnología</a><a href="#scope">05 — Alcance</a><a href="#costs">06 — Costos</a><a href="#investment">07 — Inversión</a>
-  </nav>
+  <div class="launch-bar">
+    <span>La Biblia y Nosotras</span>
+    <span class="launch-bar__date">Abrimos la Biblia. Compartimos la vida.</span>
+  </div>
 
   <main>
-    <section class="hero" id="top" aria-labelledby="hero-title">
-      <img class="hero-media" src="./assets/hero.webp" alt="Figura avanzando por un espacio arquitectónico oscuro hacia una fuente de luz">
-      <div class="hero-shade"></div><div class="grid-field"></div>
-      <div class="hero-copy" data-reveal>
-        <p class="eyebrow violet">THE NEW KNIGHTS PROTOCOL™</p>
-        <h1 id="hero-title">THE OPERATING SYSTEM <br>FOR 90 DAYS OF <br><span>TRANSFORMATION.</span></h1>
-        <p class="hero-lead">Una infraestructura digital diseñada para acompañar a cada Knight desde el momento en que conoce el programa hasta que completa su transformación.</p>
-        <a class="primary-cta magnetic" href="#system">Explorar el ecosistema <b>↘</b></a>
+    <header class="hero" aria-labelledby="hero-title">
+      <div class="hero__media">
+        <video class="hero__photo" id="hero-video"
+               muted loop playsinline preload="metadata"
+               poster="assets/video/lbyn-portada-poster.webp"
+               aria-hidden="true" tabindex="-1">
+          <source src="assets/video/lbyn-portada.mp4" type="video/mp4">
+        </video>
       </div>
-      <div class="phone-wrap" id="heroPhone" data-reveal>
-        <div class="phone" aria-label="Mockup del dashboard del Knight">
-          <div class="phone-status"><span>09:41</span><span>● ● ●</span></div>
-          <div class="phone-logo">THE NEW KNIGHTS / 90</div>
-          <p class="micro">WELCOME,</p><h2>GERSON</h2>
-          <div class="day-lockup"><strong>17</strong><span>DAY <br>OF 90</span></div>
-          <div class="phase-row"><span>RESET™</span><b>19% COMPLETED</b></div><div class="thin-progress"><i></i></div>
-          <p class="micro">TODAY'S PROTOCOL</p>
-          <button class="phone-task checked"><span>01</span><b>TRAIN</b><small>Push Workout · 42 min</small><i>✓</i></button>
-          <button class="phone-task"><span>02</span><b>DEVELOP</b><small>King · Lesson 03</small><i>○</i></button>
-          <button class="phone-task"><span>03</span><b>ACTION</b><small>Dormir antes de las 23:00</small><i>○</i></button>
-        </div>
-        <span class="hud hud-a">USER / 00817</span><span class="hud hud-b">19.4326° N</span>
-      </div>
-      <div class="hero-meta"><span>Powered by RSET IMPACT MX™</span><span>Technology by ZIV</span><span>Propuesta tecnológica · 2026</span></div>
-      <a class="scroll-cue" href="#system">SCROLL TO INITIATE <i>↓</i></a>
-    </section>
+      <div class="hero__paper" aria-hidden="true"></div>
 
-    <section class="manifesto section-pad" id="system">
-      <div class="section-index">01 / SYSTEM DEFINITION</div>
-      <div class="manifesto-title" data-reveal>
-        <p class="eyebrow">LO QUE REALMENTE CONSTRUIREMOS</p>
-        <h2>NOT A WEBSITE. <br>NOT A COURSE. <br><span>A TRANSFORMATION SYSTEM.</span></h2>
+      <div class="hero__header">
+        <a class="brand" href="#top" aria-label="La Biblia y Nosotras, inicio">
+          <img src="isotipo-lbyn.png" alt="" width="25" height="25">
+          <span>La Biblia y Nosotras</span>
+        </a>
+        <nav class="hero__nav" aria-label="Comunidad LBYN">
+          <a href="https://lbyn-grupos.pages.dev/acompanamiento/">Encontrar círculo</a>
+          <a href="https://lbyn-grupos.pages.dev/circulo/">Abrir mi círculo</a>
+        </nav>
       </div>
-      <div class="manifesto-grid">
-        <div class="manifesto-copy" data-reveal>
-          <p class="lead">No construiremos solamente una landing page ni subiremos videos a una plataforma de cursos.</p>
-          <p>Construiremos progresivamente una infraestructura propia donde RSET controla el recorrido completo: descubrimiento, compra, registro, onboarding, evaluación, protocolo personalizado, actividades diarias, entrenamiento, nutrición, contenido, hábitos, progreso, score, comunicación, automatizaciones, finalización y continuidad.</p>
-          <div class="system-chain" aria-label="Capacidades del sistema">
-            <span>DISCOVER</span><i>→</i><span>ACTIVATE</span><i>→</i><span>TRANSFORM</span><i>→</i><span>CONTINUE</span>
-          </div>
-        </div>
-        <div class="compare" data-reveal>
-          <div class="compare-tabs" role="tablist"><button class="compare-tab" data-compare="lms" role="tab">LMS TRADICIONAL</button><button class="compare-tab active" data-compare="nks" role="tab">NEW KNIGHTS SYSTEM</button></div>
-          <div id="comparePanel" class="compare-panel" aria-live="polite"></div>
+
+      <div class="hero__copy" id="top">
+        <h1 class="hero__title" id="hero-title">
+          <span>La Biblia</span>
+          <span>y Nosotras</span>
+        </h1>
+        <div class="hero__stroke" aria-hidden="true"></div>
+        <p class="hero__intro">La Palabra nos reúne.<br>La historia ya comenzó.</p>
+        <div class="hero__actions" aria-label="Elige cómo quieres participar">
+          <a class="hero__action hero__action--primary" href="https://lbyn-grupos.pages.dev/circulo/">
+            <small>Ya tengo amigas</small>
+            <strong>Abrir mi círculo</strong>
+          </a>
+          <a class="hero__action" href="https://lbyn-grupos.pages.dev/acompanamiento/">
+            <small>Quiero que me ayuden</small>
+            <strong>Encontrar un círculo</strong>
+          </a>
         </div>
       </div>
-    </section>
 
-    <section class="value-section section-pad">
-      <div class="value-noise"></div>
-      <div class="value-copy" data-reveal>
-        <p class="eyebrow violet">CONTEXT / CUSTOM SOFTWARE</p>
-        <h2>EL VALOR REAL DE <br>UN ECOSISTEMA PROPIO.</h2>
-        <p>Un ecosistema personalizado con landing, pagos, autenticación, perfiles, dashboard, journey de 90 días, contenido, progreso, administración, automatizaciones e inteligencia artificial normalmente se cotiza como desarrollo de software a la medida.</p>
+      <div class="hero__footer">
+        <p class="hero__when">Círculos de amigas<br>en toda la República</p>
+        <a class="scroll-cue" href="#cierre"><span>Descubre</span></a>
       </div>
-      <div class="market-value" data-reveal><span>VALOR COMERCIAL ESTIMADO DE UN MVP DE ESTE NIVEL</span><strong data-count="250000">$250,000</strong><i>—</i><strong data-count="450000">$450,000</strong><small>MXN · Referencia comercial estimada</small></div>
-      <p class="fine-print">El costo puede crecer con apps nativas, wearables, comunidad, streaming avanzado, gamificación compleja o infraestructura empresarial. Esta propuesta se concentra en construir el núcleo correcto y hacerlo extremadamente bien.</p>
-    </section>
+    </header>
 
-    <section class="journey section-pad" id="journey">
-      <div class="section-head" data-reveal><div><span class="section-index">02 / THE KNIGHT JOURNEY</span><h2>UN RECORRIDO. <br>ONCE MOMENTOS CLAVE.</h2></div><p>El sistema registra cada hito para saber cuántos compran, terminan el onboarding, qué completan, dónde abandonan y cuántos llegan al Day 90.</p></div>
-      <div class="journey-track" id="journeyTrack" data-reveal></div>
-      <div class="event-tape"><span>EVENT STREAM</span><b>PAYMENT.APPROVED</b><b>ONBOARDING.COMPLETED</b><b>DAY.17.ACTIVE</b><b>WORKOUT.COMPLETED</b><b>SCORE.UPDATED</b></div>
-    </section>
-
-    <section class="phases section-pad" id="phases">
-      <div class="section-index">03 / PROGRAM LOGIC</div>
-      <div class="phase-intro" data-reveal><p class="eyebrow">THREE MOVEMENTS / ONE PROTOCOL</p><h2>90 DÍAS. <br>TRES FASES. <br>UNA TRANSFORMACIÓN.</h2></div>
-      <div class="phase-cards" id="phaseCards">
-        <article class="phase-card reset active" data-phase="reset"><span>01</span><small>DAYS 01—30</small><h3>RESET™</h3><p>Definir la línea base. Interrumpir patrones. Recuperar control y claridad.</p><div class="phase-meter"><i></i></div></article>
-        <article class="phase-card build" data-phase="build"><span>02</span><small>DAYS 31—60</small><h3>BUILD™</h3><p>Construir capacidad, hábitos y un sistema personal que pueda sostenerse.</p><div class="phase-meter"><i></i></div></article>
-        <article class="phase-card reveal" data-phase="reveal"><span>03</span><small>DAYS 61—90</small><h3>REVEAL™</h3><p>Consolidar identidad, medir transformación y preparar continuidad.</p><div class="phase-meter"><i></i></div></article>
+    <section class="closing" id="cierre" aria-labelledby="closing-title">
+      <p class="closing__eyebrow">Esto apenas comienza</p>
+      <h2 class="closing__title" id="closing-title">
+        <span class="linea">Esto no es solo leer la Biblia.</span>
+        <span class="linea">Es encontrarnos dentro</span>
+        <span class="linea">de su historia.</span>
+      </h2>
+      <div class="closing__actions">
+        <a class="button" href="https://lbyn-grupos.pages.dev/circulo/">Abrir mi círculo <span aria-hidden="true">→</span></a>
+        <a class="button button--outline" href="https://lbyn-grupos.pages.dev/acompanamiento/">Encontrar un círculo <span aria-hidden="true">→</span></a>
       </div>
-      <div class="codes-layout">
-        <div class="codes-copy" data-reveal><p class="eyebrow violet">THE FIVE CODES</p><h2>CINCO EXPRESIONES. <br>UN NÚCLEO.</h2><p><strong>WORSHIPPER</strong> no es un sexto código. Es el corazón que da propósito y conecta Warrior, King, Visionary, Builder y Guardian.</p><div class="code-legend"><span>01 WARRIOR / Cuerpo</span><span>02 KING / Mente</span><span>03 VISIONARY / Visión</span><span>04 BUILDER / Manos</span><span>05 GUARDIAN / Instinto</span></div></div>
-        <div class="codes-visual" data-reveal><img src="./assets/codes.webp" alt="Cinco fragmentos metálicos rodeando un núcleo oscuro"><div class="core-label"><small>THE CORE</small><strong>WORSHIPPER</strong><span>Corazón de Adorador</span></div><button class="code-point p1" data-code="WARRIOR">01</button><button class="code-point p2" data-code="KING">02</button><button class="code-point p3" data-code="VISIONARY">03</button><button class="code-point p4" data-code="BUILDER">04</button><button class="code-point p5" data-code="GUARDIAN">05</button></div>
-      </div>
-    </section>
-
-    <section class="experience section-pad" id="experience">
-      <div class="section-head" data-reveal><div><span class="section-index">04 / PRODUCT EXPERIENCE</span><h2>¿QUÉ TIENE QUE <br>HACER HOY?</h2></div><p>El dashboard no obliga al usuario a buscar. Le entrega contexto, prioridad y acción en el momento correcto.</p></div>
-      <div class="product-demo" data-reveal>
-        <div class="screen-tabs" id="screenTabs" role="tablist" aria-label="Pantallas de la plataforma"></div>
-        <div class="device-stage"><div class="device-shell"><div class="device-top"><span id="screenTitle">DASHBOARD</span><span>DAY 17 / 90</span></div><div class="device-content" id="deviceContent"></div><div class="device-nav"><i></i><i></i><i></i><i></i><i></i></div></div><span class="screen-note" id="screenNote"></span></div>
-      </div>
-      <div class="training-spread" data-reveal><img src="./assets/training.webp" alt="Entrenamiento premium con iluminación dramática"><div><p class="eyebrow violet">TRAINING / NUTRITION / ACADEMY</p><h3>Contenido que se ejecuta, <br>no solamente se consume.</h3><p>Ejercicios, series, repeticiones, descansos, RPE, video y notas; plan diario, sustituciones, hidratación y documentos; contenido en video, audio, texto, PDF, reflexión y evaluación.</p><div class="metric-row"><span><b>06</b> Códigos de contenido</span><span><b>90</b> Días configurables</span><span><b>04</b> Evaluaciones</span></div></div></div>
-    </section>
-
-    <section class="profile-section section-pad">
-      <div class="section-index">05 / INDIVIDUAL PROFILE</div>
-      <div class="profile-grid">
-        <div data-reveal><p class="eyebrow">ONE IDENTITY / MULTIPLE PROGRAMS</p><h2>CADA KNIGHT <br>TIENE SU PROPIO <br>ESPACIO.</h2><p>Un identificador único conecta perfil, ingreso, día, fase, objetivos, evaluaciones, score, actividades, entrenamientos, nutrición, hábitos, contenido, medidas, fotos privadas, pagos y acceso.</p><p>El día se calcula desde la fecha de inicio y la zona horaria. El administrador puede pausar, corregir fecha, cambiar día, asignar contenido o desactivar acceso.</p></div>
-        <div class="profile-record" data-reveal><div class="record-head"><span>PROFILE / 00817</span><i>ACTIVE</i></div><div class="avatar">GK</div><h3>GERSON KNIGHT</h3><small>gerson@rset.mx · America/Mexico_City</small><dl><div><dt>CURRENT DAY</dt><dd>17 / 90</dd></div><div><dt>PHASE</dt><dd>RESET™</dd></div><div><dt>ACCESS</dt><dd>ENABLED</dd></div><div><dt>PAYMENT</dt><dd>PAID</dd></div><div><dt>SCORE</dt><dd>68.4</dd></div><div><dt>LAST EVENT</dt><dd>TRAIN.COMPLETE</dd></div></dl><button>VIEW PRIVATE PROGRESS →</button></div>
-      </div>
-      <div class="data-model"><span>GLOBAL USER</span><i>→</i><span>ENROLLMENT</span><i>→</i><span>PROGRAM</span><i>→</i><span>PHASE</span><i>→</i><span>PROGRAM DAY</span></div>
-    </section>
-
-    <section class="architecture section-pad" id="architecture">
-      <div class="section-head" data-reveal><div><span class="section-index">06 / TECHNOLOGY ARCHITECTURE</span><h2>UNA ARQUITECTURA <br>RÁPIDA, SEGURA Y <br>PREPARADA PARA ESCALAR.</h2></div><p>La V1 será una web app responsive/PWA. No será necesario desarrollar inicialmente aplicaciones nativas para iOS y Android.</p></div>
-      <div class="arch-diagram" data-reveal>
-        <div class="arch-line" aria-hidden="true"></div>
-        <button class="arch-node active" data-layer="user"><i>01</i><b>KNIGHT</b><small>iPhone · Android · Desktop</small></button>
-        <button class="arch-node" data-layer="pages"><i>02</i><b>CLOUDFLARE PAGES</b><small>Landing · PWA · Admin</small></button>
-        <button class="arch-node" data-layer="workers"><i>03</i><b>WORKERS API</b><small>Sesiones · APIs · Permisos</small></button>
-        <button class="arch-node" data-layer="data"><i>04</i><b>D1 + R2 + VECTORIZE</b><small>Datos · Privacidad · Knowledge</small></button>
-        <button class="arch-node" data-layer="connect"><i>05</i><b>CONNECTED SERVICES</b><small>OpenAI · Meta · Stripe · Email</small></button>
-      </div>
-      <div class="arch-detail" id="archDetail" aria-live="polite"></div>
-      <div class="tech-cards">
-        <article data-reveal><span>PAGES</span><h3>La interfaz global</h3><p>Landing, app, panel administrativo y archivos estáticos distribuidos globalmente con SSL, despliegues automáticos, versiones y rollbacks.</p></article>
-        <article data-reveal><span>WORKERS</span><h3>La capa segura</h3><p>Valida sesiones, registra progreso, recibe webhooks, conecta proveedores, controla permisos y protege todas las claves privadas.</p></article>
-        <article data-reveal><span>D1</span><h3>La memoria estructurada</h3><p>Usuarios, roles, programas, inscripciones, días, tareas, contenido, entrenamientos, scores, pagos, eventos y auditoría.</p></article>
-        <article data-reveal><span>R2 + STREAM</span><h3>Archivos bajo control</h3><p>Fotografías privadas con URL temporal, documentos, audio y video optimizado. Workers verifica propiedad antes de conceder acceso.</p></article>
-        <article data-reveal><span>VECTORIZE</span><h3>Conocimiento oficial</h3><p>Metodología, códigos, FAQ, entrenamiento, nutrición y políticas aprobadas para que la IA consulte antes de responder.</p></article>
-        <article data-reveal><span>QUEUES + CRON</span><h3>Automatización resiliente</h3><p>Recordatorios, Day 30/60/90, reintentos seguros y procesos que funcionan aunque ningún administrador esté conectado.</p></article>
-      </div>
-    </section>
-
-    <section class="flows section-pad">
-      <div class="split-flow">
-        <div data-reveal><p class="eyebrow violet">GOOGLE IDENTITY</p><h2>UN ACCESO. <br>SU PERFIL PERSONAL.</h2><p>Google valida la identidad; Workers valida el token firmado, busca o crea al usuario en D1 y genera una sesión segura.</p><ol class="number-flow"><li><b>01</b> Continuar con Google</li><li><b>02</b> OAuth 2.0 + OpenID Connect</li><li><b>03</b> Validación del ID token</li><li><b>04</b> Cookie HttpOnly · Secure · SameSite</li><li><b>05</b> Perfil y rol autorizado</li></ol><small>Nunca almacenamos la contraseña de Google. Roles iniciales: SUPER ADMIN, RSET ADMIN, COACH y KNIGHT.</small></div>
-        <div class="login-card" data-reveal><span class="shield">◇</span><p>WELCOME BACK, KNIGHT</p><h3>Continúa tu protocolo</h3><button><i>G</i> Continuar con Google</button><small>Acceso seguro. RSET nunca recibe tu contraseña.</small><div class="login-scan"></div></div>
-      </div>
-      <div class="split-flow reverse">
-        <div data-reveal><p class="eyebrow gold">STRIPE CHECKOUT</p><h2>DEL PAGO <br>AL DAY 0. <br>AUTOMÁTICAMENTE.</h2><p>El webhook firmado activa al usuario exactamente una vez, registra la campaña, asigna el programa y dispara la bienvenida.</p><ol class="number-flow"><li><b>01</b> Capturar UTMs y origen</li><li><b>02</b> Stripe procesa el pago</li><li><b>03</b> Workers valida webhook</li><li><b>04</b> Idempotencia evita duplicados</li><li><b>05</b> Activar acceso + onboarding</li></ol><small>Pago único, cupones y estados; listo para cuotas o suscripción futura. Nunca almacenamos datos de tarjeta.</small></div>
-        <div class="payment-card" data-reveal><span>ORDER / NKP-00817</span><h3>THE NEW KNIGHTS <br>PROTOCOL™</h3><dl><div><dt>STATUS</dt><dd>PAYMENT APPROVED</dd></div><div><dt>USER</dt><dd>CREATED</dd></div><div><dt>PROGRAM</dt><dd>ASSIGNED</dd></div><div><dt>ACCESS</dt><dd>ACTIVE</dd></div></dl><strong>READY FOR DAY 0 <i>✓</i></strong></div>
-      </div>
-    </section>
-
-    <section class="ai-section section-pad" id="ai">
-      <div class="ai-title" data-reveal><span class="section-index">07 / INTELLIGENCE LAYER</span><h2>ONE INTELLIGENCE LAYER. <br><span>TWO EXPERIENCES.</span></h2><p>Una sola capa de inteligencia. Dos canales conectados al mismo conocimiento oficial y al contexto autorizado de cada Knight.</p></div>
-      <div class="ai-channels">
-        <article class="ai-channel" data-reveal><span>CHANNEL / 01</span><h3>NEW KNIGHTS <br>AI COACH</h3><p>Dentro de la plataforma responde sobre protocolo, entrenamiento, nutrición autorizada, hábitos, progreso, actividades y contenido.</p><div class="chat"><p class="user-bubble">¿Qué me toca hoy?</p><p class="ai-bubble">Estás en Day 17 · RESET™. Hoy: Push Workout, Plan RESET y KING Lesson 03. Ya completaste tu entrenamiento.</p></div><small>Contexto autorizado: día, fase, tareas, contenido, progreso, score e historial relevante.</small></article>
-        <article class="ai-channel whatsapp" data-reveal><span>CHANNEL / 02</span><h3>WHATSAPP <br>AI AGENT</h3><p>Resuelve preguntas, recuerda actividades, reactiva usuarios inactivos, comparte enlaces y escala a una persona cuando es necesario.</p><div class="wa-flow"><span>USER</span><i>→</i><span>META</span><i>→</i><span>WORKERS</span><i>→</i><span>OPENAI</span><i>→</i><span>SAFE REPLY</span></div><small>Consentimiento, opt-out, webhooks verificados, límites, plantillas aprobadas y escalamiento humano.</small></article>
-      </div>
-      <div class="bonus-band" data-reveal><div><p class="eyebrow">BONO DE IMPLEMENTACIÓN TECNOLÓGICA</p><h3>La creación e integración inicial del AI Coach y su conexión con WhatsApp están incluidas en el MVP.</h3></div><div><strong>NO LICENSE FEE <br>TO ZIV.</strong><p>RSET paga directamente el consumo real de OpenAI, WhatsApp e infraestructura. La clave de OpenAI pertenece a RSET y vive como secreto en Cloudflare.</p></div></div>
-      <div class="guardrails" data-reveal><p class="eyebrow">AI SAFETY PROTOCOL</p><div><span>01 IDENTIFICAR</span><span>02 RECUPERAR CONTEXTO</span><span>03 CONSULTAR RSET</span><span>04 GENERAR</span><span>05 APLICAR REGLAS</span><span>06 REGISTRAR</span><span>07 ESCALAR</span></div><p>La IA no diagnostica, no sustituye profesionales, no recomienda medicamentos, no inventa información, no revela datos ajenos ni ejecuta cambios críticos sin autorización. Presupuesto, modelo, horarios, temas y límites son configurables.</p></div>
-    </section>
-
-    <section class="admin-section section-pad">
-      <div class="section-head" data-reveal><div><span class="section-index">08 / RSET CONTROL ROOM</span><h2>EL PANEL QUE <br>OPERA EL SISTEMA.</h2></div><p>RSET administra usuarios, contenido, días, scores, pagos, automatizaciones, IA, WhatsApp y roles desde una interfaz separada.</p></div>
-      <div class="admin-dashboard" data-reveal>
-        <aside><b>RSET / ADMIN</b><a class="active">Overview</a><a>Knights</a><a>Programs</a><a>Content</a><a>Payments</a><a>Automation</a><a>AI Usage</a><a>WhatsApp</a><a>Roles</a></aside>
-        <div class="admin-main"><div class="admin-top"><div><small>MONDAY / 24 AUG 2026</small><h3>Protocol overview</h3></div><button>＋ NEW USER</button></div><div class="admin-kpis"><article><small>ACTIVE KNIGHTS</small><strong>384</strong><i>+12.8%</i></article><article><small>ONBOARDING</small><strong>91%</strong><i>+4.2%</i></article><article><small>AVG. DAY</small><strong>36.4</strong><i>ACTIVE</i></article><article><small>DAY 90</small><strong>68%</strong><i>COHORT 01</i></article></div><div class="admin-chart"><div><small>WEEKLY COMPLIANCE</small><strong>78.4%</strong></div><div class="bars"><i style="height:42%"></i><i style="height:58%"></i><i style="height:49%"></i><i style="height:72%"></i><i style="height:64%"></i><i style="height:84%"></i><i style="height:78%"></i></div></div><div class="admin-table"><span>KNIGHT</span><span>DAY</span><span>PHASE</span><span>COMPLIANCE</span><span>STATUS</span><b>Gerson K.</b><b>17</b><b>RESET</b><b>82%</b><b class="green">ACTIVE</b><b>Miguel A.</b><b>43</b><b>BUILD</b><b>74%</b><b class="gold">REVIEW</b></div></div>
-      </div>
-    </section>
-
-    <section class="automations section-pad">
-      <div class="section-index">09 / ALWAYS ON</div><h2 data-reveal>AUTOMATIZACIONES QUE <br>NO ESPERAN A UN ADMIN.</h2>
-      <div class="automation-list">
-        <article data-reveal><span>TRIGGER / PAYMENT APPROVED</span><div><b>Activar usuario</b><i>→</i><b>Asignar programa</b><i>→</i><b>Enviar bienvenida</b></div></article>
-        <article data-reveal><span>TRIGGER / 3 DAYS INACTIVE</span><div><b>Crear evento</b><i>→</i><b>Verificar opt-in</b><i>→</i><b>Enviar recordatorio</b></div></article>
-        <article data-reveal><span>TRIGGER / DAY 30 · 60 · 90</span><div><b>Solicitar evaluación</b><i>→</i><b>Recalcular score</b><i>→</i><b>Celebrar / Continuar</b></div></article>
-        <article data-reveal><span>TRIGGER / WORKOUT MISSED</span><div><b>Detectar</b><i>→</i><b>Aplicar regla</b><i>→</i><b>Recordar o escalar</b></div></article>
-      </div>
-    </section>
-
-    <section class="security section-pad">
-      <div class="security-title" data-reveal><span class="section-index">10 / SECURITY & PRIVACY</span><h2>PRIVATE BY DESIGN. <br>CONTROLLED BY RSET.</h2><p>Ningún sistema es 100% invulnerable. Diseñaremos controles en cada capa para reducir riesgo, proteger fotografías y limitar accesos.</p></div>
-      <div class="security-grid" data-reveal><span>HTTPS</span><span>DDoS PROTECTION</span><span>TURNSTILE</span><span>CLOUDFLARE SECRETS</span><span>ROLES + PERMISSIONS</span><span>SESSION VALIDATION</span><span>TEMPORARY PHOTO URLs</span><span>BACKUPS</span><span>AUDIT LOGS</span><span>RATE LIMITING</span><span>ACCOUNT RECOVERY</span><span>DATA EXPORT / DELETE</span><span>PROD / TEST SEPARATION</span><span>WEBHOOK VALIDATION</span><span>NO CARD STORAGE</span><span>NO EXPOSED API KEYS</span></div>
-      <p class="security-foot">Se requerirán consentimiento para fotografías, política de privacidad, avisos de uso de IA y términos legales proporcionados o aprobados por RSET.</p>
-    </section>
-
-    <section class="rset-core section-pad">
-      <div class="section-index">11 / BEYOND NEW KNIGHTS</div>
-      <div class="core-grid"><div data-reveal><p class="eyebrow violet">ARCHITECTURE PREPARED FOR RSET</p><h2>EL PRIMER NÚCLEO. <br>NO UN CALLEJÓN SIN SALIDA.</h2><p>La arquitectura se organiza alrededor de usuarios globales, programas, inscripciones, fases, días, contenidos, evaluaciones, roles, pagos y automatizaciones.</p><blockquote>“La V1 no construye todavía todo RSET Academy. Construye el núcleo reutilizable que permitirá llegar ahí sin empezar nuevamente desde cero.”</blockquote></div><div class="future-map" data-reveal><span>RSET ID</span><span>RSET ACADEMY</span><span>CERTIFICACIONES</span><span>NUEVOS PROGRAMAS</span><span>MEMBRESÍAS</span><span>MENTORES</span><span>NUTRIÓLOGOS</span><span>ENTRENADORES</span><span>OTROS JOURNEYS</span></div></div>
-    </section>
-
-    <section class="scope section-pad" id="scope">
-      <div class="section-head" data-reveal><div><span class="section-index">12 / MVP SCOPE</span><h2>UN NÚCLEO ENFOCADO. <br>FUNCIONAL. PODEROSO.</h2></div><p>Incluye la configuración e importación inicial de un programa de 90 días, siempre que RSET entregue el contenido final correctamente organizado.</p></div>
-      <div class="scope-switch" role="tablist"><button class="active" data-scope="in">INCLUIDO EN EL MVP <span>31</span></button><button data-scope="out">FASES POSTERIORES <span>18</span></button></div>
-      <div class="scope-list" id="scopeList" data-reveal></div>
-      <p class="scope-note">30 días de soporte correctivo después del lanzamiento. Nuevos módulos, cambios ilimitados e integraciones no descritas se cotizan por separado.</p>
-    </section>
-
-    <section class="timeline section-pad">
-      <div class="section-head" data-reveal><div><span class="section-index">13 / 10—12 WEEKS</span><h2>DE LA ARQUITECTURA <br>AL LANZAMIENTO.</h2></div><p>El calendario depende de la entrega oportuna de contenido, cuentas y aprobaciones. Las verificaciones de Meta, Google, Stripe y otros proveedores no dependen totalmente de ZIV.</p></div>
-      <div class="timeline-track">
-        <article data-reveal><span>W 01—02</span><b>01</b><h3>STRATEGY & <br>ARCHITECTURE</h3><p>Alcance, flujos, arquitectura, datos y dirección visual.</p></article>
-        <article data-reveal><span>W 02—04</span><b>02</b><h3>EXPERIENCE <br>DESIGN</h3><p>Landing, app, dashboard, onboarding, admin y prototipos.</p></article>
-        <article data-reveal><span>W 04—07</span><b>03</b><h3>CORE <br>DEVELOPMENT</h3><p>Frontend, Workers, D1, R2, autenticación y roles.</p></article>
-        <article data-reveal><span>W 06—09</span><b>04</b><h3>JOURNEY & <br>CONTENT</h3><p>90 días, entrenamiento, nutrición, contenido, progreso y score.</p></article>
-        <article data-reveal><span>W 08—10</span><b>05</b><h3>CONNECTIONS</h3><p>Stripe, OpenAI, WhatsApp, email, analytics y automatizaciones.</p></article>
-        <article data-reveal><span>W 10—12</span><b>06</b><h3>QA & <br>LAUNCH</h3><p>Mobile, seguridad, correcciones, deployment y capacitación.</p></article>
-      </div>
-    </section>
-
-    <section class="responsibilities section-pad">
-      <div class="responsibility-grid">
-        <article data-reveal><span class="section-index">14 / ZIV</span><h2>WE BUILD <br>THE SYSTEM.</h2><p>Estrategia tecnológica, UX/UI, desarrollo, arquitectura, conexiones, base de datos, deployment, pruebas, capacitación y documentación.</p></article>
-        <article data-reveal><span class="section-index">15 / RSET</span><h2>YOU OWN <br>THE MISSION.</h2><p>Branding y copy final; contenido, videos, PDFs, entrenamiento, nutrición, algoritmo del score, avisos legales, políticas, cuentas y aprobaciones oportunas.</p></article>
-      </div>
-      <div class="ownership" data-reveal><p class="eyebrow">OWNERSHIP / CONTROL</p><div><p><b>RSET conserva</b> marca, contenido, metodología y datos. Las cuentas productivas de Cloudflare, Stripe, Meta, Google y OpenAI quedan bajo su control.</p><p><b>El código específico</b> se entrega conforme al contrato y al liquidar el proyecto. ZIV conserva componentes genéricos, librerías y conocimiento previo reutilizable.</p><p><b>Los términos definitivos</b> de propiedad, confidencialidad y soporte se formalizan contractualmente.</p></div></div>
-    </section>
-
-    <section class="costs section-pad" id="costs">
-      <div class="cost-title" data-reveal><span class="section-index">16 / OPERATING COSTS</span><h2>NO SOFTWARE RENT. <br><span>ONLY REAL INFRASTRUCTURE USAGE.</span></h2><p>ZIV no cobrará una mensualidad obligatoria de mantenimiento ni una renta por usuario. RSET paga directamente los servicios de terceros y ZIV no añade margen.</p></div>
-      <div class="cost-table" data-reveal>
-        <div class="cost-row"><div><b>CLOUDFLARE</b><small>Workers + D1 + R2 + Vectorize</small></div><p>Workers Paid desde USD $5. D1 y R2 pueden cubrir la etapa inicial con sus capacidades incluidas.</p><strong>$100—$500 <small>MXN / MES</small></strong><a href="https://developers.cloudflare.com/workers/platform/pricing/" target="_blank" rel="noreferrer">FUENTE ↗</a></div>
-        <div class="cost-row"><div><b>OPENAI API</b><small>Consumo configurable</small></div><p>Depende de modelo, contexto y longitud. Presupuesto y límites máximos configurables.</p><strong>$200—$1,700 <small>MXN / MES</small></strong><a href="https://developers.openai.com/api/docs/pricing" target="_blank" rel="noreferrer">FUENTE ↗</a></div>
-        <div class="cost-row"><div><b>WHATSAPP</b><small>Meta Cloud API</small></div><p>Precio por mensaje entregado, mercado y categoría. Servicio en ventana iniciada por el usuario puede no generar cargo.</p><strong>$200—$2,500 <small>MXN / MES</small></strong><a href="https://business.whatsapp.com/products/platform-pricing" target="_blank" rel="noreferrer">FUENTE ↗</a></div>
-        <div class="cost-row"><div><b>CLOUDFLARE STREAM</b><small>Video privado opcional</small></div><p>USD $5 / 1,000 min almacenados + USD $1 / 1,000 min entregados.</p><strong>$100—$1,500 <small>MXN / MES</small></strong><a href="https://developers.cloudflare.com/stream/pricing/" target="_blank" rel="noreferrer">FUENTE ↗</a></div>
-        <div class="cost-row"><div><b>EMAIL</b><small>Resend o equivalente</small></div><p>Free hasta el límite. Pro aprox. USD $20 / 50,000 emails.</p><strong>$0—$338 <small>MXN / MES</small></strong><a href="https://resend.com/pricing" target="_blank" rel="noreferrer">FUENTE ↗</a></div>
-        <div class="cost-row"><div><b>STRIPE</b><small>Sin mensualidad estándar</small></div><p>Tarjeta nacional: 3.6% + $3 MXN por transacción. Internacional y conversión pueden sumar cargos.</p><strong>POR VENTA</strong><a href="https://stripe.com/mx/pricing" target="_blank" rel="noreferrer">FUENTE ↗</a></div>
-      </div>
-      <div class="cost-asides"><p><b>GOOGLE SIGN-IN</b> Sin renta adicional por el acceso estándar. Proyecto a nombre de RSET. <a href="https://developers.google.com/identity/openid-connect/openid-connect" target="_blank" rel="noreferrer">Referencia ↗</a></p><p><b>DOMINIO</b> Aproximadamente $300—$900 MXN anuales, según extensión y disponibilidad. Cloudflare Registrar al costo. <a href="https://developers.cloudflare.com/registrar/" target="_blank" rel="noreferrer">Referencia ↗</a></p></div>
-      <div class="monthly-total" data-reveal><span>LANZAMIENTO / 100—500 USUARIOS ACTIVOS</span><strong>$800 — $6,500 MXN</strong><small>AL MES · RANGO ORIENTATIVO · NO INCLUYE COMISIONES POR VENTAS</small></div>
-
-      <div class="calculator" id="calculator" data-reveal>
-        <div class="calc-head"><div><p class="eyebrow violet">INTERACTIVE COST SIMULATOR</p><h3>MODELA EL CRECIMIENTO.</h3></div><p>Los costos que más crecen son IA utilizada, mensajes salientes y video consumido. Simulación orientativa, no cotización del proveedor.</p></div>
-        <div class="scenarios" id="scenarios"><button class="active" data-users="100">100</button><button data-users="1000">1,000</button><button data-users="10000">10,000</button><button data-users="100000">100,000</button></div>
-        <div class="calc-grid">
-          <form class="calc-inputs" id="calcForm" onsubmit="return false">
-            <label><span>USUARIOS ACTIVOS <output id="usersOut">100</output></span><input type="range" id="users" min="50" max="100000" step="50" value="100"></label>
-            <label><span>INTERACCIONES IA / USUARIO <output id="aiOut">10</output></span><input type="range" id="aiUse" min="0" max="100" value="10"></label>
-            <label><span>WHATSAPP SALIENTE / USUARIO <output id="waOut">8</output></span><input type="range" id="waUse" min="0" max="60" value="8"></label>
-            <label><span>MINUTOS VIDEO / USUARIO <output id="videoOut">60</output></span><input type="range" id="videoUse" min="0" max="1000" step="10" value="60"></label>
-            <label><span>EMAILS / USUARIO <output id="emailOut">5</output></span><input type="range" id="emailUse" min="0" max="50" value="5"></label>
-            <label class="fx-label"><span>TIPO DE CAMBIO USD / MXN</span><input type="number" id="fx" min="10" max="30" step="0.1" value="16.90"></label>
-          </form>
-          <div class="calc-results" aria-live="polite"><div><span>CLOUDFLARE</span><b id="cfCost">$100—$500</b></div><div><span>INTELIGENCIA ARTIFICIAL</span><b id="aiCost">$200—$1,700</b></div><div><span>WHATSAPP</span><b id="waCost">$200—$2,500</b></div><div><span>VIDEO</span><b id="videoCost">$100—$1,500</b></div><div><span>EMAIL</span><b id="emailCost">$0—$338</b></div><div class="calc-grand"><span>TOTAL ESTIMADO / MES</span><strong id="totalCost">$600—$6,538</strong><small id="perUser">$6.00—$65.38 por usuario</small></div></div>
-        </div>
-        <p class="calc-note">Tipo de cambio de referencia editable: 1 USD ≈ $16.90 MXN. Debe actualizarse el día de contratación. Las tarifas reales de OpenAI y WhatsApp dependen del modelo, categoría, mercado y uso.</p>
-      </div>
-    </section>
-
-    <section class="investment section-pad" id="investment">
-      <div class="investment-bg"></div>
-      <div class="investment-head" data-reveal><span class="section-index">17 / THE PROPOSAL</span><h2>THE REAL VALUE <br>OF BUILDING THE CORE <br><span>CORRECTLY.</span></h2></div>
-      <div class="investment-grid">
-        <div class="investment-context" data-reveal><p>VALOR COMERCIAL ESTIMADO DEL MVP</p><strong>$250,000 — $450,000 MXN</strong><span>Referencia comercial estimada</span></div>
-        <div class="special-investment" data-reveal><p>INVERSIÓN ESPECIAL PARA <br>THE NEW KNIGHTS PROTOCOL™</p><strong>$84,000</strong><span>MXN</span><small>Una inversión estratégica derivada de la relación inicial entre RSET y ZIV.</small></div>
-      </div>
-      <div class="payment-split" data-reveal><div><span>50% AL INICIO</span><strong>$42,000 MXN</strong><p>Anticipo + accesos + materiales</p></div><i>＋</i><div><span>50% AL FINAL</span><strong>$42,000 MXN</strong><p>Al concluir alcance, antes de la entrega definitiva o publicación final</p></div></div>
-      <div class="investment-includes" data-reveal><span>DISEÑO</span><span>DESARROLLO</span><span>INFRAESTRUCTURA</span><span>PLATAFORMA</span><span>ADMIN</span><span>CONEXIONES</span><span>AI COACH</span><span>WHATSAPP AI</span><span>DEPLOYMENT</span><span>CAPACITACIÓN</span><span>SOPORTE INICIAL</span></div>
-      <div class="investment-notes"><p>Sin mensualidad obligatoria a ZIV.</p><p>Sin renta de software.</p><p>Sin cobro adicional por desarrollar el agente IA inicial.</p><p>Consumos de proveedores pagados directamente por RSET.</p><p>Nuevas funcionalidades se cotizan por separado.</p></div>
-    </section>
-
-    <section class="closing">
-      <img src="./assets/closing.webp" alt="Figura contemplando un horizonte abierto tras completar su transformación">
-      <div class="closing-shade"></div>
-      <div class="closing-copy" data-reveal><p class="eyebrow violet">THE FIRST TECHNOLOGY CORE OF RSET</p><h2>WE ARE NOT BUILDING <br>90 PAGES.</h2><h3>WE ARE BUILDING ONE SYSTEM <br>THAT KNOWS WHERE EVERY KNIGHT IS <br>AND WHAT HE NEEDS TODAY.</h3><p>THE NEW KNIGHTS PROTOCOL™ será el primer núcleo tecnológico de un ecosistema capaz de crecer junto con RSET. Comenzaremos con una V1 enfocada, funcional y poderosa; preparada para evolucionar sin reconstruirse desde cero.</p><button class="authorize magnetic" id="authorizeButton">AUTORIZAR INICIO DEL MVP <span>↗</span></button></div>
-      <footer><span>THE NEW KNIGHTS PROTOCOL™</span><span>Powered by RSET IMPACT MX™</span><span>Technology by ZIV</span><a href="#top">BACK TO TOP ↑</a></footer>
+      <p class="closing__soon">Encuentra tu lugar. Caminemos juntas.</p>
+      <p class="closing__seed">
+        <a class="button button--outline" href="https://donate.stripe.com/7sY4gt4JZ8KmcCT4Z85ZC00">Sembrar en esta historia <span aria-hidden="true">→</span></a>
+      </p>
     </section>
   </main>
 
-  <dialog class="confirm-modal" id="confirmModal"><button class="modal-close" id="modalClose" aria-label="Cerrar">×</button><span class="modal-icon">◇</span><p class="eyebrow violet">VISUAL CONFIRMATION / NO CHARGE</p><h2>READY TO <br>BUILD THE CORE.</h2><p>Esta acción no realiza cargos ni envía información. La autorización formal se completa mediante contrato, anticipo y entrega de accesos y materiales.</p><div><strong>$42,000 MXN</strong><span>50% AL INICIO</span></div><button id="modalDone">ENTENDIDO</button></dialog>
-  <script src="./app.js" defer></script>
+  <footer class="footer">
+    <img src="isotipo-lbyn.png" alt="" width="36" height="36" loading="lazy">
+    <p class="footer__line">Abrimos la Biblia. Compartimos la vida.<br>Caminamos con Jesús.</p>
+    <a class="footer__panel" href="https://lbyn-grupos.pages.dev/panel/">Acceso del equipo</a>
+    <p><a class="footer__panel" href="https://donate.stripe.com/7sY4gt4JZ8KmcCT4Z85ZC00">Donar a La Biblia y Nosotras</a></p>
+    <p class="footer__legal">© 2026 La Biblia y Nosotras · Hecho con cuidado en México</p>
+  </footer>
+
+  <script>
+    (() => {
+      "use strict";
+
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const saveData = Boolean(navigator.connection && navigator.connection.saveData);
+      const heroVideo = document.getElementById("hero-video");
+
+      /* El clip de portada corre solo, mudo y en bucle. Se detiene
+         fuera de pantalla y con la pestaña oculta: no gasta batería. */
+      if (heroVideo && !reduceMotion && !saveData) {
+        const playVideo = () => heroVideo.play().catch(() => {});
+        const videoObserver = new IntersectionObserver(entries => {
+          if (entries[0].isIntersecting && !document.hidden) playVideo();
+          else heroVideo.pause();
+        }, { threshold: .08 });
+
+        videoObserver.observe(heroVideo);
+        document.addEventListener("visibilitychange", () => {
+          if (document.hidden) heroVideo.pause();
+          else if (heroVideo.getBoundingClientRect().bottom > 0) playVideo();
+        });
+      }
+
+    })();
+  </script>
 </body>
 </html>
